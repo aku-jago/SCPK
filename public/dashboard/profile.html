@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Profil Saya — SCPK</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🫁</text></svg>">
+  <link rel="stylesheet" href="/assets/css/global.css">
+  <link rel="stylesheet" href="/assets/css/dashboard.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body class="dashboard-layout">
+  <!-- Mobile Top Bar -->
+  <div class="top-bar" id="top-bar">
+    <button class="top-bar-toggle" id="sidebar-toggle" aria-label="Toggle menu">
+      <i data-lucide="menu" style="width:22px;height:22px;"></i>
+    </button>
+    <div class="navbar-brand">
+      <div class="navbar-brand-icon"><i data-lucide="heart-pulse" style="width:18px;height:18px;color:white;"></i></div>
+      <span style="font-size:var(--text-lg);font-weight:800;">SCPK</span>
+    </div>
+    <button class="btn btn-icon btn-ghost" id="theme-toggle-mobile" style="margin-left:auto;" aria-label="Toggle theme">
+      <i data-lucide="sun" style="width:18px;height:18px;"></i>
+    </button>
+  </div>
+
+  <!-- Sidebar Overlay -->
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="navbar-brand-icon"><i data-lucide="heart-pulse" style="width:18px;height:18px;color:white;"></i></div>
+      <span style="font-family:var(--font-display);font-size:var(--text-lg);font-weight:800;color:var(--gray-900);">SCPK</span>
+      <button class="btn btn-icon btn-ghost" id="theme-toggle" style="margin-left:auto;" aria-label="Toggle theme">
+        <i data-lucide="sun" style="width:16px;height:16px;" id="theme-icon-light"></i>
+        <i data-lucide="moon" style="width:16px;height:16px;display:none;" id="theme-icon-dark"></i>
+      </button>
+    </div>
+
+    <div class="sidebar-user" id="sidebar-user">
+      <div class="sidebar-user-avatar" id="user-avatar">U</div>
+      <div>
+        <div class="sidebar-user-name" id="user-name">Loading...</div>
+        <div class="sidebar-user-role" id="user-role">User</div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-title">Menu</div>
+      <a href="/dashboard/" class="sidebar-link" id="nav-dashboard">
+        <i data-lucide="layout-dashboard" style="width:20px;height:20px;"></i> Dashboard
+      </a>
+      <a href="/dashboard/screening.html" class="sidebar-link" id="nav-screening">
+        <i data-lucide="clipboard-check" style="width:20px;height:20px;"></i> Self Screening
+      </a>
+      <a href="/dashboard/history.html" class="sidebar-link" id="nav-history">
+        <i data-lucide="history" style="width:20px;height:20px;"></i> Riwayat
+      </a>
+      <a href="/dashboard/recommendation.html" class="sidebar-link" id="nav-recommendation">
+        <i data-lucide="heart-handshake" style="width:20px;height:20px;"></i> Rekomendasi
+      </a>
+
+      <div class="sidebar-section-title" style="margin-top:var(--space-4);">Akun</div>
+      <a href="/dashboard/profile.html" class="sidebar-link active" id="nav-profile">
+        <i data-lucide="user" style="width:20px;height:20px;"></i> Profil
+      </a>
+      <a href="/dashboard/settings.html" class="sidebar-link" id="nav-settings">
+        <i data-lucide="settings" style="width:20px;height:20px;"></i> Pengaturan
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="sidebar-link w-full" id="btn-logout" style="color:var(--danger);">
+        <i data-lucide="log-out" style="width:20px;height:20px;"></i> Keluar
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content page-transition">
+    <div class="page-header">
+      <h1 class="page-title">Profil Saya</h1>
+      <p class="page-subtitle">Kelola informasi data diri dan kontak akun Anda.</p>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 2fr;gap:var(--space-6);align-items:start;">
+      <!-- Profile Summary Card -->
+      <div class="glass-card" style="text-align:center;padding:var(--space-8);">
+        <div style="width:96px;height:96px;border-radius:var(--radius-full);background:var(--gradient-button);color:white;font-weight:900;font-size:var(--text-3xl);display:flex;align-items:center;justify-content:center;margin:0 auto var(--space-4);" id="profile-card-avatar">U</div>
+        <h2 style="font-size:var(--text-lg);font-weight:800;color:var(--gray-900);" id="profile-card-name">User</h2>
+        <div style="font-size:var(--text-xs);color:var(--gray-500);margin-bottom:var(--space-4);" id="profile-card-email">user@scpk.com</div>
+        <div style="border-top:1px solid var(--gray-100);padding-top:var(--space-4);margin-top:var(--space-4);text-align:left;">
+          <div style="display:flex;justify-content:space-between;margin-bottom:var(--space-2);">
+            <span style="font-size:var(--text-xs);color:var(--gray-500);">Peran:</span>
+            <span style="font-size:var(--text-xs);font-weight:700;color:var(--gray-800);" id="profile-card-role">Pengguna</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;">
+            <span style="font-size:var(--text-xs);color:var(--gray-500);">Terdaftar sejak:</span>
+            <span style="font-size:var(--text-xs);font-weight:700;color:var(--gray-800);" id="profile-card-joined">-</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Edit Profile Form Card -->
+      <div class="glass-card">
+        <h2 style="font-size:var(--text-lg);font-weight:800;color:var(--gray-900);margin-bottom:var(--space-6);">Edit Informasi Profil</h2>
+        <form id="profile-form" novalidate>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);">
+            <div class="form-group">
+              <label class="form-label" for="profile-name">Nama Lengkap *</label>
+              <input type="text" id="profile-name" class="form-input" required minlength="2">
+              <div class="form-error" id="name-error"></div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="profile-email">Alamat Email</label>
+              <input type="email" id="profile-email" class="form-input" disabled style="background:var(--gray-100);">
+            </div>
+          </div>
+
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);">
+            <div class="form-group">
+              <label class="form-label" for="profile-phone">Nomor Telepon</label>
+              <input type="tel" id="profile-phone" class="form-input" placeholder="Contoh: 08123456789">
+              <div class="form-error" id="phone-error"></div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="profile-gender">Jenis Kelamin</label>
+              <select id="profile-gender" class="form-input">
+                <option value="">Pilih...</option>
+                <option value="MALE">Laki-laki</option>
+                <option value="FEMALE">Perempuan</option>
+              </select>
+              <div class="form-error" id="gender-error"></div>
+            </div>
+          </div>
+
+          <div class="form-group" style="max-width:50%;">
+            <label class="form-label" for="profile-dob">Tanggal Lahir</label>
+            <input type="date" id="profile-dob" class="form-input">
+            <div class="form-error" id="dob-error"></div>
+          </div>
+
+          <div style="display:flex;justify-content:flex-end;margin-top:var(--space-6);">
+            <button type="submit" class="btn btn-primary" id="btn-save-profile">
+              <i data-lucide="save" style="width:16px;height:16px;"></i> Simpan Perubahan
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <script src="/assets/js/lib/api.js"></script>
+  <script src="/assets/js/lib/auth.js"></script>
+  <script src="/assets/js/lib/toast.js"></script>
+  <script src="/assets/js/lib/theme.js"></script>
+  <script src="/assets/js/dashboard/profile.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Processing — SCPK</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🫁</text></svg>">
+  <link rel="stylesheet" href="/assets/css/global.css">
+  <link rel="stylesheet" href="/assets/css/dashboard.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body class="dashboard-layout" style="background:var(--gradient-hero);">
+  <main style="display:flex;align-items:center;justify-content:center;min-height:100vh;margin:0;padding:var(--space-6);">
+    <div class="ai-processing" id="ai-processing">
+      <div class="ai-brain-container">
+        <div class="ai-brain-ring"></div>
+        <div class="ai-brain-ring"></div>
+        <div class="ai-brain-ring"></div>
+        <div class="ai-brain-icon">
+          <i data-lucide="brain" style="width:56px;height:56px;"></i>
+        </div>
+      </div>
+
+      <h2 style="font-size:var(--text-2xl);font-weight:800;color:var(--gray-900);margin-bottom:var(--space-2);">
+        AI Sedang Menganalisis
+      </h2>
+      <p style="font-size:var(--text-sm);color:var(--gray-500);margin-bottom:var(--space-8);">
+        Fuzzy Tsukamoto Engine memproses data Anda...
+      </p>
+
+      <div class="ai-step-list" id="ai-steps">
+        <div class="ai-step" id="ai-step-1">
+          <div class="ai-step-icon"><i data-lucide="database" style="width:16px;height:16px;"></i></div>
+          <span class="ai-step-label">Memvalidasi input data</span>
+        </div>
+        <div class="ai-step" id="ai-step-2">
+          <div class="ai-step-icon"><i data-lucide="git-branch" style="width:16px;height:16px;"></i></div>
+          <span class="ai-step-label">Fuzzifikasi parameter</span>
+        </div>
+        <div class="ai-step" id="ai-step-3">
+          <div class="ai-step-icon"><i data-lucide="cpu" style="width:16px;height:16px;"></i></div>
+          <span class="ai-step-label">Evaluasi aturan fuzzy</span>
+        </div>
+        <div class="ai-step" id="ai-step-4">
+          <div class="ai-step-icon"><i data-lucide="calculator" style="width:16px;height:16px;"></i></div>
+          <span class="ai-step-label">Defuzzifikasi Tsukamoto</span>
+        </div>
+        <div class="ai-step" id="ai-step-5">
+          <div class="ai-step-icon"><i data-lucide="heart-handshake" style="width:16px;height:16px;"></i></div>
+          <span class="ai-step-label">Menghasilkan rekomendasi</span>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="/assets/js/lib/api.js"></script>
+  <script src="/assets/js/lib/auth.js"></script>
+  <script src="/assets/js/lib/toast.js"></script>
+  <script src="/assets/js/lib/theme.js"></script>
+  <script>
+    lucide.createIcons();
+    if (!Auth.requireAuth()) throw new Error('Not authenticated');
+
+    const params = new URLSearchParams(window.location.search);
+    const screeningId = params.get('id');
+
+    const steps = ['ai-step-1','ai-step-2','ai-step-3','ai-step-4','ai-step-5'];
+    let stepIdx = 0;
+
+    function animateStep() {
+      if (stepIdx >= steps.length) {
+        // All done, redirect to result
+        setTimeout(() => {
+          window.location.href = `/dashboard/result.html?id=${screeningId}`;
+        }, 600);
+        return;
+      }
+      const el = document.getElementById(steps[stepIdx]);
+      if (el) {
+        el.classList.remove('active');
+        el.classList.add('completed');
+      }
+      stepIdx++;
+      if (stepIdx < steps.length) {
+        const next = document.getElementById(steps[stepIdx]);
+        if (next) next.classList.add('active');
+      }
+      setTimeout(animateStep, 600 + Math.random() * 400);
+    }
+
+    // Start animation
+    document.getElementById(steps[0])?.classList.add('active');
+    setTimeout(animateStep, 800);
+  </script>
+</body>
+</html>

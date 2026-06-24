@@ -1,0 +1,68 @@
+/* ============================================================
+   Admin-Specific Dashboard Styles
+   ============================================================ */
+
+:root {
+  /* Override Primary colors for Admin to distinguish from User Dashboard */
+  --admin-blue-50: #f0f9ff;
+  --admin-blue-100: #e0f2fe;
+  --admin-blue-500: #0ea5e9;
+  --admin-blue-600: #0284c7;
+  
+  --admin-gradient-button: linear-gradient(135deg, #0ea5e9 0%, #6366f1 100%);
+  --admin-gradient-button-hover: linear-gradient(135deg, #0284c7 0%, #4f46e5 100%);
+  --admin-shadow: 0 4px 20px rgba(14, 165, 233, 0.15);
+}
+
+/* Admin layout overrides */
+.admin-badge {
+  background: var(--admin-blue-100);
+  color: var(--admin-blue-600);
+  border: 1px solid var(--admin-blue-500);
+}
+
+.sidebar-user-avatar.admin-avatar {
+  background: var(--admin-gradient-button);
+}
+
+.sidebar-link.active.admin-link-active {
+  background: var(--admin-blue-50);
+  color: var(--admin-blue-600);
+}
+
+[data-theme="dark"] .sidebar-link.active.admin-link-active {
+  background: rgba(14, 165, 233, 0.1);
+  color: var(--admin-blue-500);
+}
+
+/* Rule Config Matrix Styles */
+.rule-card {
+  border-left: 4px solid var(--admin-blue-500);
+}
+
+.rule-condition-badge {
+  display: inline-block;
+  padding: var(--space-1) var(--space-2);
+  background: var(--gray-100);
+  border-radius: var(--radius-sm);
+  font-size: 11px;
+  color: var(--gray-600);
+  margin-right: var(--space-1);
+  margin-bottom: var(--space-1);
+  border: 1px solid var(--gray-200);
+}
+
+/* Modal form extensions */
+.admin-modal-title {
+  font-size: var(--text-xl);
+  font-weight: 800;
+  color: var(--gray-900);
+  margin-bottom: var(--space-4);
+}
+
+/* Responsive Table Adjustments */
+.actions-cell {
+  display: flex;
+  gap: var(--space-2);
+  justify-content: flex-end;
+}

@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hasil Screening — SCPK</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🫁</text></svg>">
+  <link rel="stylesheet" href="/assets/css/global.css">
+  <link rel="stylesheet" href="/assets/css/dashboard.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.7/chart.umd.min.js"></script>
+</head>
+<body class="dashboard-layout">
+  <div class="top-bar" id="top-bar">
+    <button class="top-bar-toggle" id="sidebar-toggle"><i data-lucide="menu" style="width:22px;height:22px;"></i></button>
+    <div class="navbar-brand"><div class="navbar-brand-icon"><i data-lucide="heart-pulse" style="width:18px;height:18px;color:white;"></i></div><span style="font-size:var(--text-lg);font-weight:800;">SCPK</span></div>
+  </div>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand"><div class="navbar-brand-icon"><i data-lucide="heart-pulse" style="width:18px;height:18px;color:white;"></i></div><span style="font-family:var(--font-display);font-size:var(--text-lg);font-weight:800;">SCPK</span><button class="btn btn-icon btn-ghost" id="theme-toggle" style="margin-left:auto;"><i data-lucide="sun" style="width:16px;height:16px;" id="theme-icon-light"></i><i data-lucide="moon" style="width:16px;height:16px;display:none;" id="theme-icon-dark"></i></button></div>
+    <div class="sidebar-user"><div class="sidebar-user-avatar" id="user-avatar">U</div><div><div class="sidebar-user-name" id="user-name">User</div><div class="sidebar-user-role">Pengguna</div></div></div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-title">Menu</div>
+      <a href="/dashboard/" class="sidebar-link"><i data-lucide="layout-dashboard" style="width:20px;height:20px;"></i> Dashboard</a>
+      <a href="/dashboard/screening.html" class="sidebar-link"><i data-lucide="clipboard-check" style="width:20px;height:20px;"></i> Self Screening</a>
+      <a href="/dashboard/history.html" class="sidebar-link"><i data-lucide="history" style="width:20px;height:20px;"></i> Riwayat</a>
+      <a href="/dashboard/recommendation.html" class="sidebar-link"><i data-lucide="heart-handshake" style="width:20px;height:20px;"></i> Rekomendasi</a>
+      <div class="sidebar-section-title" style="margin-top:var(--space-4);">Akun</div>
+      <a href="/dashboard/profile.html" class="sidebar-link"><i data-lucide="user" style="width:20px;height:20px;"></i> Profil</a>
+      <a href="/dashboard/settings.html" class="sidebar-link"><i data-lucide="settings" style="width:20px;height:20px;"></i> Pengaturan</a>
+    </nav>
+    <div class="sidebar-footer"><button class="sidebar-link w-full" id="btn-logout" style="color:var(--danger);"><i data-lucide="log-out" style="width:20px;height:20px;"></i> Keluar</button></div>
+  </aside>
+
+  <main class="main-content page-transition">
+    <div class="page-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--space-4);">
+      <div>
+        <h1 class="page-title">Hasil Screening</h1>
+        <p class="page-subtitle" id="result-date">-</p>
+      </div>
+      <div style="display:flex;gap:var(--space-3);">
+        <button class="btn btn-secondary" id="btn-download"><i data-lucide="download" style="width:16px;height:16px;"></i> Download PDF</button>
+        <a href="/dashboard/screening.html" class="btn btn-primary"><i data-lucide="plus" style="width:16px;height:16px;"></i> Screening Baru</a>
+      </div>
+    </div>
+
+    <!-- Risk Score Hero -->
+    <div class="glass-card" style="text-align:center;margin-bottom:var(--space-8);">
+      <div class="risk-gauge-container">
+        <canvas id="risk-gauge" width="260" height="260"></canvas>
+        <div class="risk-score-display">
+          <div class="risk-score-number" id="risk-score">-</div>
+          <div class="risk-score-label">Skor Risiko</div>
+        </div>
+      </div>
+      <div class="risk-category-badge" id="risk-badge" style="margin-bottom:var(--space-4);">-</div>
+      <p id="risk-description" style="font-size:var(--text-sm);color:var(--gray-500);max-width:500px;margin:0 auto;"></p>
+    </div>
+
+    <!-- Detail Grid -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-6);margin-bottom:var(--space-8);">
+      <!-- Input Parameters -->
+      <div class="chart-card">
+        <div class="chart-card-title">Parameter Input</div>
+        <div id="params-list" style="display:grid;gap:var(--space-2);"></div>
+      </div>
+      <!-- Factor Radar -->
+      <div class="chart-card">
+        <div class="chart-card-title">Distribusi Faktor Risiko</div>
+        <canvas id="radar-chart" height="250"></canvas>
+      </div>
+    </div>
+
+    <!-- Recommendations -->
+    <div class="chart-card" style="margin-bottom:var(--space-8);">
+      <div class="chart-card-title" style="margin-bottom:var(--space-6);">Rekomendasi</div>
+      <div id="recommendations-list" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:var(--space-4);"></div>
+    </div>
+  </main>
+
+  <script src="/assets/js/lib/api.js"></script>
+  <script src="/assets/js/lib/auth.js"></script>
+  <script src="/assets/js/lib/toast.js"></script>
+  <script src="/assets/js/lib/theme.js"></script>
+  <script src="/assets/js/lib/pdf-generator.js"></script>
+  <script src="/assets/js/dashboard/result.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

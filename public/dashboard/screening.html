@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Self Screening — SCPK</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🫁</text></svg>">
+  <link rel="stylesheet" href="/assets/css/global.css">
+  <link rel="stylesheet" href="/assets/css/dashboard.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body class="dashboard-layout">
+  <div class="top-bar" id="top-bar">
+    <button class="top-bar-toggle" id="sidebar-toggle"><i data-lucide="menu" style="width:22px;height:22px;"></i></button>
+    <div class="navbar-brand"><div class="navbar-brand-icon"><i data-lucide="heart-pulse" style="width:18px;height:18px;color:white;"></i></div><span style="font-size:var(--text-lg);font-weight:800;">SCPK</span></div>
+  </div>
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand"><div class="navbar-brand-icon"><i data-lucide="heart-pulse" style="width:18px;height:18px;color:white;"></i></div><span style="font-family:var(--font-display);font-size:var(--text-lg);font-weight:800;">SCPK</span><button class="btn btn-icon btn-ghost" id="theme-toggle" style="margin-left:auto;"><i data-lucide="sun" style="width:16px;height:16px;" id="theme-icon-light"></i><i data-lucide="moon" style="width:16px;height:16px;display:none;" id="theme-icon-dark"></i></button></div>
+    <div class="sidebar-user" id="sidebar-user"><div class="sidebar-user-avatar" id="user-avatar">U</div><div><div class="sidebar-user-name" id="user-name">User</div><div class="sidebar-user-role" id="user-role">Pengguna</div></div></div>
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-title">Menu</div>
+      <a href="/dashboard/" class="sidebar-link"><i data-lucide="layout-dashboard" style="width:20px;height:20px;"></i> Dashboard</a>
+      <a href="/dashboard/screening.html" class="sidebar-link active"><i data-lucide="clipboard-check" style="width:20px;height:20px;"></i> Self Screening</a>
+      <a href="/dashboard/history.html" class="sidebar-link"><i data-lucide="history" style="width:20px;height:20px;"></i> Riwayat</a>
+      <a href="/dashboard/recommendation.html" class="sidebar-link"><i data-lucide="heart-handshake" style="width:20px;height:20px;"></i> Rekomendasi</a>
+      <div class="sidebar-section-title" style="margin-top:var(--space-4);">Akun</div>
+      <a href="/dashboard/profile.html" class="sidebar-link"><i data-lucide="user" style="width:20px;height:20px;"></i> Profil</a>
+      <a href="/dashboard/settings.html" class="sidebar-link"><i data-lucide="settings" style="width:20px;height:20px;"></i> Pengaturan</a>
+    </nav>
+    <div class="sidebar-footer"><button class="sidebar-link w-full" id="btn-logout" style="color:var(--danger);"><i data-lucide="log-out" style="width:20px;height:20px;"></i> Keluar</button></div>
+  </aside>
+
+  <main class="main-content page-transition">
+    <div class="page-header">
+      <h1 class="page-title">Self Screening</h1>
+      <p class="page-subtitle">Jawab pertanyaan berikut untuk menganalisis tingkat risiko Anda.</p>
+    </div>
+
+    <div class="wizard" id="screening-wizard">
+      <!-- Progress -->
+      <div class="wizard-progress" id="wizard-progress">
+        <div class="wizard-step-dot active" data-step="1">1</div>
+        <div class="wizard-step-line" id="line-1"></div>
+        <div class="wizard-step-dot" data-step="2">2</div>
+        <div class="wizard-step-line" id="line-2"></div>
+        <div class="wizard-step-dot" data-step="3">3</div>
+        <div class="wizard-step-line" id="line-3"></div>
+        <div class="wizard-step-dot" data-step="4">4</div>
+      </div>
+
+      <div class="glass-card">
+        <!-- Step 1: Personal Info -->
+        <div class="wizard-panel active" id="step-1">
+          <div class="wizard-panel-title">Informasi Pribadi</div>
+          <div class="wizard-panel-desc">Masukkan data diri Anda untuk analisis yang akurat.</div>
+          <div class="form-group">
+            <label class="form-label" for="age">Usia (tahun) *</label>
+            <input type="number" id="age" class="form-input" placeholder="Contoh: 45" min="15" max="80" required>
+            <div class="form-error" id="age-error"></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-4);">
+            <div class="form-group">
+              <label class="form-label" for="weight">Berat Badan (kg) *</label>
+              <input type="number" id="weight" class="form-input" placeholder="70" min="30" max="200" step="0.1" required>
+              <div class="form-error" id="weight-error"></div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="height">Tinggi Badan (cm) *</label>
+              <input type="number" id="height" class="form-input" placeholder="170" min="100" max="250" step="0.1" required>
+              <div class="form-error" id="height-error"></div>
+            </div>
+          </div>
+          <div class="bmi-display" id="bmi-display" style="display:none;">
+            <div>
+              <div style="font-size:var(--text-xs);color:var(--gray-500);">BMI Anda</div>
+              <div class="bmi-value" id="bmi-value" style="color:var(--gray-900);">-</div>
+            </div>
+            <div class="bmi-category badge" id="bmi-category">-</div>
+          </div>
+          <div class="wizard-actions">
+            <div></div>
+            <button class="btn btn-primary" onclick="wizardNext()">Lanjut <i data-lucide="arrow-right" style="width:16px;height:16px;"></i></button>
+          </div>
+        </div>
+
+        <!-- Step 2: Smoking Habits -->
+        <div class="wizard-panel" id="step-2">
+          <div class="wizard-panel-title">Kebiasaan Merokok</div>
+          <div class="wizard-panel-desc">Informasi tentang kebiasaan merokok Anda.</div>
+          <div class="form-group">
+            <label class="form-label" for="cigarettesPerDay">Jumlah Rokok per Hari (batang) *</label>
+            <input type="number" id="cigarettesPerDay" class="form-input" placeholder="Contoh: 15" min="1" max="60" required>
+            <div class="form-error" id="cigarettesPerDay-error"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="coughDuration">Durasi Batuk (bulan) *</label>
+            <input type="number" id="coughDuration" class="form-input" placeholder="0 jika tidak batuk" min="0" max="24" step="0.5" required>
+            <div style="font-size:var(--text-xs);color:var(--gray-500);margin-top:var(--space-1);">Masukkan 0 jika tidak mengalami batuk</div>
+            <div class="form-error" id="coughDuration-error"></div>
+          </div>
+          <div class="wizard-actions">
+            <button class="btn btn-secondary" onclick="wizardPrev()"><i data-lucide="arrow-left" style="width:16px;height:16px;"></i> Kembali</button>
+            <button class="btn btn-primary" onclick="wizardNext()">Lanjut <i data-lucide="arrow-right" style="width:16px;height:16px;"></i></button>
+          </div>
+        </div>
+
+        <!-- Step 3: Health Factors -->
+        <div class="wizard-panel" id="step-3">
+          <div class="wizard-panel-title">Faktor Kesehatan</div>
+          <div class="wizard-panel-desc">Informasi tambahan tentang kondisi kesehatan Anda.</div>
+          <div class="form-group">
+            <label class="form-label">Riwayat Kanker Paru-Paru dalam Keluarga *</label>
+            <div style="display:flex;gap:var(--space-4);margin-top:var(--space-2);">
+              <label style="display:flex;align-items:center;gap:var(--space-2);cursor:pointer;padding:var(--space-3) var(--space-5);border:1.5px solid var(--gray-200);border-radius:var(--radius-lg);flex:1;transition:all 0.2s;">
+                <input type="radio" name="familyHistory" value="true" style="accent-color:var(--pink-500);"> <span>Ya, ada</span>
+              </label>
+              <label style="display:flex;align-items:center;gap:var(--space-2);cursor:pointer;padding:var(--space-3) var(--space-5);border:1.5px solid var(--gray-200);border-radius:var(--radius-lg);flex:1;transition:all 0.2s;">
+                <input type="radio" name="familyHistory" value="false" checked style="accent-color:var(--pink-500);"> <span>Tidak ada</span>
+              </label>
+            </div>
+            <div class="form-error" id="familyHistory-error"></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="environmentalExposure">Paparan Lingkungan Berbahaya (1-10) *</label>
+            <input type="range" id="environmentalExposure" min="1" max="10" value="3" style="width:100%;accent-color:var(--pink-500);">
+            <div style="display:flex;justify-content:space-between;font-size:var(--text-xs);color:var(--gray-500);"><span>1 - Rendah</span><span id="env-value" style="font-weight:700;color:var(--pink-500);">3</span><span>10 - Tinggi</span></div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="chestPainScale">Skala Nyeri Dada (1-10) *</label>
+            <input type="range" id="chestPainScale" min="1" max="10" value="2" style="width:100%;accent-color:var(--pink-500);">
+            <div style="display:flex;justify-content:space-between;font-size:var(--text-xs);color:var(--gray-500);"><span>1 - Ringan</span><span id="pain-value" style="font-weight:700;color:var(--pink-500);">2</span><span>10 - Berat</span></div>
+          </div>
+          <div class="wizard-actions">
+            <button class="btn btn-secondary" onclick="wizardPrev()"><i data-lucide="arrow-left" style="width:16px;height:16px;"></i> Kembali</button>
+            <button class="btn btn-primary" onclick="wizardNext()">Lanjut <i data-lucide="arrow-right" style="width:16px;height:16px;"></i></button>
+          </div>
+        </div>
+
+        <!-- Step 4: Confirmation -->
+        <div class="wizard-panel" id="step-4">
+          <div class="wizard-panel-title">Konfirmasi Data</div>
+          <div class="wizard-panel-desc">Periksa kembali data yang Anda masukkan sebelum dianalisis AI.</div>
+          <div id="summary-data" style="display:grid;gap:var(--space-3);"></div>
+          <div style="margin-top:var(--space-6);padding:var(--space-4);background:var(--warning-light);border-radius:var(--radius-lg);border:1px solid rgba(234,179,8,0.2);">
+            <div style="display:flex;align-items:center;gap:var(--space-2);font-size:var(--text-sm);font-weight:600;color:#a16207;">
+              <i data-lucide="alert-triangle" style="width:16px;height:16px;"></i>
+              Disclaimer
+            </div>
+            <p style="font-size:var(--text-xs);color:#a16207;margin-top:var(--space-2);line-height:1.5;">
+              Hasil analisis ini bersifat prediktif dan bukan diagnosis medis. 
+              Selalu konsultasikan dengan dokter untuk evaluasi klinis yang tepat.
+            </p>
+          </div>
+          <div class="wizard-actions">
+            <button class="btn btn-secondary" onclick="wizardPrev()"><i data-lucide="arrow-left" style="width:16px;height:16px;"></i> Kembali</button>
+            <button class="btn btn-primary btn-lg" id="btn-submit-screening">
+              <i data-lucide="brain" style="width:18px;height:18px;"></i> Analisis dengan AI
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="/assets/js/lib/api.js"></script>
+  <script src="/assets/js/lib/auth.js"></script>
+  <script src="/assets/js/lib/toast.js"></script>
+  <script src="/assets/js/lib/theme.js"></script>
+  <script src="/assets/js/dashboard/screening.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

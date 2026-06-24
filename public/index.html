@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="SCPK - Sistem AI Deteksi Dini & Klasifikasi Tingkat Risiko Kanker Paru-Paru bagi Perokok Aktif. Platform skrining mandiri berbasis Fuzzy Tsukamoto.">
+  <meta name="keywords" content="kanker paru-paru, deteksi dini, AI, fuzzy tsukamoto, skrining, perokok, kesehatan">
+  <meta name="author" content="SCPK Team">
+  <title>SCPK — Self-Screening Platform | Deteksi Dini Kanker Paru-Paru</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🫁</text></svg>">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="assets/css/global.css">
+  <link rel="stylesheet" href="assets/css/landing.css">
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+  <!-- GSAP + ScrollTrigger -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <!-- Three.js -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+</head>
+<body>
+
+  <!-- ============================================================
+       NAVBAR
+       ============================================================ -->
+  <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
+    <div class="container" style="display:flex;align-items:center;width:100%;max-width:100%;padding:0 var(--space-8);">
+      <a href="/" class="navbar-brand" aria-label="SCPK Home">
+        <div class="navbar-brand-icon">
+          <i data-lucide="heart-pulse" style="width:20px;height:20px;color:white;"></i>
+        </div>
+        <span>SCPK</span>
+      </a>
+
+      <div class="navbar-menu" id="navbar-menu">
+        <a href="#features" class="navbar-link">Fitur</a>
+        <a href="#statistics" class="navbar-link">Statistik</a>
+        <a href="#risk-factors" class="navbar-link">Faktor Risiko</a>
+        <a href="#technology" class="navbar-link">Teknologi AI</a>
+      </div>
+
+      <div class="navbar-actions">
+        <button class="btn btn-icon btn-ghost" id="theme-toggle" aria-label="Toggle theme">
+          <i data-lucide="sun" style="width:18px;height:18px;" id="theme-icon-light"></i>
+          <i data-lucide="moon" style="width:18px;height:18px;display:none;" id="theme-icon-dark"></i>
+        </button>
+        <a href="/login.html" class="btn btn-ghost" id="btn-login">Masuk</a>
+        <a href="/register.html" class="btn btn-primary" id="btn-register">Mulai Gratis</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ============================================================
+       SCENE 1: HERO
+       ============================================================ -->
+  <section class="hero" id="hero">
+    <!-- Background Glow Layer -->
+    <div class="hero-bg-glow" data-parallax-speed="0.1">
+      <div class="hero-glow-orb hero-glow-orb-1"></div>
+      <div class="hero-glow-orb hero-glow-orb-2"></div>
+      <div class="hero-glow-orb hero-glow-orb-3"></div>
+    </div>
+
+    <!-- Three.js Particles Layer -->
+    <canvas id="particles-canvas" data-parallax-speed="0.2"></canvas>
+
+    <!-- Human Anatomy Model Layer -->
+    <div class="hero-model-container" data-parallax-speed="0.4" id="model-container">
+      <img 
+        src="assets/images/human-anatomy.png" 
+        alt="3D Human Anatomy Model" 
+        class="hero-model" 
+        id="hero-model"
+        loading="eager"
+      >
+    </div>
+
+    <!-- Floating Cards Layer -->
+    <div class="floating-card floating-card-1" data-parallax-speed="0.35" id="floating-card-1">
+      <div class="floating-card-icon" style="background:var(--success-light);color:var(--success);">
+        <i data-lucide="shield-check" style="width:20px;height:20px;"></i>
+      </div>
+      <div class="floating-card-title">AI Accuracy</div>
+      <div class="floating-card-value">95.8%</div>
+    </div>
+
+    <div class="floating-card floating-card-2" data-parallax-speed="0.5" id="floating-card-2">
+      <div class="floating-card-icon" style="background:var(--pink-100);color:var(--pink-500);">
+        <i data-lucide="activity" style="width:20px;height:20px;"></i>
+      </div>
+      <div class="floating-card-title">Risk Analysis</div>
+      <div class="floating-card-value">Real-time</div>
+    </div>
+
+    <div class="floating-card floating-card-3" data-parallax-speed="0.6" id="floating-card-3">
+      <div class="floating-card-icon" style="background:var(--purple-100);color:var(--purple-500);">
+        <i data-lucide="brain" style="width:20px;height:20px;"></i>
+      </div>
+      <div class="floating-card-title">Fuzzy Logic</div>
+      <div class="floating-card-value">Tsukamoto</div>
+    </div>
+
+    <!-- Text Layer -->
+    <div class="hero-content" data-parallax-speed="0.3">
+      <div class="hero-badge">
+        <span class="hero-badge-dot"></span>
+        AI-Powered Health Screening
+      </div>
+
+      <h1 class="hero-title">
+        Deteksi Dini<br>
+        <span class="hero-title-highlight">Kanker Paru-Paru</span><br>
+        Berbasis AI
+      </h1>
+
+      <p class="hero-description">
+        Platform self-screening cerdas menggunakan metode Fuzzy Tsukamoto 
+        untuk klasifikasi tingkat risiko kanker paru-paru bagi perokok aktif. 
+        Mulai skrining dalam hitungan menit.
+      </p>
+
+      <div class="hero-actions">
+        <a href="/register.html" class="hero-cta-primary" id="hero-cta-start">
+          Mulai Screening
+          <i data-lucide="arrow-right" style="width:18px;height:18px;"></i>
+        </a>
+        <a href="#technology" class="hero-cta-secondary" id="hero-cta-learn">
+          <i data-lucide="play-circle" style="width:20px;height:20px;"></i>
+          Pelajari Lebih Lanjut
+        </a>
+      </div>
+    </div>
+
+    <!-- Scroll Indicator -->
+    <div class="scroll-indicator" id="scroll-indicator">
+      <span class="scroll-indicator-text">Scroll</span>
+      <div class="scroll-indicator-line"></div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FEATURES SECTION
+       ============================================================ -->
+  <section class="features-section" id="features">
+    <div class="container">
+      <div class="features-header section-center">
+        <span class="section-badge">
+          <i data-lucide="sparkles" style="width:14px;height:14px;"></i>
+          Platform Features
+        </span>
+        <h2 class="section-title">Fitur <span class="text-gradient">Unggulan</span></h2>
+        <p class="section-desc">
+          Teknologi AI terdepan dengan pengalaman pengguna yang premium 
+          untuk membantu Anda memahami dan mengelola risiko kesehatan.
+        </p>
+      </div>
+
+      <div class="features-grid" id="features-grid">
+        <div class="feature-card" id="feature-ai">
+          <div class="feature-icon" style="background:var(--pink-50);color:var(--pink-500);">
+            <i data-lucide="brain" style="width:28px;height:28px;"></i>
+          </div>
+          <h3 class="feature-title">AI Fuzzy Tsukamoto</h3>
+          <p class="feature-desc">Mesin inferensi fuzzy canggih yang menganalisis multi-parameter untuk menghasilkan klasifikasi risiko yang akurat dan personal.</p>
+        </div>
+
+        <div class="feature-card" id="feature-screening">
+          <div class="feature-icon" style="background:var(--purple-50);color:var(--purple-500);">
+            <i data-lucide="clipboard-check" style="width:28px;height:28px;"></i>
+          </div>
+          <h3 class="feature-title">Self Screening</h3>
+          <p class="feature-desc">Proses skrining mandiri yang mudah dan cepat. Cukup jawab beberapa pertanyaan dan dapatkan hasil analisis dalam hitungan detik.</p>
+        </div>
+
+        <div class="feature-card" id="feature-risk">
+          <div class="feature-icon" style="background:var(--info-light);color:var(--info);">
+            <i data-lucide="gauge" style="width:28px;height:28px;"></i>
+          </div>
+          <h3 class="feature-title">Klasifikasi Risiko</h3>
+          <p class="feature-desc">Empat tingkat klasifikasi risiko: Rendah, Sedang, Tinggi, dan Sangat Tinggi. Setiap kategori disertai penjelasan detail.</p>
+        </div>
+
+        <div class="feature-card" id="feature-recommendation">
+          <div class="feature-icon" style="background:var(--success-light);color:var(--success);">
+            <i data-lucide="heart-handshake" style="width:28px;height:28px;"></i>
+          </div>
+          <h3 class="feature-title">Rekomendasi Medis</h3>
+          <p class="feature-desc">Rekomendasi kesehatan personal yang disesuaikan dengan profil risiko Anda, meliputi gaya hidup, diet, dan tindakan medis.</p>
+        </div>
+
+        <div class="feature-card" id="feature-analytics">
+          <div class="feature-icon" style="background:var(--warning-light);color:var(--warning);">
+            <i data-lucide="bar-chart-3" style="width:28px;height:28px;"></i>
+          </div>
+          <h3 class="feature-title">Analytics Dashboard</h3>
+          <p class="feature-desc">Dashboard analitik komprehensif untuk memantau riwayat skrining, tren risiko, dan perkembangan kesehatan Anda.</p>
+        </div>
+
+        <div class="feature-card" id="feature-education">
+          <div class="feature-icon" style="background:var(--pink-50);color:var(--pink-500);">
+            <i data-lucide="graduation-cap" style="width:28px;height:28px;"></i>
+          </div>
+          <h3 class="feature-title">Edukasi Kesehatan</h3>
+          <p class="feature-desc">Knowledge base lengkap tentang kanker paru-paru, faktor risiko, pencegahan, dan tips kesehatan dari sumber terpercaya.</p>
+        </div>
+
+        <div class="feature-card" id="feature-privacy">
+          <div class="feature-icon" style="background:var(--gray-100);color:var(--gray-600);">
+            <i data-lucide="shield" style="width:28px;height:28px;"></i>
+          </div>
+          <h3 class="feature-title">Data Privacy</h3>
+          <p class="feature-desc">Data kesehatan Anda terlindungi dengan enkripsi end-to-end dan standar keamanan tertinggi. Privasi Anda adalah prioritas kami.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SCENE 2: STATISTICS
+       ============================================================ -->
+  <section class="scroll-scene stats-scene" id="statistics">
+    <div class="container section-center">
+      <span class="section-badge">
+        <i data-lucide="trending-up" style="width:14px;height:14px;"></i>
+        Data & Statistik
+      </span>
+      <h2 class="section-title">Fakta Kanker Paru-Paru <span class="text-gradient">di Indonesia</span></h2>
+      <p class="section-desc" style="margin:0 auto;">
+        Data menunjukkan urgensi deteksi dini kanker paru-paru. 
+        Dengan skrining yang tepat, tingkat keberhasilan pengobatan meningkat signifikan.
+      </p>
+
+      <div class="stats-grid-landing" id="stats-grid">
+        <div class="stat-item">
+          <div class="stat-number" data-target="34800" data-suffix="+" id="stat-deaths">0</div>
+          <div class="stat-label">Kasus Baru per Tahun</div>
+          <div class="stat-desc">Indonesia menempati urutan tinggi di Asia Tenggara untuk kasus kanker paru-paru</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" data-target="67" data-suffix="%" id="stat-smokers">0</div>
+          <div class="stat-label">Perokok Aktif Pria</div>
+          <div class="stat-desc">Prevalensi perokok aktif di Indonesia masih sangat tinggi</div>
+        </div>
+        <div class="stat-item">
+          <div class="stat-number" data-target="70" data-suffix="%" id="stat-late">0</div>
+          <div class="stat-label">Terdeteksi Stadium Lanjut</div>
+          <div class="stat-desc">Sebagian besar kasus ditemukan pada stadium lanjut karena kurangnya skrining dini</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SCENE 3: RISK FACTORS
+       ============================================================ -->
+  <section class="scroll-scene" id="risk-factors">
+    <div class="container">
+      <div class="section-center">
+        <span class="section-badge">
+          <i data-lucide="alert-triangle" style="width:14px;height:14px;"></i>
+          Faktor Risiko
+        </span>
+        <h2 class="section-title">Faktor yang <span class="text-gradient">Meningkatkan Risiko</span></h2>
+        <p class="section-desc" style="margin:0 auto;">
+          Memahami faktor risiko adalah langkah pertama untuk pencegahan. 
+          Platform kami menganalisis semua faktor ini untuk menghasilkan profil risiko Anda.
+        </p>
+      </div>
+
+      <div class="risk-factors-grid" id="risk-factors-grid">
+        <div class="risk-factor-card">
+          <div class="risk-factor-icon">
+            <i data-lucide="cigarette" style="width:28px;height:28px;"></i>
+          </div>
+          <h3 class="risk-factor-title">Kebiasaan Merokok</h3>
+          <p class="risk-factor-desc">Jumlah batang rokok per hari dan durasi merokok menjadi faktor utama risiko kanker paru-paru.</p>
+        </div>
+
+        <div class="risk-factor-card">
+          <div class="risk-factor-icon">
+            <i data-lucide="clock" style="width:28px;height:28px;"></i>
+          </div>
+          <h3 class="risk-factor-title">Usia</h3>
+          <p class="risk-factor-desc">Risiko meningkat seiring bertambahnya usia, terutama pada individu berusia di atas 50 tahun.</p>
+        </div>
+
+        <div class="risk-factor-card">
+          <div class="risk-factor-icon">
+            <i data-lucide="users" style="width:28px;height:28px;"></i>
+          </div>
+          <h3 class="risk-factor-title">Riwayat Keluarga</h3>
+          <p class="risk-factor-desc">Genetika berperan penting. Riwayat kanker paru dalam keluarga meningkatkan kerentanan individu.</p>
+        </div>
+
+        <div class="risk-factor-card">
+          <div class="risk-factor-icon">
+            <i data-lucide="wind" style="width:28px;height:28px;"></i>
+          </div>
+          <h3 class="risk-factor-title">Paparan Lingkungan</h3>
+          <p class="risk-factor-desc">Polusi udara, asap rokok pasif, radon, dan bahan kimia berbahaya di tempat kerja.</p>
+        </div>
+
+        <div class="risk-factor-card">
+          <div class="risk-factor-icon">
+            <i data-lucide="stethoscope" style="width:28px;height:28px;"></i>
+          </div>
+          <h3 class="risk-factor-title">Gejala Fisik</h3>
+          <p class="risk-factor-desc">Batuk kronis, nyeri dada, sesak napas, dan penurunan berat badan yang tidak normal.</p>
+        </div>
+
+        <div class="risk-factor-card">
+          <div class="risk-factor-icon">
+            <i data-lucide="scale" style="width:28px;height:28px;"></i>
+          </div>
+          <h3 class="risk-factor-title">BMI & Kesehatan Umum</h3>
+          <p class="risk-factor-desc">Indeks massa tubuh dan kondisi kesehatan umum mempengaruhi kerentanan terhadap penyakit paru.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SCENE 4: AI TECHNOLOGY
+       ============================================================ -->
+  <section class="scroll-scene ai-section" id="technology">
+    <div class="container section-center">
+      <span class="section-badge">
+        <i data-lucide="cpu" style="width:14px;height:14px;"></i>
+        Teknologi AI
+      </span>
+      <h2 class="section-title">Bagaimana <span class="text-gradient">AI Kami Bekerja?</span></h2>
+      <p class="section-desc" style="margin:0 auto;">
+        Platform kami menggunakan metode Fuzzy Inference System Tsukamoto 
+        yang terbukti efektif untuk sistem pendukung keputusan medis.
+      </p>
+
+      <div class="ai-flow" id="ai-flow">
+        <div class="ai-flow-step">
+          <div class="ai-flow-icon" style="color:var(--pink-500);">
+            <i data-lucide="file-input" style="width:32px;height:32px;"></i>
+          </div>
+          <div class="ai-flow-label">Input Data</div>
+          <div class="ai-flow-desc">7 parameter kesehatan & gaya hidup</div>
+        </div>
+
+        <div class="ai-flow-arrow">
+          <i data-lucide="chevron-right" style="width:24px;height:24px;"></i>
+        </div>
+
+        <div class="ai-flow-step">
+          <div class="ai-flow-icon" style="color:var(--purple-500);">
+            <i data-lucide="git-branch" style="width:32px;height:32px;"></i>
+          </div>
+          <div class="ai-flow-label">Fuzzification</div>
+          <div class="ai-flow-desc">Konversi ke himpunan fuzzy</div>
+        </div>
+
+        <div class="ai-flow-arrow">
+          <i data-lucide="chevron-right" style="width:24px;height:24px;"></i>
+        </div>
+
+        <div class="ai-flow-step">
+          <div class="ai-flow-icon" style="color:var(--info);">
+            <i data-lucide="brain" style="width:32px;height:32px;"></i>
+          </div>
+          <div class="ai-flow-label">Rule Evaluation</div>
+          <div class="ai-flow-desc">20 aturan fuzzy dievaluasi</div>
+        </div>
+
+        <div class="ai-flow-arrow">
+          <i data-lucide="chevron-right" style="width:24px;height:24px;"></i>
+        </div>
+
+        <div class="ai-flow-step">
+          <div class="ai-flow-icon" style="color:var(--success);">
+            <i data-lucide="calculator" style="width:32px;height:32px;"></i>
+          </div>
+          <div class="ai-flow-label">Defuzzification</div>
+          <div class="ai-flow-desc">Tsukamoto weighted average</div>
+        </div>
+
+        <div class="ai-flow-arrow">
+          <i data-lucide="chevron-right" style="width:24px;height:24px;"></i>
+        </div>
+
+        <div class="ai-flow-step">
+          <div class="ai-flow-icon" style="color:var(--danger);">
+            <i data-lucide="gauge" style="width:32px;height:32px;"></i>
+          </div>
+          <div class="ai-flow-label">Risk Score</div>
+          <div class="ai-flow-desc">Skor & klasifikasi risiko</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       SCENE 5: CTA
+       ============================================================ -->
+  <section class="scroll-scene cta-section" id="cta">
+    <div class="container">
+      <h2 class="cta-title">
+        Mulai Screening<br>
+        <span class="text-gradient">Kesehatan Anda</span> Sekarang
+      </h2>
+      <p class="cta-desc">
+        Hanya butuh 3 menit untuk mengetahui tingkat risiko Anda. 
+        Gratis, privat, dan didukung teknologi AI terdepan.
+      </p>
+      <div class="cta-buttons">
+        <a href="/register.html" class="hero-cta-primary" id="cta-register">
+          Daftar Gratis
+          <i data-lucide="arrow-right" style="width:18px;height:18px;"></i>
+        </a>
+        <a href="/login.html" class="hero-cta-secondary" id="cta-login">
+          Sudah punya akun? Masuk
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       FOOTER
+       ============================================================ -->
+  <footer class="landing-footer" id="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="footer-brand">🫁 SCPK</div>
+          <p class="footer-desc">
+            Sistem AI Deteksi Dini & Klasifikasi Tingkat Risiko 
+            Kanker Paru-Paru bagi Perokok Aktif. Platform skrining mandiri 
+            yang membantu Anda memahami risiko kesehatan paru-paru.
+          </p>
+        </div>
+        <div>
+          <div class="footer-title">Platform</div>
+          <div class="footer-links">
+            <a href="#features" class="footer-link">Fitur</a>
+            <a href="#technology" class="footer-link">Teknologi AI</a>
+            <a href="/register.html" class="footer-link">Mulai Screening</a>
+            <a href="/login.html" class="footer-link">Login</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer-title">Edukasi</div>
+          <div class="footer-links">
+            <a href="#" class="footer-link">Kanker Paru-Paru</a>
+            <a href="#" class="footer-link">Bahaya Merokok</a>
+            <a href="#" class="footer-link">Deteksi Dini</a>
+            <a href="#" class="footer-link">Pencegahan</a>
+          </div>
+        </div>
+        <div>
+          <div class="footer-title">Legal</div>
+          <div class="footer-links">
+            <a href="#" class="footer-link">Kebijakan Privasi</a>
+            <a href="#" class="footer-link">Syarat & Ketentuan</a>
+            <a href="#" class="footer-link">Disclaimer Medis</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span class="footer-copyright">
+          © 2025 SCPK Self-Screening Platform. All rights reserved.
+        </span>
+        <span class="footer-copyright" style="font-size:var(--text-xs);color:var(--gray-600);">
+          ⚠️ Platform ini bukan pengganti diagnosis medis profesional. 
+          Selalu konsultasikan dengan dokter.
+        </span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ============================================================
+       SCRIPTS
+       ============================================================ -->
+  <script src="assets/js/lib/theme.js"></script>
+  <script src="assets/js/landing/particles.js"></script>
+  <script src="assets/js/landing/hero.js"></script>
+  <script src="assets/js/landing/scroll-scenes.js"></script>
+  <script src="assets/js/landing/features.js"></script>
+
+  <script>
+    // Initialize Lucide icons
+    lucide.createIcons();
+  </script>
+</body>
+</html>

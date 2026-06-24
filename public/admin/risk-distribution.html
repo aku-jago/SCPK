@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Epidemiologi & Distribusi Risiko — SCPK Admin</title>
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🫁</text></svg>">
+  <link rel="stylesheet" href="/assets/css/global.css">
+  <link rel="stylesheet" href="/assets/css/dashboard.css">
+  <link rel="stylesheet" href="/assets/css/admin.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.7/chart.umd.min.js"></script>
+</head>
+<body class="dashboard-layout">
+  <!-- Mobile Top Bar -->
+  <div class="top-bar" id="top-bar">
+    <button class="top-bar-toggle" id="sidebar-toggle" aria-label="Toggle menu">
+      <i data-lucide="menu" style="width:22px;height:22px;"></i>
+    </button>
+    <div class="navbar-brand">
+      <div class="navbar-brand-icon"><i data-lucide="heart-pulse" style="width:18px;height:18px;color:white;"></i></div>
+      <span style="font-size:var(--text-lg);font-weight:800;">SCPK Admin</span>
+    </div>
+    <button class="btn btn-icon btn-ghost" id="theme-toggle-mobile" style="margin-left:auto;" aria-label="Toggle theme">
+      <i data-lucide="sun" style="width:18px;height:18px;"></i>
+    </button>
+  </div>
+
+  <!-- Sidebar Overlay -->
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="navbar-brand-icon" style="background:var(--admin-gradient-button);"><i data-lucide="heart-pulse" style="width:18px;height:18px;color:white;"></i></div>
+      <span style="font-family:var(--font-display);font-size:var(--text-lg);font-weight:800;color:var(--gray-900);">SCPK Admin</span>
+      <button class="btn btn-icon btn-ghost" id="theme-toggle" style="margin-left:auto;" aria-label="Toggle theme">
+        <i data-lucide="sun" style="width:16px;height:16px;" id="theme-icon-light"></i>
+        <i data-lucide="moon" style="width:16px;height:16px;display:none;" id="theme-icon-dark"></i>
+      </button>
+    </div>
+
+    <div class="sidebar-user" id="sidebar-user">
+      <div class="sidebar-user-avatar admin-avatar" id="user-avatar">A</div>
+      <div>
+        <div class="sidebar-user-name" id="user-name">Loading...</div>
+        <div class="sidebar-user-role" id="user-role">Administrator</div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-title">Menu Utama</div>
+      <a href="/admin/" class="sidebar-link" id="nav-analytics">
+        <i data-lucide="line-chart" style="width:20px;height:20px;"></i> Ringkasan Analisis
+      </a>
+      <a href="/admin/users.html" class="sidebar-link" id="nav-users">
+        <i data-lucide="users" style="width:20px;height:20px;"></i> Data Pengguna
+      </a>
+      <a href="/admin/knowledge-base.html" class="sidebar-link" id="nav-knowledge">
+        <i data-lucide="book-open" style="width:20px;height:20px;"></i> Knowledge Base
+      </a>
+
+      <div class="sidebar-section-title" style="margin-top:var(--space-4);">Mesin Fuzzy AI</div>
+      <a href="/admin/fuzzy-rules.html" class="sidebar-link" id="nav-rules">
+        <i data-lucide="sliders" style="width:20px;height:20px;"></i> Aturan & Variabel
+      </a>
+      <a href="/admin/risk-distribution.html" class="sidebar-link active admin-link-active" id="nav-distribution">
+        <i data-lucide="pie-chart" style="width:20px;height:20px;"></i> Epidemiologi Risiko
+      </a>
+
+      <div class="sidebar-section-title" style="margin-top:var(--space-4);">Akun</div>
+      <a href="/admin/settings.html" class="sidebar-link" id="nav-settings">
+        <i data-lucide="settings" style="width:20px;height:20px;"></i> Pengaturan
+      </a>
+      <a href="/dashboard/" class="sidebar-link" style="border-top: 1px solid var(--gray-200); margin-top: var(--space-4); padding-top: var(--space-4);">
+        <i data-lucide="arrow-left-right" style="width:20px;height:20px;"></i> Area Pengguna
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="sidebar-link w-full" id="btn-logout" style="color:var(--danger);">
+        <i data-lucide="log-out" style="width:20px;height:20px;"></i> Keluar
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content page-transition">
+    <div class="page-header">
+      <h1 class="page-title">Epidemiologi & Distribusi Risiko</h1>
+      <p class="page-subtitle">Analisis tren penyebaran kategori risiko kesehatan perokok berdasarkan data spasial waktu.</p>
+    </div>
+
+    <!-- Monthly Trend Chart Card -->
+    <div class="chart-card" style="margin-bottom:var(--space-6);">
+      <div class="chart-card-title">Tren Bulanan Klasifikasi Risiko (12 Bulan Terakhir)</div>
+      <div style="position:relative;height:300px;">
+        <canvas id="monthly-trend-chart"></canvas>
+      </div>
+    </div>
+
+    <!-- Table breakdown of average score vs category counts -->
+    <div style="display:grid;grid-template-columns:1.2fr 1.8fr;gap:var(--space-6);align-items:start;">
+      <!-- Detailed distribution breakdown card -->
+      <div class="chart-card">
+        <div class="chart-card-title" style="margin-bottom:var(--space-4);">Distribusi Rangkuman</div>
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Kategori</th>
+                <th>Total Kasus</th>
+                <th>Rerata Skor</th>
+              </tr>
+            </thead>
+            <tbody id="distribution-breakdown-table">
+              <!-- Rendered dynamically -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- General insights or parameters analysis description card -->
+      <div class="glass-card">
+        <h3 style="font-size:var(--text-base);font-weight:800;color:var(--gray-900);margin-bottom:var(--space-3);">Catatan Epidemiologi</h3>
+        <p style="font-size:var(--text-sm);color:var(--gray-600);line-height:1.6;margin-bottom:var(--space-4);">
+          Visualisasi tren di atas memetakan jumlah screening yang diselesaikan per bulan, dipisahkan berdasarkan tingkat keparahan risiko yang dihitung AI.
+        </p>
+        <div style="display:flex;flex-direction:column;gap:var(--space-3);">
+          <div style="display:flex;align-items:flex-start;gap:var(--space-3);">
+            <div style="width:12px;height:12px;border-radius:50%;background:#22c55e;margin-top:4px;flex-shrink:0;"></div>
+            <div>
+              <strong style="font-size:var(--text-xs);color:var(--gray-800);">Kategori Rendah (0 - 30)</strong>
+              <div style="font-size:var(--text-xs);color:var(--gray-500);line-height:1.4;">Tidak memerlukan rujukan medis langsung. Pencegahan primer berfokus pada mempertahankan kebiasaan sehat.</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:var(--space-3);">
+            <div style="width:12px;height:12px;border-radius:50%;background:#eab308;margin-top:4px;flex-shrink:0;"></div>
+            <div>
+              <strong style="font-size:var(--text-xs);color:var(--gray-800);">Kategori Sedang (25 - 75)</strong>
+              <div style="font-size:var(--text-xs);color:var(--gray-500);line-height:1.4;">Rekomendasi mitigasi mencakup konseling berhenti merokok dan evaluasi gejala berkala.</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:var(--space-3);">
+            <div style="width:12px;height:12px;border-radius:50%;background:#f97316;margin-top:4px;flex-shrink:0;"></div>
+            <div>
+              <strong style="font-size:var(--text-xs);color:var(--gray-800);">Kategori Tinggi (60 - 90)</strong>
+              <div style="font-size:var(--text-xs);color:var(--gray-500);line-height:1.4;">Tindakan klinis disarankan. Rujukan awal untuk pemeriksaan lanjut seperti LDCT (Low-Dose CT Scan).</div>
+            </div>
+          </div>
+          <div style="display:flex;align-items:flex-start;gap:var(--space-3);">
+            <div style="width:12px;height:12px;border-radius:50%;background:#ef4444;margin-top:4px;flex-shrink:0;"></div>
+            <div>
+              <strong style="font-size:var(--text-xs);color:var(--gray-800);">Kategori Sangat Tinggi (80 - 100)</strong>
+              <div style="font-size:var(--text-xs);color:var(--gray-500);line-height:1.4;">Kondisi kritis. Diperlukan rujukan medis mendesak ke dokter spesialis paru untuk penegakan diagnosis formal.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="/assets/js/lib/api.js"></script>
+  <script src="/assets/js/lib/auth.js"></script>
+  <script src="/assets/js/lib/toast.js"></script>
+  <script src="/assets/js/lib/theme.js"></script>
+  <script src="/assets/js/admin/risk-distribution.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>
