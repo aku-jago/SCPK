@@ -73,18 +73,39 @@
   // ── Parallax Layers ──
   const parallaxElements = document.querySelectorAll('[data-parallax-speed]');
 
-  function handleScroll() {
-    const scrollY = window.scrollY;
-
+  if (typeof gsap !== 'undefined' && typeof ScrollTrigger !== 'undefined') {
+    gsap.registerPlugin(ScrollTrigger);
+    
     parallaxElements.forEach((el) => {
       const speed = parseFloat(el.dataset.parallaxSpeed) || 0;
-      const yOffset = -(scrollY * speed);
-      el.style.transform = `translateY(${yOffset}px)`;
+      
+      gsap.to(el, {
+        y: () => -window.innerHeight * speed,
+        ease: "none",
+        scrollTrigger: {
+          trigger: "#hero",
+          start: "top top",
+          end: "bottom top",
+          scrub: true,
+          invalidateOnRefresh: true
+        }
+      });
     });
-  }
+  } else {
+    // Fallback if GSAP is not loaded
+    function handleScroll() {
+      const scrollY = window.scrollY;
 
-  // Use passive scroll listener for performance
-  window.addEventListener('scroll', handleScroll, { passive: true });
+      parallaxElements.forEach((el) => {
+        const speed = parseFloat(el.dataset.parallaxSpeed) || 0;
+        const yOffset = -(scrollY * speed);
+        el.style.transform = `translateY(${yOffset}px)`;
+      });
+    }
+
+    // Use passive scroll listener for performance
+    window.addEventListener('scroll', handleScroll, { passive: true });
+  }
 
   // ── Navbar Scroll Effect ──
   const navbar = document.getElementById('navbar');

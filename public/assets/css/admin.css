@@ -1,5 +1,6 @@
 /* ============================================================
    Admin-Specific Dashboard Styles
+   Premium Visual Enhancement
    ============================================================ */
 
 :root {
@@ -65,4 +66,202 @@
   display: flex;
   gap: var(--space-2);
   justify-content: flex-end;
+}
+
+/* ============================================================
+   Admin Welcome Banner Override
+   ============================================================ */
+.admin-welcome-banner {
+  background: linear-gradient(135deg, rgba(14,165,233,0.08) 0%, rgba(99,102,241,0.08) 50%, rgba(139,92,246,0.06) 100%);
+  border-color: rgba(14,165,233,0.12);
+}
+
+.admin-welcome-banner::before {
+  background: radial-gradient(circle, rgba(14,165,233,0.1) 0%, transparent 70%);
+}
+
+.admin-welcome-banner::after {
+  background: radial-gradient(circle, rgba(99,102,241,0.08) 0%, transparent 70%);
+}
+
+[data-theme="dark"] .admin-welcome-banner {
+  background: linear-gradient(135deg, rgba(14,165,233,0.1) 0%, rgba(99,102,241,0.1) 50%, rgba(139,92,246,0.08) 100%);
+  border-color: rgba(14,165,233,0.15);
+}
+
+.admin-welcome-date {
+  color: var(--admin-blue-600);
+  background: rgba(14,165,233,0.08);
+  border-color: rgba(14,165,233,0.15);
+}
+
+[data-theme="dark"] .admin-welcome-date {
+  color: var(--admin-blue-500);
+  background: rgba(14,165,233,0.12);
+  border-color: rgba(14,165,233,0.2);
+}
+
+/* ── Admin Floating Orbs Override ── */
+.admin-orbs .floating-orb:nth-child(1) {
+  background: rgba(14,165,233,0.12);
+}
+
+.admin-orbs .floating-orb:nth-child(2) {
+  background: rgba(99,102,241,0.10);
+}
+
+.admin-orbs .floating-orb:nth-child(3) {
+  background: rgba(14,165,233,0.08);
+}
+
+[data-theme="dark"] .admin-orbs .floating-orb:nth-child(1) { background: rgba(14,165,233,0.08); }
+[data-theme="dark"] .admin-orbs .floating-orb:nth-child(2) { background: rgba(99,102,241,0.06); }
+[data-theme="dark"] .admin-orbs .floating-orb:nth-child(3) { background: rgba(14,165,233,0.05); }
+
+/* ── Admin Stat Card Enhancements ── */
+.stat-card-enhanced.stat-admin-blue::before { background: linear-gradient(90deg, #0ea5e9, #38bdf8); }
+.stat-card-enhanced:hover.stat-admin-blue { box-shadow: 0 8px 30px rgba(14,165,233,0.15); }
+.stat-card-enhanced.stat-admin-blue::after { background: radial-gradient(circle, rgba(14,165,233,0.15), transparent 70%); }
+.stat-icon-ring.ring-admin-blue { background: linear-gradient(135deg, #e0f2fe, #f0f9ff); color: #0ea5e9; }
+.stat-icon-ring.ring-admin-blue::after { border-color: #0ea5e9; }
+[data-theme="dark"] .stat-icon-ring.ring-admin-blue { background: rgba(14,165,233,0.12); }
+
+.stat-card-enhanced.stat-indigo::before { background: linear-gradient(90deg, #6366f1, #818cf8); }
+.stat-card-enhanced:hover.stat-indigo { box-shadow: 0 8px 30px rgba(99,102,241,0.15); }
+.stat-card-enhanced.stat-indigo::after { background: radial-gradient(circle, rgba(99,102,241,0.15), transparent 70%); }
+.stat-icon-ring.ring-indigo { background: linear-gradient(135deg, #e0e7ff, #eef2ff); color: #6366f1; }
+.stat-icon-ring.ring-indigo::after { border-color: #6366f1; }
+[data-theme="dark"] .stat-icon-ring.ring-indigo { background: rgba(99,102,241,0.12); }
+
+/* ── Admin Chart Card Override ── */
+.admin-chart-card::before {
+  background: linear-gradient(90deg, #0ea5e9, #6366f1, #0ea5e9);
+  background-size: 200% 100%;
+}
+
+.admin-chart-badge {
+  background: rgba(14,165,233,0.08);
+  color: var(--admin-blue-600);
+}
+
+[data-theme="dark"] .admin-chart-badge {
+  background: rgba(14,165,233,0.15);
+  color: var(--admin-blue-500);
+}
+
+/* ── System Status Card ── */
+.system-status-card {
+  position: relative;
+  background: linear-gradient(135deg, rgba(14,165,233,0.04), rgba(99,102,241,0.04));
+  border: 1px solid rgba(14,165,233,0.12);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-6);
+  margin-top: var(--space-8);
+  overflow: hidden;
+  animation: stat-entrance 0.5s var(--ease-out) 0.45s backwards;
+}
+
+[data-theme="dark"] .system-status-card {
+  background: linear-gradient(135deg, rgba(14,165,233,0.06), rgba(99,102,241,0.06));
+  border-color: rgba(14,165,233,0.18);
+}
+
+.system-status-card::before {
+  content: '';
+  position: absolute;
+  top: -30%;
+  right: -15%;
+  width: 200px;
+  height: 200px;
+  background: radial-gradient(circle, rgba(14,165,233,0.06), transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.system-status-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+}
+
+.system-status-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-lg);
+  background: var(--admin-gradient-button);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  flex-shrink: 0;
+}
+
+.system-status-title {
+  font-size: var(--text-sm);
+  font-weight: 700;
+  color: var(--admin-blue-600);
+}
+
+[data-theme="dark"] .system-status-title {
+  color: var(--admin-blue-500);
+}
+
+.system-status-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+}
+
+.system-status-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.status-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.status-dot.online {
+  background: #22c55e;
+  box-shadow: 0 0 8px rgba(34,197,94,0.4);
+  animation: status-pulse 2s ease-in-out infinite;
+}
+
+@keyframes status-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.status-dot.stable { background: #3b82f6; box-shadow: 0 0 8px rgba(59,130,246,0.3); }
+
+.system-status-label {
+  font-size: var(--text-xs);
+  color: var(--gray-600);
+}
+
+.system-status-value {
+  font-size: var(--text-xs);
+  font-weight: 700;
+  color: var(--gray-800);
+  margin-left: auto;
+}
+
+/* ── Admin Activity Table Enhanced ── */
+.admin-activity-table .data-table tr {
+  transition: background var(--duration-fast);
+}
+
+.admin-activity-table .data-table tr:hover td {
+  background: rgba(14,165,233,0.03);
+}
+
+@media (max-width: 768px) {
+  .system-status-grid {
+    grid-template-columns: 1fr;
+  }
 }

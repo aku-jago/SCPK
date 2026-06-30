@@ -29,12 +29,12 @@ class AdminController {
             user: { select: { name: true, email: true } },
           },
         }),
-        // User growth: last 7 days
+        // User growth: last 7 days (SQLite compatible)
         prisma.$queryRaw`
-          SELECT DATE(\"createdAt\") as date, COUNT(*)::int as count
+          SELECT DATE("createdAt") as date, CAST(COUNT(*) AS INTEGER) as count
           FROM users
-          WHERE \"createdAt\" >= NOW() - INTERVAL '7 days'
-          GROUP BY DATE(\"createdAt\")
+          WHERE "createdAt" >= date('now', '-7 days')
+          GROUP BY DATE("createdAt")
           ORDER BY date ASC
         `.catch(() => []),
       ]);
@@ -189,16 +189,16 @@ class AdminController {
         _avg: { riskScore: true },
       });
 
-      // Monthly trend
+      // Monthly trend (SQLite compatible)
       const monthlyTrend = await prisma.$queryRaw`
         SELECT 
-          TO_CHAR(DATE_TRUNC('month', \"createdAt\"), 'YYYY-MM') as month,
-          \"riskCategory\",
-          COUNT(*)::int as count,
-          AVG(\"riskScore\")::float as avg_score
+          strftime('%Y-%m', "createdAt") as month,
+          "riskCategory",
+          CAST(COUNT(*) AS INTEGER) as count,
+          AVG("riskScore") as avg_score
         FROM screenings
-        WHERE \"createdAt\" >= NOW() - INTERVAL '12 months'
-        GROUP BY DATE_TRUNC('month', \"createdAt\"), \"riskCategory\"
+        WHERE "createdAt" >= date('now', '-12 months')
+        GROUP BY strftime('%Y-%m', "createdAt"), "riskCategory"
         ORDER BY month ASC
       `.catch(() => []);
 

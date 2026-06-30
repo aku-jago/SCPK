@@ -8,9 +8,16 @@
   <link rel="stylesheet" href="/assets/css/global.css">
   <link rel="stylesheet" href="/assets/css/dashboard.css">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.7/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 </head>
-<body class="dashboard-layout">
+<body class="dashboard-layout dashboard-bg">
+  <!-- Floating Decorative Orbs -->
+  <div class="floating-orbs" aria-hidden="true">
+    <div class="floating-orb"></div>
+    <div class="floating-orb"></div>
+    <div class="floating-orb"></div>
+  </div>
+
   <div class="top-bar" id="top-bar">
     <button class="top-bar-toggle" id="sidebar-toggle"><i data-lucide="menu" style="width:22px;height:22px;"></i></button>
     <div class="navbar-brand"><div class="navbar-brand-icon"><i data-lucide="heart-pulse" style="width:18px;height:18px;color:white;"></i></div><span style="font-size:var(--text-lg);font-weight:800;">SCPK</span></div>
@@ -33,6 +40,7 @@
   </aside>
 
   <main class="main-content page-transition">
+    <!-- Header -->
     <div class="page-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--space-4);">
       <div>
         <h1 class="page-title">Hasil Screening</h1>
@@ -44,36 +52,117 @@
       </div>
     </div>
 
-    <!-- Risk Score Hero -->
-    <div class="glass-card" style="text-align:center;margin-bottom:var(--space-8);">
-      <div class="risk-gauge-container">
-        <canvas id="risk-gauge" width="260" height="260"></canvas>
-        <div class="risk-score-display">
-          <div class="risk-score-number" id="risk-score">-</div>
-          <div class="risk-score-label">Skor Risiko</div>
+    <!-- ═══ Risk Score Hero — Split Layout ═══ -->
+    <div class="result-hero-card" id="result-hero-card">
+      <!-- LEFT: Gauge Indicator -->
+      <div class="result-gauge-section">
+        <div class="result-gauge-wrapper">
+          <canvas id="risk-gauge" width="300" height="300"></canvas>
+          <div class="result-gauge-center">
+            <div class="result-gauge-score" id="risk-score">-</div>
+            <div class="result-gauge-label">Skor Risiko</div>
+          </div>
+        </div>
+        <!-- Gauge legend -->
+        <div class="result-gauge-legend">
+          <div class="gauge-legend-item">
+            <span class="gauge-legend-dot" style="background:#22c55e;"></span>
+            <span>Rendah</span>
+          </div>
+          <div class="gauge-legend-item">
+            <span class="gauge-legend-dot" style="background:#eab308;"></span>
+            <span>Sedang</span>
+          </div>
+          <div class="gauge-legend-item">
+            <span class="gauge-legend-dot" style="background:#f97316;"></span>
+            <span>Tinggi</span>
+          </div>
+          <div class="gauge-legend-item">
+            <span class="gauge-legend-dot" style="background:#ef4444;"></span>
+            <span>Sangat Tinggi</span>
+          </div>
         </div>
       </div>
-      <div class="risk-category-badge" id="risk-badge" style="margin-bottom:var(--space-4);">-</div>
-      <p id="risk-description" style="font-size:var(--text-sm);color:var(--gray-500);max-width:500px;margin:0 auto;"></p>
+
+      <!-- RIGHT: AI Analysis Explanation -->
+      <div class="result-analysis-section">
+        <div class="result-analysis-header">
+          <div class="result-analysis-icon">
+            <i data-lucide="brain" style="width:24px;height:24px;"></i>
+          </div>
+          <div>
+            <h3 class="result-analysis-title">Analisis AI</h3>
+            <p class="result-analysis-subtitle">Fuzzy Tsukamoto Engine</p>
+          </div>
+        </div>
+
+        <!-- Risk Badge -->
+        <div class="result-risk-badge-wrapper">
+          <div class="result-risk-badge" id="risk-badge">-</div>
+        </div>
+
+        <!-- Score Breakdown -->
+        <div class="result-score-meter">
+          <div class="result-score-meter-label">
+            <span>Tingkat Risiko</span>
+            <span class="result-score-meter-value" id="risk-meter-value">0%</span>
+          </div>
+          <div class="result-score-bar">
+            <div class="result-score-bar-fill" id="risk-bar-fill"></div>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="result-analysis-desc" id="risk-description">
+          <i data-lucide="info" style="width:16px;height:16px;flex-shrink:0;margin-top:2px;"></i>
+          <p>Memuat analisis...</p>
+        </div>
+
+        <!-- Key Factors -->
+        <div class="result-key-factors" id="result-key-factors">
+          <div class="result-factor-title">Faktor Dominan</div>
+          <div class="result-factors-list" id="dominant-factors-list">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Detail Grid -->
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-6);margin-bottom:var(--space-8);">
       <!-- Input Parameters -->
-      <div class="chart-card">
-        <div class="chart-card-title">Parameter Input</div>
+      <div class="chart-card-enhanced">
+        <div class="chart-card-title-enhanced">
+          <h3>Parameter Input</h3>
+          <span class="chart-card-badge">
+            <i data-lucide="list" style="width:10px;height:10px;"></i>
+            Detail
+          </span>
+        </div>
         <div id="params-list" style="display:grid;gap:var(--space-2);"></div>
       </div>
       <!-- Factor Radar -->
-      <div class="chart-card">
-        <div class="chart-card-title">Distribusi Faktor Risiko</div>
+      <div class="chart-card-enhanced">
+        <div class="chart-card-title-enhanced">
+          <h3>Distribusi Faktor Risiko</h3>
+          <span class="chart-card-badge">
+            <i data-lucide="radar" style="width:10px;height:10px;"></i>
+            Radar
+          </span>
+        </div>
         <canvas id="radar-chart" height="250"></canvas>
       </div>
     </div>
 
     <!-- Recommendations -->
-    <div class="chart-card" style="margin-bottom:var(--space-8);">
-      <div class="chart-card-title" style="margin-bottom:var(--space-6);">Rekomendasi</div>
+    <div class="chart-card-enhanced" style="margin-bottom:var(--space-8);">
+      <div class="chart-card-title-enhanced" style="margin-bottom:var(--space-6);">
+        <h3>Rekomendasi</h3>
+        <span class="chart-card-badge">
+          <i data-lucide="heart-handshake" style="width:10px;height:10px;"></i>
+          Saran AI
+        </span>
+      </div>
       <div id="recommendations-list" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:var(--space-4);"></div>
     </div>
   </main>

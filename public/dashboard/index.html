@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="/assets/css/global.css">
   <link rel="stylesheet" href="/assets/css/dashboard.css">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.7/chart.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 </head>
 <body class="dashboard-layout">
   <!-- Mobile Top Bar -->
@@ -29,7 +29,7 @@
   <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
   <!-- Sidebar -->
-  <aside class="sidebar" id="sidebar">
+  <aside class="sidebar" id="sidebar" style="border-right: 1px solid var(--gray-200);">
     <div class="sidebar-brand">
       <div class="navbar-brand-icon"><i data-lucide="heart-pulse" style="width:18px;height:18px;color:white;"></i></div>
       <span style="font-family:var(--font-display);font-size:var(--text-lg);font-weight:800;color:var(--gray-900);">SCPK</span>
@@ -39,16 +39,16 @@
       </button>
     </div>
 
-    <div class="sidebar-user" id="sidebar-user">
-      <div class="sidebar-user-avatar" id="user-avatar">U</div>
+    <div class="sidebar-user" id="sidebar-user" style="padding-bottom:var(--space-2);border-bottom:none;">
+      <div class="sidebar-user-avatar" id="user-avatar" style="background:#ec4899;color:white;">U</div>
       <div>
         <div class="sidebar-user-name" id="user-name">Loading...</div>
-        <div class="sidebar-user-role" id="user-role">User</div>
+        <div class="sidebar-user-role" id="user-role">Pengguna</div>
       </div>
     </div>
 
     <nav class="sidebar-nav">
-      <div class="sidebar-section-title">Menu</div>
+      <div class="sidebar-section-title">Menu Utama</div>
       <a href="/dashboard/" class="sidebar-link active" id="nav-dashboard">
         <i data-lucide="layout-dashboard" style="width:20px;height:20px;"></i> Dashboard
       </a>
@@ -62,106 +62,217 @@
         <i data-lucide="heart-handshake" style="width:20px;height:20px;"></i> Rekomendasi
       </a>
 
-      <div class="sidebar-section-title" style="margin-top:var(--space-4);">Akun</div>
+      <div class="sidebar-section-title" style="margin-top:var(--space-4);">Pengaturan Akun</div>
       <a href="/dashboard/profile.html" class="sidebar-link" id="nav-profile">
         <i data-lucide="user" style="width:20px;height:20px;"></i> Profil
       </a>
       <a href="/dashboard/settings.html" class="sidebar-link" id="nav-settings">
-        <i data-lucide="settings" style="width:20px;height:20px;"></i> Pengaturan
+        <i data-lucide="settings" style="width:20px;height:20px;"></i> Konfigurasi
       </a>
     </nav>
 
-    <div class="sidebar-footer">
-      <button class="sidebar-link w-full" id="btn-logout" style="color:var(--danger);">
-        <i data-lucide="log-out" style="width:20px;height:20px;"></i> Keluar
+    <div class="sidebar-footer" style="padding-top:0;">
+      <div class="sidebar-premium-card" style="background: linear-gradient(135deg, #ec4899, #8b5cf6);">
+        <div class="sidebar-premium-icon">
+          <i data-lucide="sparkles" style="width:16px;height:16px;"></i>
+        </div>
+        <div class="sidebar-premium-title">Analisis Cerdas</div>
+        <div class="sidebar-premium-desc">Dapatkan rekomendasi personal berdasarkan hasil screening terbaru Anda.</div>
+        <button class="sidebar-premium-btn" onclick="window.location.href='/dashboard/recommendation.html'">Lihat Rekomendasi</button>
+      </div>
+      <button class="sidebar-link w-full" id="btn-logout" style="color:var(--gray-500);justify-content:center;">
+        <i data-lucide="log-out" style="width:16px;height:16px;"></i> Keluar Akun
       </button>
     </div>
   </aside>
 
   <!-- Main Content -->
-  <main class="main-content page-transition">
-    <div class="page-header">
-      <h1 class="page-title">Dashboard</h1>
-      <p class="page-subtitle">Selamat datang kembali! Berikut ringkasan kesehatan Anda.</p>
-    </div>
-
-    <!-- Stats -->
-    <div class="stats-grid" id="stats-container">
-      <div class="stat-card">
-        <div class="stat-card-header">
-          <div class="stat-card-icon" style="background:var(--pink-50);color:var(--pink-500);">
-            <i data-lucide="clipboard-check" style="width:24px;height:24px;"></i>
-          </div>
-        </div>
-        <div class="stat-card-value" id="total-screenings">0</div>
-        <div class="stat-card-label">Total Screening</div>
+  <main class="main-content page-transition" style="background:var(--gray-50);">
+    <!-- Dashboard Header -->
+    <div class="bento-dashboard-header">
+      <div>
+        <h1 class="page-title" style="margin-bottom:0;font-size:24px;font-weight:800;">Dashboard</h1>
       </div>
-      <div class="stat-card">
-        <div class="stat-card-header">
-          <div class="stat-card-icon" style="background:var(--purple-50);color:var(--purple-500);">
-            <i data-lucide="gauge" style="width:24px;height:24px;"></i>
-          </div>
+      <div class="bento-header-actions">
+        <div class="bento-date-picker">
+          <i data-lucide="calendar" style="width:14px;height:14px;color:var(--gray-400);"></i>
+          <span id="date-range-display">Loading...</span>
+          <i data-lucide="chevron-down" style="width:14px;height:14px;color:var(--gray-400);"></i>
         </div>
-        <div class="stat-card-value" id="latest-score">-</div>
-        <div class="stat-card-label">Skor Risiko Terakhir</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-card-header">
-          <div class="stat-card-icon" style="background:var(--success-light);color:var(--success);">
-            <i data-lucide="shield-check" style="width:24px;height:24px;"></i>
-          </div>
-        </div>
-        <div class="stat-card-value" id="risk-category">-</div>
-        <div class="stat-card-label">Kategori Risiko</div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-card-header">
-          <div class="stat-card-icon" style="background:var(--info-light);color:var(--info);">
-            <i data-lucide="calendar" style="width:24px;height:24px;"></i>
-          </div>
-        </div>
-        <div class="stat-card-value" id="last-screening-date">-</div>
-        <div class="stat-card-label">Screening Terakhir</div>
+        <a href="/dashboard/screening.html" class="btn btn-secondary" style="background:var(--white);border-color:var(--gray-200);color:var(--gray-700);">
+          <i data-lucide="plus" style="width:14px;height:14px;"></i> Screening Baru
+        </a>
+        <button class="btn btn-primary" style="background:#ec4899;border-radius:var(--radius-full);">
+          <i data-lucide="download" style="width:14px;height:14px;"></i> Export PDF
+        </button>
       </div>
     </div>
 
-    <!-- Charts Row -->
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:var(--space-6);margin-bottom:var(--space-8);">
-      <div class="chart-card">
-        <div class="chart-card-title">Tren Skor Risiko</div>
-        <canvas id="risk-trend-chart" height="200"></canvas>
+    <!-- Top 4 Stats -->
+    <div class="bento-stats-row">
+      <div class="bento-stat-card">
+        <div class="bento-stat-header">
+          <span>Total Screening</span>
+          <i data-lucide="clipboard-list" class="bento-stat-icon" style="color:#ec4899;"></i>
+        </div>
+        <div class="bento-stat-body">
+          <span class="bento-stat-value" id="total-screenings">0</span>
+          <span class="bento-trend-badge neutral"><i data-lucide="minus" style="width:10px;height:10px;"></i> -</span>
+        </div>
+        <div class="bento-stat-subtitle">Riwayat seumur hidup</div>
       </div>
-      <div class="chart-card">
-        <div class="chart-card-title">Distribusi Faktor</div>
-        <canvas id="factor-chart" height="200"></canvas>
+      <div class="bento-stat-card">
+        <div class="bento-stat-header">
+          <span>Skor Terakhir</span>
+          <i data-lucide="gauge" class="bento-stat-icon" style="color:#8b5cf6;"></i>
+        </div>
+        <div class="bento-stat-body">
+          <span class="bento-stat-value" id="latest-score">0</span>
+          <span class="bento-trend-badge" id="score-trend-badge"><i data-lucide="minus" style="width:10px;height:10px;"></i> 0%</span>
+        </div>
+        <div class="bento-stat-subtitle">vs. screening sebelumnya</div>
+      </div>
+      <div class="bento-stat-card">
+        <div class="bento-stat-header">
+          <span>Kategori Risiko</span>
+          <i data-lucide="shield-alert" class="bento-stat-icon" style="color:#f59e0b;"></i>
+        </div>
+        <div class="bento-stat-body">
+          <span class="bento-stat-value" id="risk-category" style="font-size:1.25rem;">-</span>
+        </div>
+        <div class="bento-stat-subtitle">Berdasarkan hasil terbaru</div>
+      </div>
+      <div class="bento-stat-card">
+        <div class="bento-stat-header">
+          <span>Screening Terakhir</span>
+          <i data-lucide="calendar-clock" class="bento-stat-icon" style="color:#10b981;"></i>
+        </div>
+        <div class="bento-stat-body">
+          <span class="bento-stat-value" id="last-screening-date" style="font-size:1.25rem;">-</span>
+        </div>
+        <div class="bento-stat-subtitle">Tanggal periksa</div>
       </div>
     </div>
 
-    <!-- Quick Actions -->
-    <div class="chart-card">
-      <div class="chart-card-title" style="margin-bottom:var(--space-6);">Aksi Cepat</div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:var(--space-4);">
-        <a href="/dashboard/screening.html" class="glass-card" style="text-align:center;padding:var(--space-6);text-decoration:none;">
-          <div style="width:48px;height:48px;border-radius:var(--radius-xl);background:var(--gradient-button);display:flex;align-items:center;justify-content:center;margin:0 auto var(--space-3);color:white;">
-            <i data-lucide="plus" style="width:24px;height:24px;"></i>
+    <!-- Main Layout: 2 Columns -->
+    <div class="bento-main-grid">
+      <!-- LEFT COLUMN -->
+      <div class="bento-left-col">
+        <!-- Tracker Rokok Harian -->
+        <div class="bento-card" style="padding-bottom:var(--space-2);">
+          <div class="bento-card-title">
+            <span>Tracker Rokok Harian</span>
+            <i data-lucide="activity" class="bento-card-menu" style="color:var(--pink-500);"></i>
           </div>
-          <div style="font-weight:700;color:var(--gray-800);font-size:var(--text-sm);">Mulai Screening</div>
-          <div style="font-size:var(--text-xs);color:var(--gray-500);margin-top:var(--space-1);">Analisis risiko baru</div>
-        </a>
-        <a href="/dashboard/history.html" class="glass-card" style="text-align:center;padding:var(--space-6);text-decoration:none;">
-          <div style="width:48px;height:48px;border-radius:var(--radius-xl);background:var(--purple-50);display:flex;align-items:center;justify-content:center;margin:0 auto var(--space-3);color:var(--purple-500);">
-            <i data-lucide="history" style="width:24px;height:24px;"></i>
+          
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-4);">
+            <div>
+              <div style="font-family:var(--font-display);font-size:2.5rem;font-weight:800;color:var(--gray-900);line-height:1;" id="tracker-avg">0</div>
+              <div style="font-size:var(--text-xs);color:var(--gray-500);margin-top:4px;">Rata-rata/hari (Minggu Ini)</div>
+            </div>
+            
+            <div style="display:flex;align-items:center;gap:var(--space-2);">
+              <input type="number" id="cigarette-input" min="0" placeholder="0" style="width:70px;padding:var(--space-2);border:1px solid var(--gray-200);border-radius:var(--radius-md);font-size:var(--text-lg);font-weight:700;text-align:center;">
+              <button id="btn-log-cigarette" class="btn btn-primary" style="padding:var(--space-2) var(--space-4);background:var(--gray-900);border:none;">Catat</button>
+            </div>
           </div>
-          <div style="font-weight:700;color:var(--gray-800);font-size:var(--text-sm);">Lihat Riwayat</div>
-          <div style="font-size:var(--text-xs);color:var(--gray-500);margin-top:var(--space-1);">Riwayat screening</div>
-        </a>
-        <a href="/dashboard/recommendation.html" class="glass-card" style="text-align:center;padding:var(--space-6);text-decoration:none;">
-          <div style="width:48px;height:48px;border-radius:var(--radius-xl);background:var(--success-light);display:flex;align-items:center;justify-content:center;margin:0 auto var(--space-3);color:var(--success);">
-            <i data-lucide="heart-handshake" style="width:24px;height:24px;"></i>
+          
+          <div style="position:relative;height:140px;width:100%;margin-bottom:var(--space-4);">
+            <canvas id="cigarette-chart"></canvas>
           </div>
-          <div style="font-weight:700;color:var(--gray-800);font-size:var(--text-sm);">Rekomendasi</div>
-          <div style="font-size:var(--text-xs);color:var(--gray-500);margin-top:var(--space-1);">Tips kesehatan</div>
-        </a>
+
+          <!-- Peringatan AI -->
+          <div id="tracker-ai-warning" style="display:none;padding:var(--space-3);border-radius:var(--radius-lg);border-left:4px solid var(--danger);background:rgba(239, 68, 68, 0.05);">
+            <div style="font-weight:700;font-size:var(--text-sm);margin-bottom:2px;color:var(--gray-900);" id="warning-title">Peringatan</div>
+            <div style="font-size:var(--text-xs);line-height:1.5;color:var(--gray-700);" id="warning-content">Tubuh Anda bukan asbak!</div>
+          </div>
+        </div>
+
+        <!-- Segmented Bar (Risk Factors) -->
+        <div class="bento-card">
+          <div class="bento-card-title" style="margin-bottom:0;">
+            <span>Proporsi Faktor Risiko Dominan</span>
+            <i data-lucide="more-horizontal" class="bento-card-menu"></i>
+          </div>
+          <div class="bento-segmented-bar" id="factor-segmented-bar">
+            <!-- Dynamically populated -->
+          </div>
+          <div class="segment-labels" id="factor-segmented-labels" style="display:flex;flex-wrap:wrap;gap:var(--space-4);">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- Data Table -->
+        <div class="bento-card">
+          <div class="bento-card-title">
+            <span>Riwayat Screening Terakhir</span>
+            <i data-lucide="more-horizontal" class="bento-card-menu"></i>
+          </div>
+          <div class="bento-table-container">
+            <table class="bento-table">
+              <thead>
+                <tr>
+                  <th>Tanggal</th>
+                  <th>Skor</th>
+                  <th>Kategori Risiko</th>
+                  <th style="text-align:right;">Aksi</th>
+                </tr>
+              </thead>
+              <tbody id="recent-table-body">
+                <!-- Dynamically populated -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN -->
+      <div class="bento-right-col">
+        <!-- Radar Chart: Profil Risiko -->
+        <div class="bento-card">
+          <div class="bento-card-title">
+            <span>Profil Faktor</span>
+            <i data-lucide="more-horizontal" class="bento-card-menu"></i>
+          </div>
+          <div style="position:relative;height:200px;margin-top:var(--space-2);">
+            <canvas id="factor-radar-chart"></canvas>
+          </div>
+        </div>
+
+        <!-- Gauge Chart: Skor Risiko -->
+        <div class="bento-card" style="text-align:center;">
+          <div class="bento-card-title" style="margin-bottom:var(--space-6);">
+            <span>Indikator Risiko</span>
+            <i data-lucide="more-horizontal" class="bento-card-menu"></i>
+          </div>
+          <div style="position:relative;width:200px;height:110px;margin:0 auto;">
+            <canvas id="risk-gauge-mini"></canvas>
+            <div style="position:absolute;bottom:0;left:0;right:0;text-align:center;">
+              <div style="font-family:var(--font-display);font-size:2.5rem;font-weight:900;line-height:1;color:var(--gray-900);" id="gauge-score-val">0</div>
+              <div style="font-size:10px;color:var(--gray-400);margin-top:4px;">Skala Tsukamoto</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- AI Assistant Widget -->
+        <div class="bento-card bento-ai-widget">
+          <div class="bento-card-title" style="justify-content:center;color:var(--gray-600);font-size:var(--text-sm);">
+            💡 Tips Harian
+          </div>
+          <div class="ai-orb-container" style="height:100px;margin:0;">
+            <div class="ai-orb" style="width:50px;height:50px;background:radial-gradient(circle at 30% 30%, #f472b6, #db2777);box-shadow:0 10px 30px rgba(236,72,153,0.3);"></div>
+          </div>
+          <p id="health-tip-text" style="font-size:var(--text-xs);color:var(--gray-600);line-height:1.5;margin-bottom:var(--space-4);padding:0 var(--space-2);">
+            Menjaga pola hidup sehat dapat mengurangi risiko...
+          </p>
+          <div class="ai-input-bar">
+            <i data-lucide="message-circle" style="width:14px;height:14px;color:var(--gray-400);"></i>
+            <input type="text" placeholder="Berikan saran lebih lanjut..." readonly style="cursor:not-allowed;">
+            <button class="ai-send-btn" style="background:#ec4899;">
+              <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
+            </button>
+          </div>
+        </div>
       </div>
     </div>
   </main>

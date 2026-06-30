@@ -29,6 +29,7 @@ model User {
   updatedAt     DateTime    @updatedAt
 
   screenings    Screening[]
+  cigaretteLogs CigaretteLog[]
   
   @@map("users")
 }
@@ -183,4 +184,19 @@ enum KBCategory {
   TREATMENT
   LIFESTYLE
   RESEARCH
+}
+
+// ============================================
+// Cigarette Tracker Model
+// ============================================
+model CigaretteLog {
+  id        String   @id @default(cuid())
+  userId    String
+  count     Int
+  date      DateTime @default(now())
+  createdAt DateTime @default(now())
+  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  @@map("cigarette_logs")
 }

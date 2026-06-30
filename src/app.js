@@ -10,6 +10,7 @@ const authRoutes = require('./routes/authRoutes');
 const screeningRoutes = require('./routes/screeningRoutes');
 const adminRoutes = require('./routes/adminRoutes');
 const knowledgeBaseRoutes = require('./routes/knowledgeBaseRoutes');
+const trackerRoutes = require('./routes/trackerRoutes');
 
 const app = express();
 
@@ -53,6 +54,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/screening', screeningRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/knowledge-base', knowledgeBaseRoutes);
+app.use('/api/tracker', trackerRoutes);
 
 // API health check
 app.get('/api/health', (req, res) => {

@@ -7,6 +7,8 @@
 
   if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
 
+  gsap.registerPlugin(ScrollTrigger);
+
   // Features header reveal
   gsap.from('#features .section-badge, #features .section-title, #features .section-desc', {
     opacity: 0,

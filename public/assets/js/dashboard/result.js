@@ -64,9 +64,20 @@
       const scoreEl = document.getElementById('risk-score');
       const badgeEl = document.getElementById('risk-badge');
       const descEl = document.getElementById('risk-description');
+      const meterValue = document.getElementById('risk-meter-value');
+      const barFill = document.getElementById('risk-bar-fill');
 
-      // Animating score
-      animateValue(scoreEl, 0, screeningData.riskScore, 1000);
+      if (meterValue) animateValue(meterValue, 0, screeningData.riskScore, 1000, '%');
+      if (barFill) {
+        barFill.style.width = '0%';
+        barFill.style.backgroundColor = screeningData.riskColor || '#ef4444';
+        setTimeout(() => {
+          barFill.style.width = `${screeningData.riskScore}%`;
+        }, 100);
+      }
+
+      // Animating score with percentage symbol
+      animateValue(scoreEl, 0, screeningData.riskScore, 1000, '%');
 
       // Badge style
       badgeEl.textContent = screeningData.riskLabel || screeningData.riskCategory;
@@ -93,6 +104,9 @@
       // Render parameter items
       renderParameters(screeningData);
 
+      // Render dominant factors list
+      renderDominantFactors(screeningData);
+
       // Render radar chart
       renderRadar(screeningData);
 
@@ -106,12 +120,12 @@
   }
 
   // Value animation helper
-  function animateValue(obj, start, end, duration) {
+  function animateValue(obj, start, end, duration, suffix = '') {
     let startTimestamp = null;
     const step = (timestamp) => {
       if (!startTimestamp) startTimestamp = timestamp;
       const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-      obj.innerHTML = Math.floor(progress * (end - start) + start);
+      obj.innerHTML = Math.floor(progress * (end - start) + start) + suffix;
       if (progress < 1) {
         window.requestAnimationFrame(step);
       }
@@ -119,70 +133,76 @@
     window.requestAnimationFrame(step);
   }
 
-  // Draw custom canvas gauge
+  // Draw segmented canvas gauge (like reference)
   function drawGauge(score, colorCode) {
     const canvas = document.getElementById('risk-gauge');
     if (!canvas) return;
     const ctx = canvas.getContext('2d');
+    
     const x = canvas.width / 2;
-    const y = canvas.height / 2;
-    const radius = 100;
+    // Lower center slightly because it's a semi-circle
+    const y = canvas.height / 2 + 30; 
+    
+    const innerRadius = 95;
+    const outerRadius = 125;
+    const totalSegments = 45;
+    
+    function hexToRgba(hex, alpha) {
+      if (!hex.startsWith('#')) return hex;
+      const r = parseInt(hex.slice(1, 3), 16);
+      const g = parseInt(hex.slice(3, 5), 16);
+      const b = parseInt(hex.slice(5, 7), 16);
+      return `rgba(${r},${g},${b},${alpha})`;
+    }
 
-    let currentAngle = Math.PI; // Start from left
+    const baseColor = colorCode || '#10b981';
 
     function drawFrame(currentScore) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-      // Background gauge track
-      ctx.beginPath();
-      ctx.arc(x, y, radius, Math.PI, 2 * Math.PI);
-      ctx.lineWidth = 14;
-      ctx.strokeStyle = '#e5e7eb';
-      ctx.lineCap = 'round';
-      ctx.stroke();
+      const startAngle = Math.PI;
+      const totalAngle = Math.PI;
+      const filledSegments = Math.round((currentScore / 100) * totalSegments);
 
-      // Colored filled track based on currentScore
-      const endAngle = Math.PI + (Math.PI * (currentScore / 100));
-      ctx.beginPath();
-      ctx.arc(x, y, radius, Math.PI, endAngle);
-      ctx.lineWidth = 14;
-      ctx.strokeStyle = colorCode || '#ec4899';
-      ctx.lineCap = 'round';
-      ctx.stroke();
-
-      // Draw needle/pointer
-      ctx.save();
-      ctx.translate(x, y);
-      ctx.rotate(endAngle);
-      ctx.beginPath();
-      ctx.moveTo(-10, 0);
-      ctx.lineTo(0, -radius - 4);
-      ctx.lineTo(10, 0);
-      ctx.closePath();
-      ctx.fillStyle = '#1f2937';
-      ctx.fill();
-
-      // Needle center
-      ctx.beginPath();
-      ctx.arc(0, 0, 8, 0, 2 * Math.PI);
-      ctx.fillStyle = '#ffffff';
-      ctx.fill();
-      ctx.lineWidth = 3;
-      ctx.strokeStyle = '#1f2937';
-      ctx.stroke();
-      ctx.restore();
+      for (let i = 0; i <= totalSegments; i++) {
+        const angle = startAngle + (i / totalSegments) * totalAngle;
+        
+        ctx.beginPath();
+        const startX = x + Math.cos(angle) * innerRadius;
+        const startY = y + Math.sin(angle) * innerRadius;
+        const endX = x + Math.cos(angle) * outerRadius;
+        const endY = y + Math.sin(angle) * outerRadius;
+        
+        ctx.moveTo(startX, startY);
+        ctx.lineTo(endX, endY);
+        
+        ctx.lineWidth = 4;
+        ctx.lineCap = 'round';
+        
+        if (i <= filledSegments && currentScore > 0) {
+          // Opacity fades out towards the end for a gradient look
+          const alpha = 0.4 + (0.6 * (i / Math.max(filledSegments, 1)));
+          ctx.strokeStyle = hexToRgba(baseColor, alpha);
+        } else {
+          ctx.strokeStyle = '#f3f4f6';
+        }
+        
+        ctx.stroke();
+      }
     }
 
-    // Animate the needle sweep
     let currentScoreAnim = 0;
-    const duration = 1000;
+    const duration = 1200;
     let startTimestamp = null;
 
     const animStep = (timestamp) => {
       if (!startTimestamp) startTimestamp = timestamp;
       const progress = Math.min((timestamp - startTimestamp) / duration, 1);
-      currentScoreAnim = progress * score;
+      const easeOut = 1 - Math.pow(1 - progress, 3);
+      currentScoreAnim = easeOut * score;
+      
       drawFrame(currentScoreAnim);
+      
       if (progress < 1) {
         window.requestAnimationFrame(animStep);
       }
@@ -221,6 +241,35 @@
           <span style="font-size:var(--text-sm);color:var(--gray-600);font-weight:500;">${p.label}</span>
         </div>
         <span style="font-size:var(--text-sm);font-weight:700;color:var(--gray-800);">${p.value}</span>
+      </div>
+    `).join('');
+
+    lucide.createIcons();
+  }
+
+  function renderDominantFactors(data) {
+    const list = document.getElementById('dominant-factors-list');
+    if (!list) return;
+
+    let factors = [];
+    if (data.cigarettesPerDay > 10) factors.push({ label: 'Intensitas Merokok Tinggi', icon: 'ban', color: '#ef4444' });
+    else if (data.cigarettesPerDay > 0) factors.push({ label: 'Perokok Aktif', icon: 'ban', color: '#f59e0b' });
+    
+    if (data.coughDuration > 2) factors.push({ label: 'Batuk Kronis', icon: 'wind', color: '#ef4444' });
+    if (data.bmi > 25) factors.push({ label: 'Berat Badan Berlebih (BMI)', icon: 'activity', color: '#f59e0b' });
+    if (data.familyHistory) factors.push({ label: 'Riwayat Genetik/Keluarga', icon: 'users', color: '#ef4444' });
+    if (data.environmentalExposure > 5) factors.push({ label: 'Paparan Polusi Tinggi', icon: 'shield-alert', color: '#ef4444' });
+    if (data.chestPainScale > 4) factors.push({ label: 'Nyeri Dada Signifikan', icon: 'flame', color: '#ef4444' });
+    else if (data.chestPainScale > 0) factors.push({ label: 'Gejala Nyeri Dada', icon: 'flame', color: '#f59e0b' });
+
+    if (factors.length === 0) {
+      factors.push({ label: 'Tidak ada faktor risiko dominan', icon: 'check-circle', color: '#10b981' });
+    }
+
+    list.innerHTML = factors.slice(0, 4).map(f => `
+      <div style="display:flex;align-items:center;gap:var(--space-2);margin-bottom:var(--space-2);background:var(--white);padding:var(--space-2) var(--space-3);border-radius:var(--radius-lg);border:1px solid var(--gray-200);">
+        <i data-lucide="${f.icon}" style="width:16px;height:16px;color:${f.color};"></i>
+        <span style="font-size:var(--text-sm);font-weight:600;color:var(--gray-800);">${f.label}</span>
       </div>
     `).join('');
 

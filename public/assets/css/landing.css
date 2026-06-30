@@ -64,12 +64,16 @@
 .hero-model-container {
   position: absolute;
   right: 5%;
-  top: 50%;
-  transform: translateY(-50%);
+  top: 10vh;
   z-index: 3;
-  width: 500px;
-  height: 700px;
+  width: 45vw;
+  max-width: 600px;
+  height: 80vh;
+  max-height: 800px;
   perspective: 1000px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .hero-model {
@@ -518,6 +522,18 @@
 .features-section {
   padding: var(--space-24) 0;
   background: var(--white);
+  position: relative;
+}
+
+.features-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 500px;
+  background: linear-gradient(180deg, var(--pink-50) 0%, transparent 100%);
+  pointer-events: none;
 }
 
 .features-header {
@@ -707,9 +723,10 @@
 /* ── Responsive Landing ── */
 @media (max-width: 1024px) {
   .hero-model-container {
-    width: 380px;
-    height: 540px;
+    width: 40vw;
+    height: 60vh;
     right: 2%;
+    top: 20vh;
     opacity: 0.3;
   }
 
