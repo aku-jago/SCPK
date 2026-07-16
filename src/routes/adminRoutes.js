@@ -25,6 +25,10 @@ router.delete('/fuzzy-rules/:id', adminController.deleteFuzzyRule);
 // Fuzzy Variables
 router.get('/fuzzy-variables', adminController.getFuzzyVariables);
 
+// All Screenings (Admin History)
+router.get('/screenings', adminController.getAllScreenings);
+router.delete('/screenings/:id', adminController.deleteScreening);
+
 // Risk Distribution
 router.get('/risk-distribution', adminController.getRiskDistribution);
 

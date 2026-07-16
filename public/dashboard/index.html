@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard — SCPK Self-Screening Platform</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🫁</text></svg>">
+  <title>Dashboard — LunarHealth Self-Screening Platform</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/images/logo/favicon.svg">
   <link rel="stylesheet" href="/assets/css/global.css">
   <link rel="stylesheet" href="/assets/css/dashboard.css">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
@@ -18,7 +18,7 @@
     </button>
     <div class="navbar-brand">
       <div class="navbar-brand-icon"><i data-lucide="heart-pulse" style="width:18px;height:18px;color:white;"></i></div>
-      <span style="font-size:var(--text-lg);font-weight:800;">SCPK</span>
+      <span style="font-size:var(--text-lg);font-weight:800;">LunarHealth</span>
     </div>
     <button class="btn btn-icon btn-ghost" id="theme-toggle-mobile" style="margin-left:auto;" aria-label="Toggle theme">
       <i data-lucide="sun" style="width:18px;height:18px;"></i>
@@ -29,18 +29,18 @@
   <div class="sidebar-overlay" id="sidebar-overlay"></div>
 
   <!-- Sidebar -->
-  <aside class="sidebar" id="sidebar" style="border-right: 1px solid var(--gray-200);">
+  <aside class="sidebar" id="sidebar">
     <div class="sidebar-brand">
-      <div class="navbar-brand-icon"><i data-lucide="heart-pulse" style="width:18px;height:18px;color:white;"></i></div>
-      <span style="font-family:var(--font-display);font-size:var(--text-lg);font-weight:800;color:var(--gray-900);">SCPK</span>
+      <div class="navbar-brand-icon" style="background:var(--gradient-button);"><i data-lucide="heart-pulse" style="width:18px;height:18px;color:white;"></i></div>
+      <span style="font-family:var(--font-display);font-size:var(--text-lg);font-weight:800;color:var(--gray-900);">LunarHealth</span>
       <button class="btn btn-icon btn-ghost" id="theme-toggle" style="margin-left:auto;" aria-label="Toggle theme">
         <i data-lucide="sun" style="width:16px;height:16px;" id="theme-icon-light"></i>
         <i data-lucide="moon" style="width:16px;height:16px;display:none;" id="theme-icon-dark"></i>
       </button>
     </div>
 
-    <div class="sidebar-user" id="sidebar-user" style="padding-bottom:var(--space-2);border-bottom:none;">
-      <div class="sidebar-user-avatar" id="user-avatar" style="background:#ec4899;color:white;">U</div>
+    <div class="sidebar-user" id="sidebar-user">
+      <div class="sidebar-user-avatar" id="user-avatar" style="background:var(--gradient-button);color:white;cursor:pointer;" title="Klik untuk ubah profil" onclick="window.location.href='/dashboard/profile.html'">U</div>
       <div>
         <div class="sidebar-user-name" id="user-name">Loading...</div>
         <div class="sidebar-user-role" id="user-role">Pengguna</div>
@@ -67,12 +67,12 @@
         <i data-lucide="user" style="width:20px;height:20px;"></i> Profil
       </a>
       <a href="/dashboard/settings.html" class="sidebar-link" id="nav-settings">
-        <i data-lucide="settings" style="width:20px;height:20px;"></i> Konfigurasi
+        <i data-lucide="settings" style="width:20px;height:20px;"></i> Pengaturan
       </a>
     </nav>
 
-    <div class="sidebar-footer" style="padding-top:0;">
-      <div class="sidebar-premium-card" style="background: linear-gradient(135deg, #ec4899, #8b5cf6);">
+    <div class="sidebar-footer">
+      <div class="sidebar-premium-card" style="background: var(--gradient-button); margin-bottom:var(--space-4);">
         <div class="sidebar-premium-icon">
           <i data-lucide="sparkles" style="width:16px;height:16px;"></i>
         </div>
@@ -80,8 +80,8 @@
         <div class="sidebar-premium-desc">Dapatkan rekomendasi personal berdasarkan hasil screening terbaru Anda.</div>
         <button class="sidebar-premium-btn" onclick="window.location.href='/dashboard/recommendation.html'">Lihat Rekomendasi</button>
       </div>
-      <button class="sidebar-link w-full" id="btn-logout" style="color:var(--gray-500);justify-content:center;">
-        <i data-lucide="log-out" style="width:16px;height:16px;"></i> Keluar Akun
+      <button class="sidebar-link w-full" id="btn-logout" style="color:var(--danger);">
+        <i data-lucide="log-out" style="width:20px;height:20px;"></i> Keluar Akun
       </button>
     </div>
   </aside>
@@ -102,7 +102,7 @@
         <a href="/dashboard/screening.html" class="btn btn-secondary" style="background:var(--white);border-color:var(--gray-200);color:var(--gray-700);">
           <i data-lucide="plus" style="width:14px;height:14px;"></i> Screening Baru
         </a>
-        <button class="btn btn-primary" style="background:#ec4899;border-radius:var(--radius-full);">
+        <button class="btn btn-primary" style="background:var(--brand-500);border-radius:var(--radius-full);">
           <i data-lucide="download" style="width:14px;height:14px;"></i> Export PDF
         </button>
       </div>
@@ -113,7 +113,7 @@
       <div class="bento-stat-card">
         <div class="bento-stat-header">
           <span>Total Screening</span>
-          <i data-lucide="clipboard-list" class="bento-stat-icon" style="color:#ec4899;"></i>
+          <i data-lucide="clipboard-list" class="bento-stat-icon" style="color:var(--brand-500);"></i>
         </div>
         <div class="bento-stat-body">
           <span class="bento-stat-value" id="total-screenings">0</span>
@@ -162,7 +162,7 @@
         <div class="bento-card" style="padding-bottom:var(--space-2);">
           <div class="bento-card-title">
             <span>Tracker Rokok Harian</span>
-            <i data-lucide="activity" class="bento-card-menu" style="color:var(--pink-500);"></i>
+            <i data-lucide="activity" class="bento-card-menu" style="color:var(--brand-500);"></i>
           </div>
           
           <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:var(--space-4);">
@@ -260,7 +260,7 @@
             💡 Tips Harian
           </div>
           <div class="ai-orb-container" style="height:100px;margin:0;">
-            <div class="ai-orb" style="width:50px;height:50px;background:radial-gradient(circle at 30% 30%, #f472b6, #db2777);box-shadow:0 10px 30px rgba(236,72,153,0.3);"></div>
+            <div class="ai-orb" style="width:50px;height:50px;background:radial-gradient(circle at 30% 30%, var(--brand-400), var(--brand-600));box-shadow:0 10px 30px rgba(236,72,153,0.3);"></div>
           </div>
           <p id="health-tip-text" style="font-size:var(--text-xs);color:var(--gray-600);line-height:1.5;margin-bottom:var(--space-4);padding:0 var(--space-2);">
             Menjaga pola hidup sehat dapat mengurangi risiko...
@@ -268,7 +268,7 @@
           <div class="ai-input-bar">
             <i data-lucide="message-circle" style="width:14px;height:14px;color:var(--gray-400);"></i>
             <input type="text" placeholder="Berikan saran lebih lanjut..." readonly style="cursor:not-allowed;">
-            <button class="ai-send-btn" style="background:#ec4899;">
+            <button class="ai-send-btn" style="background:var(--brand-500);">
               <i data-lucide="arrow-right" style="width:14px;height:14px;"></i>
             </button>
           </div>

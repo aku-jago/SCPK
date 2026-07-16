@@ -69,7 +69,7 @@ const Auth = {
 
   logout() {
     API.removeToken();
-    window.location.href = '/login.html';
+    window.location.href = '/';
   },
 
   /**

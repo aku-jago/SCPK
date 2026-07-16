@@ -1,5 +1,5 @@
 {
-  "name": "scpk-self-screening-platform",
+  "name": "lunarhealth-self-screening-platform",
   "version": "1.0.0",
   "description": "Sistem AI Deteksi Dini & Klasifikasi Tingkat Risiko Kanker Paru-Paru bagi Perokok Aktif",
   "main": "src/server.js",
@@ -23,7 +23,7 @@
     "fuzzy-tsukamoto",
     "screening"
   ],
-  "author": "SCPK Team",
+  "author": "LunarHealth Team",
   "license": "MIT",
   "dependencies": {
     "@prisma/client": "^6.9.0",
@@ -34,7 +34,8 @@
     "express-validator": "^7.2.1",
     "helmet": "^8.0.0",
     "jsonwebtoken": "^9.0.2",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "multer": "^2.2.0"
   },
   "devDependencies": {
     "prisma": "^6.9.0"

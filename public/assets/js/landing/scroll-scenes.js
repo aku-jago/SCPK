@@ -12,7 +12,7 @@
 
   if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') return;
 
-  gsap.registerPlugin(ScrollTrigger);
+  gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
   // ── Counter Animation ──
   function animateCounter(element, target, suffix = '') {

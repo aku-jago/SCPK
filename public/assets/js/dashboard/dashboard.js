@@ -44,8 +44,35 @@
   const user = Auth.getUser();
   if (user) {
     document.getElementById('user-name').textContent = user.name || 'User';
-    document.getElementById('user-role').textContent = user.role === 'ADMIN' ? 'Administrator' : 'Pengguna';
-    document.getElementById('user-avatar').textContent = (user.name || 'U').charAt(0).toUpperCase();
+
+    const roleEl = document.getElementById('user-role');
+    if (roleEl) roleEl.textContent = user.role === 'ADMIN' ? 'Administrator' : 'Pengguna';
+
+
+    // Add Admin link if user is ADMIN
+    if (user.role === 'ADMIN') {
+      const nav = document.querySelector('.sidebar-nav');
+      if (nav && !document.getElementById('nav-admin-return')) {
+        nav.insertAdjacentHTML('beforeend', `
+          <div class="sidebar-section-title" style="margin-top:var(--space-4);">Admin Area</div>
+          <a href="/admin/" class="sidebar-link" id="nav-admin-return">
+            <i data-lucide="shield" style="width:20px;height:20px;"></i> Dashboard Admin
+          </a>
+        `);
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+      }
+    }
+
+    
+    const avatarEl = document.getElementById('user-avatar');
+    if (avatarEl) {
+      if (user.avatar) {
+        avatarEl.innerHTML = '<img src="' + user.avatar + '" alt="Profile" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">';
+        avatarEl.style.background = 'none';
+      } else {
+        avatarEl.textContent = (user.name || 'U').charAt(0).toUpperCase();
+      }
+    }
   }
 
   // Highlight active nav
@@ -261,14 +288,14 @@
     const p4 = ((f4/total) * 100).toFixed(1);
 
     document.getElementById('factor-segmented-bar').innerHTML = `
-      <div class="segment" style="width:${p1}%;background:#ec4899;"></div>
+      <div class="segment" style="width:${p1}%;background:var(--brand-500);"></div>
       <div class="segment" style="width:${p2}%;background:#8b5cf6;"></div>
       <div class="segment" style="width:${p3}%;background:#f59e0b;"></div>
       <div class="segment" style="width:${p4}%;background:#10b981;"></div>
     `;
 
     document.getElementById('factor-segmented-labels').innerHTML = `
-      <div><div class="segment-label"><span class="segment-dot" style="background:#ec4899;"></span> Rokok</div><span class="segment-label-val">${p1}%</span></div>
+      <div><div class="segment-label"><span class="segment-dot" style="background:var(--brand-500);"></span> Rokok</div><span class="segment-label-val">${p1}%</span></div>
       <div><div class="segment-label"><span class="segment-dot" style="background:#8b5cf6;"></span> Usia</div><span class="segment-label-val">${p2}%</span></div>
       <div><div class="segment-label"><span class="segment-dot" style="background:#f59e0b;"></span> Lingkungan</div><span class="segment-label-val">${p3}%</span></div>
       <div><div class="segment-label"><span class="segment-dot" style="background:#10b981;"></span> Gejala Fisik</div><span class="segment-label-val">${p4}%</span></div>

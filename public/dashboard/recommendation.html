@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Rekomendasi Kesehatan — SCPK</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>𫆤</text></svg>">
+  <title>Rekomendasi Kesehatan — LunarHealth</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/images/logo/favicon.svg">
   <link rel="stylesheet" href="/assets/css/global.css">
   <link rel="stylesheet" href="/assets/css/dashboard.css">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
@@ -17,7 +17,7 @@
     </button>
     <div class="navbar-brand">
       <div class="navbar-brand-icon"><i data-lucide="heart-pulse" style="width:18px;height:18px;color:white;"></i></div>
-      <span style="font-size:var(--text-lg);font-weight:800;">SCPK</span>
+      <span style="font-size:var(--text-lg);font-weight:800;">LunarHealth</span>
     </div>
     <button class="btn btn-icon btn-ghost" id="theme-toggle-mobile" style="margin-left:auto;" aria-label="Toggle theme">
       <i data-lucide="sun" style="width:18px;height:18px;"></i>
@@ -30,8 +30,8 @@
   <!-- Sidebar -->
   <aside class="sidebar" id="sidebar">
     <div class="sidebar-brand">
-      <div class="navbar-brand-icon"><i data-lucide="heart-pulse" style="width:18px;height:18px;color:white;"></i></div>
-      <span style="font-family:var(--font-display);font-size:var(--text-lg);font-weight:800;color:var(--gray-900);">SCPK</span>
+      <div class="navbar-brand-icon" style="background:var(--gradient-button);"><i data-lucide="heart-pulse" style="width:18px;height:18px;color:white;"></i></div>
+      <span style="font-family:var(--font-display);font-size:var(--text-lg);font-weight:800;color:var(--gray-900);">LunarHealth</span>
       <button class="btn btn-icon btn-ghost" id="theme-toggle" style="margin-left:auto;" aria-label="Toggle theme">
         <i data-lucide="sun" style="width:16px;height:16px;" id="theme-icon-light"></i>
         <i data-lucide="moon" style="width:16px;height:16px;display:none;" id="theme-icon-dark"></i>
@@ -39,15 +39,15 @@
     </div>
 
     <div class="sidebar-user" id="sidebar-user">
-      <div class="sidebar-user-avatar" id="user-avatar">U</div>
+      <div class="sidebar-user-avatar" id="user-avatar" style="background:var(--gradient-button);color:white;cursor:pointer;" title="Klik untuk ubah profil" onclick="window.location.href='/dashboard/profile.html'">U</div>
       <div>
         <div class="sidebar-user-name" id="user-name">Loading...</div>
-        <div class="sidebar-user-role" id="user-role">User</div>
+        <div class="sidebar-user-role" id="user-role">Pengguna</div>
       </div>
     </div>
 
     <nav class="sidebar-nav">
-      <div class="sidebar-section-title">Menu</div>
+      <div class="sidebar-section-title">Menu Utama</div>
       <a href="/dashboard/" class="sidebar-link" id="nav-dashboard">
         <i data-lucide="layout-dashboard" style="width:20px;height:20px;"></i> Dashboard
       </a>
@@ -61,7 +61,7 @@
         <i data-lucide="heart-handshake" style="width:20px;height:20px;"></i> Rekomendasi
       </a>
 
-      <div class="sidebar-section-title" style="margin-top:var(--space-4);">Akun</div>
+      <div class="sidebar-section-title" style="margin-top:var(--space-4);">Pengaturan Akun</div>
       <a href="/dashboard/profile.html" class="sidebar-link" id="nav-profile">
         <i data-lucide="user" style="width:20px;height:20px;"></i> Profil
       </a>
@@ -72,7 +72,7 @@
 
     <div class="sidebar-footer">
       <button class="sidebar-link w-full" id="btn-logout" style="color:var(--danger);">
-        <i data-lucide="log-out" style="width:20px;height:20px;"></i> Keluar
+        <i data-lucide="log-out" style="width:20px;height:20px;"></i> Keluar Akun
       </button>
     </div>
   </aside>
@@ -99,7 +99,7 @@
           </div>
 
           <div id="personal-empty-container" class="empty-state" style="display:none;padding:var(--space-8) var(--space-4);">
-            <div class="empty-state-icon" style="width:60px;height:60px;background:var(--pink-50);color:var(--pink-500);">
+            <div class="empty-state-icon" style="width:60px;height:60px;background:var(--brand-50);color:var(--brand-500);">
               <i data-lucide="alert-circle" style="width:28px;height:28px;"></i>
             </div>
             <div class="empty-state-title" style="font-size:var(--text-md);">Rekomendasi Kosong</div>

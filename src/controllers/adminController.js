@@ -29,14 +29,14 @@ class AdminController {
             user: { select: { name: true, email: true } },
           },
         }),
-        // User growth: last 7 days (SQLite compatible)
-        prisma.$queryRaw`
-          SELECT DATE("createdAt") as date, CAST(COUNT(*) AS INTEGER) as count
-          FROM users
-          WHERE "createdAt" >= date('now', '-7 days')
-          GROUP BY DATE("createdAt")
-          ORDER BY date ASC
-        `.catch(() => []),
+        prisma.screening.findMany({
+          where: {
+            createdAt: {
+              gte: new Date(new Date().setDate(new Date().getDate() - 14)),
+            },
+          },
+          select: { createdAt: true },
+        }),
       ]);
 
       // Calculate averages
@@ -52,6 +52,26 @@ class AdminController {
         distribution[item.riskCategory] = item._count.id;
       }
 
+      // Format screening trend (last 14 days)
+      const trendMap = {};
+      for (let i = 14; i >= 0; i--) {
+        const d = new Date();
+        d.setDate(d.getDate() - i);
+        trendMap[d.toISOString().split('T')[0]] = 0;
+      }
+      
+      for (const s of userGrowth) {
+        const dateStr = s.createdAt.toISOString().split('T')[0];
+        if (trendMap[dateStr] !== undefined) {
+          trendMap[dateStr]++;
+        }
+      }
+
+      const formattedTrend = Object.keys(trendMap).sort().map(date => ({
+        date,
+        count: trendMap[date]
+      }));
+
       res.json({
         success: true,
         data: {
@@ -64,7 +84,7 @@ class AdminController {
           },
           riskDistribution: distribution,
           recentScreenings,
-          userGrowth,
+          userGrowth: formattedTrend,
         },
       });
     } catch (error) {
@@ -173,6 +193,110 @@ class AdminController {
         orderBy: { name: 'asc' },
       });
       res.json({ success: true, data: variables });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * GET /api/admin/screenings
+   * Get all screenings with pagination, search, and filters
+   */
+  async getAllScreenings(req, res, next) {
+    try {
+      const page = parseInt(req.query.page) || 1;
+      const limit = parseInt(req.query.limit) || 15;
+      const search = req.query.search || '';
+      const riskCategory = req.query.riskCategory || '';
+      const dateFrom = req.query.dateFrom || '';
+      const dateTo = req.query.dateTo || '';
+
+      const where = {};
+
+      // Filter by risk category
+      if (riskCategory) {
+        where.riskCategory = riskCategory;
+      }
+
+      // Filter by date range
+      if (dateFrom || dateTo) {
+        where.createdAt = {};
+        if (dateFrom) {
+          where.createdAt.gte = new Date(dateFrom);
+        }
+        if (dateTo) {
+          const endDate = new Date(dateTo);
+          endDate.setHours(23, 59, 59, 999);
+          where.createdAt.lte = endDate;
+        }
+      }
+
+      // Search by user name or email
+      if (search) {
+        where.user = {
+          OR: [
+            { name: { contains: search } },
+            { email: { contains: search } },
+          ],
+        };
+      }
+
+      const [screenings, total] = await Promise.all([
+        prisma.screening.findMany({
+          where,
+          include: {
+            user: { select: { id: true, name: true, email: true } },
+          },
+          orderBy: { createdAt: 'desc' },
+          skip: (page - 1) * limit,
+          take: limit,
+        }),
+        prisma.screening.count({ where }),
+      ]);
+
+      res.json({
+        success: true,
+        data: {
+          screenings,
+          pagination: {
+            page,
+            limit,
+            total,
+            totalPages: Math.ceil(total / limit),
+          },
+        },
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * DELETE /api/admin/screenings/:id
+   */
+  async deleteScreening(req, res, next) {
+    try {
+      const { id } = req.params;
+      
+      const screening = await prisma.screening.findUnique({
+        where: { id }
+      });
+
+      if (!screening) {
+        return res.status(404).json({
+          success: false,
+          message: 'Data screening tidak ditemukan.',
+        });
+      }
+
+      await prisma.screening.delete({
+        where: { id }
+      });
+
+      res.json({
+        success: true,
+        message: 'Data screening berhasil dihapus.',
+      });
     } catch (error) {
       next(error);
     }

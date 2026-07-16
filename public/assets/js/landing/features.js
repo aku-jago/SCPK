@@ -25,18 +25,14 @@
 
   // Feature cards stagger
   gsap.from('.feature-card', {
-    opacity: 0,
     y: 60,
     scale: 0.95,
     duration: 0.6,
-    stagger: {
-      each: 0.1,
-      from: 'start',
-    },
+    stagger: 0.1,
     ease: 'power3.out',
     scrollTrigger: {
       trigger: '#features-grid',
-      start: 'top 80%',
+      start: 'top 95%',
       once: true,
     },
   });
@@ -73,4 +69,9 @@
       });
     });
   });
+
+  // Force ScrollTrigger to refresh after a short delay to account for DOM changes
+  setTimeout(() => {
+    ScrollTrigger.refresh();
+  }, 500);
 })();

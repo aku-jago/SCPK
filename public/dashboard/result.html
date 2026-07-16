@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Hasil Screening — SCPK</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🫁</text></svg>">
+  <title>Hasil Screening — LunarHealth</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/images/logo/favicon.svg">
   <link rel="stylesheet" href="/assets/css/global.css">
   <link rel="stylesheet" href="/assets/css/dashboard.css">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
@@ -20,23 +20,56 @@
 
   <div class="top-bar" id="top-bar">
     <button class="top-bar-toggle" id="sidebar-toggle"><i data-lucide="menu" style="width:22px;height:22px;"></i></button>
-    <div class="navbar-brand"><div class="navbar-brand-icon"><i data-lucide="heart-pulse" style="width:18px;height:18px;color:white;"></i></div><span style="font-size:var(--text-lg);font-weight:800;">SCPK</span></div>
+    <div class="navbar-brand"><div class="navbar-brand-icon"><i data-lucide="heart-pulse" style="width:18px;height:18px;color:white;"></i></div><span style="font-size:var(--text-lg);font-weight:800;">LunarHealth</span></div>
   </div>
   <div class="sidebar-overlay" id="sidebar-overlay"></div>
   <aside class="sidebar" id="sidebar">
-    <div class="sidebar-brand"><div class="navbar-brand-icon"><i data-lucide="heart-pulse" style="width:18px;height:18px;color:white;"></i></div><span style="font-family:var(--font-display);font-size:var(--text-lg);font-weight:800;">SCPK</span><button class="btn btn-icon btn-ghost" id="theme-toggle" style="margin-left:auto;"><i data-lucide="sun" style="width:16px;height:16px;" id="theme-icon-light"></i><i data-lucide="moon" style="width:16px;height:16px;display:none;" id="theme-icon-dark"></i></button></div>
-    <div class="sidebar-user"><div class="sidebar-user-avatar" id="user-avatar">U</div><div><div class="sidebar-user-name" id="user-name">User</div><div class="sidebar-user-role">Pengguna</div></div></div>
+    <div class="sidebar-brand">
+      <div class="navbar-brand-icon" style="background:var(--gradient-button);"><i data-lucide="heart-pulse" style="width:18px;height:18px;color:white;"></i></div>
+      <span style="font-family:var(--font-display);font-size:var(--text-lg);font-weight:800;color:var(--gray-900);">LunarHealth</span>
+      <button class="btn btn-icon btn-ghost" id="theme-toggle" style="margin-left:auto;" aria-label="Toggle theme">
+        <i data-lucide="sun" style="width:16px;height:16px;" id="theme-icon-light"></i>
+        <i data-lucide="moon" style="width:16px;height:16px;display:none;" id="theme-icon-dark"></i>
+      </button>
+    </div>
+
+    <div class="sidebar-user" id="sidebar-user">
+      <div class="sidebar-user-avatar" id="user-avatar" style="background:var(--gradient-button);color:white;cursor:pointer;" title="Klik untuk ubah profil" onclick="window.location.href='/dashboard/profile.html'">U</div>
+      <div>
+        <div class="sidebar-user-name" id="user-name">Loading...</div>
+        <div class="sidebar-user-role" id="user-role">Pengguna</div>
+      </div>
+    </div>
+
     <nav class="sidebar-nav">
-      <div class="sidebar-section-title">Menu</div>
-      <a href="/dashboard/" class="sidebar-link"><i data-lucide="layout-dashboard" style="width:20px;height:20px;"></i> Dashboard</a>
-      <a href="/dashboard/screening.html" class="sidebar-link"><i data-lucide="clipboard-check" style="width:20px;height:20px;"></i> Self Screening</a>
-      <a href="/dashboard/history.html" class="sidebar-link"><i data-lucide="history" style="width:20px;height:20px;"></i> Riwayat</a>
-      <a href="/dashboard/recommendation.html" class="sidebar-link"><i data-lucide="heart-handshake" style="width:20px;height:20px;"></i> Rekomendasi</a>
-      <div class="sidebar-section-title" style="margin-top:var(--space-4);">Akun</div>
-      <a href="/dashboard/profile.html" class="sidebar-link"><i data-lucide="user" style="width:20px;height:20px;"></i> Profil</a>
-      <a href="/dashboard/settings.html" class="sidebar-link"><i data-lucide="settings" style="width:20px;height:20px;"></i> Pengaturan</a>
+      <div class="sidebar-section-title">Menu Utama</div>
+      <a href="/dashboard/" class="sidebar-link" id="nav-dashboard">
+        <i data-lucide="layout-dashboard" style="width:20px;height:20px;"></i> Dashboard
+      </a>
+      <a href="/dashboard/screening.html" class="sidebar-link" id="nav-screening">
+        <i data-lucide="clipboard-check" style="width:20px;height:20px;"></i> Self Screening
+      </a>
+      <a href="/dashboard/history.html" class="sidebar-link" id="nav-history">
+        <i data-lucide="history" style="width:20px;height:20px;"></i> Riwayat
+      </a>
+      <a href="/dashboard/recommendation.html" class="sidebar-link" id="nav-recommendation">
+        <i data-lucide="heart-handshake" style="width:20px;height:20px;"></i> Rekomendasi
+      </a>
+
+      <div class="sidebar-section-title" style="margin-top:var(--space-4);">Pengaturan Akun</div>
+      <a href="/dashboard/profile.html" class="sidebar-link" id="nav-profile">
+        <i data-lucide="user" style="width:20px;height:20px;"></i> Profil
+      </a>
+      <a href="/dashboard/settings.html" class="sidebar-link" id="nav-settings">
+        <i data-lucide="settings" style="width:20px;height:20px;"></i> Pengaturan
+      </a>
     </nav>
-    <div class="sidebar-footer"><button class="sidebar-link w-full" id="btn-logout" style="color:var(--danger);"><i data-lucide="log-out" style="width:20px;height:20px;"></i> Keluar</button></div>
+
+    <div class="sidebar-footer">
+      <button class="sidebar-link w-full" id="btn-logout" style="color:var(--danger);">
+        <i data-lucide="log-out" style="width:20px;height:20px;"></i> Keluar Akun
+      </button>
+    </div>
   </aside>
 
   <main class="main-content page-transition">
@@ -166,6 +199,99 @@
       <div id="recommendations-list" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:var(--space-4);"></div>
     </div>
   </main>
+
+  <!-- ═══ Smoking Cessation Motivation Popup ═══ -->
+  <div class="quit-modal-overlay" id="quit-modal-overlay">
+    <div class="quit-modal" id="quit-modal">
+      <!-- Close Button -->
+      <button class="quit-modal-close" id="quit-modal-close" aria-label="Tutup">
+        <i data-lucide="x" style="width:20px;height:20px;"></i>
+      </button>
+
+      <!-- Animated Background Particles -->
+      <div class="quit-modal-particles" aria-hidden="true">
+        <div class="quit-particle"></div>
+        <div class="quit-particle"></div>
+        <div class="quit-particle"></div>
+        <div class="quit-particle"></div>
+        <div class="quit-particle"></div>
+        <div class="quit-particle"></div>
+      </div>
+
+      <!-- Header Icon -->
+      <div class="quit-modal-icon-wrapper" id="quit-modal-icon-wrapper">
+        <div class="quit-modal-icon-ring"></div>
+        <div class="quit-modal-icon" id="quit-modal-icon">
+          <i data-lucide="heart-pulse" style="width:32px;height:32px;"></i>
+        </div>
+      </div>
+
+      <!-- Badge -->
+      <div class="quit-modal-badge" id="quit-modal-badge">Peringatan Kesehatan</div>
+
+      <!-- Title -->
+      <h2 class="quit-modal-title" id="quit-modal-title">Sayangi Paru-Paru Anda</h2>
+
+      <!-- Motivational Message -->
+      <p class="quit-modal-message" id="quit-modal-message">
+        Setiap langkah kecil menuju berhenti merokok adalah investasi besar untuk masa depan Anda.
+      </p>
+
+      <!-- Quote Box -->
+      <div class="quit-modal-quote" id="quit-modal-quote">
+        <i data-lucide="quote" style="width:16px;height:16px;opacity:0.5;flex-shrink:0;"></i>
+        <p>"Tidak ada kata terlambat untuk berhenti merokok. Tubuh Anda mulai pulih dalam 20 menit setelah rokok terakhir."</p>
+      </div>
+
+      <!-- Benefits Timeline -->
+      <div class="quit-modal-benefits">
+        <div class="quit-modal-benefits-title">
+          <i data-lucide="sparkles" style="width:14px;height:14px;"></i>
+          <span>Manfaat Berhenti Merokok</span>
+        </div>
+        <div class="quit-benefits-timeline">
+          <div class="quit-benefit-item">
+            <div class="quit-benefit-time">20 menit</div>
+            <div class="quit-benefit-dot"></div>
+            <div class="quit-benefit-text">Detak jantung & tekanan darah mulai normal</div>
+          </div>
+          <div class="quit-benefit-item">
+            <div class="quit-benefit-time">24 jam</div>
+            <div class="quit-benefit-dot"></div>
+            <div class="quit-benefit-text">Risiko serangan jantung mulai menurun</div>
+          </div>
+          <div class="quit-benefit-item">
+            <div class="quit-benefit-time">1 tahun</div>
+            <div class="quit-benefit-dot"></div>
+            <div class="quit-benefit-text">Risiko penyakit jantung turun 50%</div>
+          </div>
+          <div class="quit-benefit-item">
+            <div class="quit-benefit-time">10 tahun</div>
+            <div class="quit-benefit-dot"></div>
+            <div class="quit-benefit-text">Risiko kanker paru berkurang drastis</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="quit-modal-actions">
+        <a href="/dashboard/recommendation.html" class="btn btn-primary quit-modal-btn-primary">
+          <i data-lucide="heart-handshake" style="width:16px;height:16px;"></i>
+          Lihat Rekomendasi Lengkap
+        </a>
+        <button class="btn btn-secondary quit-modal-btn-secondary" id="quit-modal-dismiss">
+          <i data-lucide="check" style="width:16px;height:16px;"></i>
+          Saya Mengerti
+        </button>
+      </div>
+
+      <!-- Footer Note -->
+      <p class="quit-modal-footer">
+        <i data-lucide="shield-check" style="width:12px;height:12px;"></i>
+        Hasil screening ini bersifat informatif dan bukan diagnosis medis.
+      </p>
+    </div>
+  </div>
 
   <script src="/assets/js/lib/api.js"></script>
   <script src="/assets/js/lib/auth.js"></script>

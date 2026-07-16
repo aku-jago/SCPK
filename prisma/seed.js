@@ -365,6 +365,161 @@ async function main() {
       consequent: 'tinggi',
       weight: 1.0,
     },
+    // ── Additional rules for better coverage ──
+
+    // Young + heavy smoker combinations
+    {
+      name: 'R21 - Muda, Berat, Sedang Batuk → Tinggi',
+      conditions: [
+        { variable: 'age', value: 'muda' },
+        { variable: 'cigarettesPerDay', value: 'berat' },
+        { variable: 'coughDuration', value: 'sedang' },
+      ],
+      consequent: 'tinggi',
+      weight: 0.9,
+    },
+    {
+      name: 'R22 - Muda, Berat, Lama Batuk → Tinggi',
+      conditions: [
+        { variable: 'age', value: 'muda' },
+        { variable: 'cigarettesPerDay', value: 'berat' },
+        { variable: 'coughDuration', value: 'lama' },
+      ],
+      consequent: 'tinggi',
+      weight: 1.0,
+    },
+    {
+      name: 'R23 - Muda, Sedang, Lama Batuk → Sedang',
+      conditions: [
+        { variable: 'age', value: 'muda' },
+        { variable: 'cigarettesPerDay', value: 'sedang' },
+        { variable: 'coughDuration', value: 'lama' },
+      ],
+      consequent: 'sedang',
+      weight: 1.0,
+    },
+
+    // 2-condition fallback rules — ensure extreme single factors produce results
+    {
+      name: 'R24 - Berat Rokok, Lama Batuk → Tinggi',
+      conditions: [
+        { variable: 'cigarettesPerDay', value: 'berat' },
+        { variable: 'coughDuration', value: 'lama' },
+      ],
+      consequent: 'tinggi',
+      weight: 0.9,
+    },
+    {
+      name: 'R25 - Sedang Rokok, Lama Batuk → Sedang',
+      conditions: [
+        { variable: 'cigarettesPerDay', value: 'sedang' },
+        { variable: 'coughDuration', value: 'lama' },
+      ],
+      consequent: 'sedang',
+      weight: 0.9,
+    },
+    {
+      name: 'R26 - Paparan Tinggi, Nyeri Berat → Tinggi',
+      conditions: [
+        { variable: 'environmentalExposure', value: 'tinggi' },
+        { variable: 'chestPainScale', value: 'berat' },
+      ],
+      consequent: 'tinggi',
+      weight: 0.8,
+    },
+    {
+      name: 'R27 - Riwayat Ada, Lama Batuk → Sedang',
+      conditions: [
+        { variable: 'familyHistory', value: 'ada' },
+        { variable: 'coughDuration', value: 'lama' },
+      ],
+      consequent: 'sedang',
+      weight: 0.8,
+    },
+    {
+      name: 'R28 - Riwayat Ada, Berat Rokok → Tinggi',
+      conditions: [
+        { variable: 'familyHistory', value: 'ada' },
+        { variable: 'cigarettesPerDay', value: 'berat' },
+      ],
+      consequent: 'tinggi',
+      weight: 0.9,
+    },
+    {
+      name: 'R29 - Riwayat Ada, Nyeri Berat → Tinggi',
+      conditions: [
+        { variable: 'familyHistory', value: 'ada' },
+        { variable: 'chestPainScale', value: 'berat' },
+      ],
+      consequent: 'tinggi',
+      weight: 0.8,
+    },
+
+    // Dewasa/Tua with heavy overall risk
+    {
+      name: 'R30 - Dewasa, Berat, Paparan Tinggi → Tinggi',
+      conditions: [
+        { variable: 'age', value: 'dewasa' },
+        { variable: 'cigarettesPerDay', value: 'berat' },
+        { variable: 'environmentalExposure', value: 'tinggi' },
+      ],
+      consequent: 'tinggi',
+      weight: 1.0,
+    },
+    {
+      name: 'R31 - Dewasa, Berat, Nyeri Berat → Tinggi',
+      conditions: [
+        { variable: 'age', value: 'dewasa' },
+        { variable: 'cigarettesPerDay', value: 'berat' },
+        { variable: 'chestPainScale', value: 'berat' },
+      ],
+      consequent: 'tinggi',
+      weight: 1.0,
+    },
+    {
+      name: 'R32 - Dewasa, Berat, Riwayat Ada → Tinggi',
+      conditions: [
+        { variable: 'age', value: 'dewasa' },
+        { variable: 'cigarettesPerDay', value: 'berat' },
+        { variable: 'familyHistory', value: 'ada' },
+      ],
+      consequent: 'tinggi',
+      weight: 1.0,
+    },
+    {
+      name: 'R33 - Dewasa, Lama Batuk, Nyeri Berat, Riwayat Ada → Sangat Tinggi',
+      conditions: [
+        { variable: 'age', value: 'dewasa' },
+        { variable: 'coughDuration', value: 'lama' },
+        { variable: 'chestPainScale', value: 'berat' },
+        { variable: 'familyHistory', value: 'ada' },
+      ],
+      consequent: 'sangat_tinggi',
+      weight: 1.0,
+    },
+
+    // Tua + moderate factors → still elevated
+    {
+      name: 'R34 - Tua, Sedang Rokok, Lama Batuk → Tinggi',
+      conditions: [
+        { variable: 'age', value: 'tua' },
+        { variable: 'cigarettesPerDay', value: 'sedang' },
+        { variable: 'coughDuration', value: 'lama' },
+      ],
+      consequent: 'tinggi',
+      weight: 1.0,
+    },
+    {
+      name: 'R35 - Tua, Ringan Rokok, Lama Batuk, Riwayat Ada → Sedang',
+      conditions: [
+        { variable: 'age', value: 'tua' },
+        { variable: 'cigarettesPerDay', value: 'ringan' },
+        { variable: 'coughDuration', value: 'lama' },
+        { variable: 'familyHistory', value: 'ada' },
+      ],
+      consequent: 'sedang',
+      weight: 0.9,
+    },
   ];
 
   // Clear existing rules and recreate

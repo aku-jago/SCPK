@@ -1,5 +1,5 @@
 /* ============================================================
-   SCPK Self-Screening Platform — Global Design System
+   LunarHealth Self-Screening Platform — Global Design System
    Premium Medical Futuristic Theme
    ============================================================ */
 
@@ -12,14 +12,14 @@
    CSS Custom Properties — Design Tokens
    ============================================================ */
 :root {
-  /* ── Primary Palette (Soft Pink / Blush) ── */
-  --pink-50: #fdf2f8;
-  --pink-100: #fce7f3;
-  --pink-200: #fbcfe8;
-  --pink-300: #f9a8d4;
-  --pink-400: #f472b6;
-  --pink-500: #ec4899;
-  --pink-600: #db2777;
+  /* ── Primary Palette (Soft Pink / Blush) — Legacy ── */
+  --pink-50: var(--brand-50);
+  --pink-100: var(--brand-100);
+  --pink-200: var(--brand-100);
+  --pink-300: var(--brand-300);
+  --pink-400: var(--brand-400);
+  --pink-500: var(--brand-500);
+  --pink-600: var(--brand-600);
 
   /* ── Purple Accent ── */
   --purple-50: #faf5ff;
@@ -29,6 +29,18 @@
   --purple-400: #c084fc;
   --purple-500: #a855f7;
   --purple-600: #9333ea;
+
+  /* ── Brand Identity (Blue-Violet — Unified) ── */
+  --brand-50: #eff6ff;
+  --brand-100: #dbeafe;
+  --brand-200: #bfdbfe;
+  --brand-300: #93c5fd;
+  --brand-400: #60a5fa;
+  --brand-500: #2563eb;
+  --brand-600: #1d4ed8;
+  --brand-700: #1e40af;
+  --brand-accent: #8b5cf6;
+  --brand-accent-light: #a78bfa;
 
   /* ── Neutral ── */
   --white: #ffffff;
@@ -61,13 +73,13 @@
   --risk-critical: #ef4444;
 
   /* ── Gradients ── */
-  --gradient-primary: linear-gradient(135deg, #fce7f3 0%, #f3e8ff 50%, #ede9fe 100%);
-  --gradient-hero: linear-gradient(180deg, #fdf2f8 0%, #fce7f3 30%, #f3e8ff 70%, #faf5ff 100%);
-  --gradient-card: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(253,242,248,0.7) 100%);
+  --gradient-primary: linear-gradient(135deg, #dbeafe 0%, #e9d5ff 50%, #ede9fe 100%);
+  --gradient-hero: linear-gradient(180deg, #eff6ff 0%, #dbeafe 30%, #e9d5ff 70%, #faf5ff 100%);
+  --gradient-card: linear-gradient(135deg, rgba(255,255,255,0.9) 0%, rgba(219,234,254,0.7) 100%);
   --gradient-glass: linear-gradient(135deg, rgba(255,255,255,0.25) 0%, rgba(255,255,255,0.1) 100%);
-  --gradient-pink-purple: linear-gradient(135deg, #f9a8d4 0%, #c084fc 100%);
-  --gradient-button: linear-gradient(135deg, #ec4899 0%, #a855f7 100%);
-  --gradient-button-hover: linear-gradient(135deg, #db2777 0%, #9333ea 100%);
+  --gradient-pink-purple: linear-gradient(135deg, #60a5fa 0%, #a78bfa 100%);
+  --gradient-button: linear-gradient(135deg, #2563eb 0%, #8b5cf6 100%);
+  --gradient-button-hover: linear-gradient(135deg, #1d4ed8 0%, #7c3aed 100%);
   --gradient-dark: linear-gradient(135deg, #1f2937 0%, #111827 100%);
 
   /* ── Typography ── */
@@ -126,9 +138,9 @@
   --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.08), 0 4px 6px -4px rgba(0, 0, 0, 0.04);
   --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
   --shadow-2xl: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
-  --shadow-glass: 0 8px 32px rgba(236, 72, 153, 0.08);
-  --shadow-pink: 0 4px 24px rgba(236, 72, 153, 0.15);
-  --shadow-glow: 0 0 40px rgba(236, 72, 153, 0.12);
+  --shadow-glass: 0 8px 32px rgba(37, 99, 235, 0.08);
+  --shadow-pink: 0 4px 24px rgba(37, 99, 235, 0.15);
+  --shadow-glow: 0 0 40px rgba(37, 99, 235, 0.12);
 
   /* ── Transitions ── */
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
@@ -360,7 +372,7 @@ p {
 }
 
 .btn:focus-visible {
-  outline: 2px solid var(--pink-400);
+  outline: 2px solid var(--brand-400);
   outline-offset: 2px;
 }
 
@@ -443,7 +455,7 @@ p {
 }
 
 .form-input:focus {
-  border-color: var(--pink-400);
+  border-color: var(--brand-400);
   box-shadow: 0 0 0 3px rgba(236, 72, 153, 0.1);
 }
 
@@ -508,9 +520,9 @@ p {
   color: #2563eb;
 }
 
-.badge-pink {
-  background: var(--pink-100);
-  color: var(--pink-600);
+.badge-info {
+  background: var(--brand-100);
+  color: var(--brand-600);
 }
 
 .badge-purple {
@@ -802,8 +814,8 @@ p {
 }
 
 .sidebar-link.active {
-  color: var(--pink-600);
-  background: var(--pink-50);
+  color: var(--brand-600);
+  background: var(--brand-50);
   font-weight: 600;
 }
 
@@ -1023,7 +1035,7 @@ p {
 }
 
 :focus-visible {
-  outline: 2px solid var(--pink-400);
+  outline: 2px solid var(--brand-400);
   outline-offset: 2px;
 }
 

@@ -51,8 +51,8 @@ const API = {
       if (!response.ok) {
         if (response.status === 401) {
           this.removeToken();
-          if (!window.location.pathname.includes('login')) {
-            window.location.href = '/login.html';
+          if (!window.location.pathname.includes('login') && window.location.pathname !== '/') {
+            window.location.href = '/';
           }
         }
         throw { status: response.status, ...data };

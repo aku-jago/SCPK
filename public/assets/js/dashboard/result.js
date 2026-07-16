@@ -31,7 +31,34 @@
   const user = Auth.getUser();
   if (user) {
     document.getElementById('user-name').textContent = user.name || 'User';
-    document.getElementById('user-avatar').textContent = (user.name || 'U').charAt(0).toUpperCase();
+
+    const roleEl = document.getElementById('user-role');
+    if (roleEl) roleEl.textContent = user.role === 'ADMIN' ? 'Administrator' : 'Pengguna';
+
+
+    // Add Admin link if user is ADMIN
+    if (user.role === 'ADMIN') {
+      const nav = document.querySelector('.sidebar-nav');
+      if (nav && !document.getElementById('nav-admin-return')) {
+        nav.insertAdjacentHTML('beforeend', `
+          <div class="sidebar-section-title" style="margin-top:var(--space-4);">Admin Area</div>
+          <a href="/admin/" class="sidebar-link" id="nav-admin-return">
+            <i data-lucide="shield" style="width:20px;height:20px;"></i> Dashboard Admin
+          </a>
+        `);
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+      }
+    }
+
+    const avatarEl = document.getElementById('user-avatar');
+    if (avatarEl) {
+      if (user.avatar) {
+        avatarEl.innerHTML = '<img src="' + user.avatar + '" alt="Profile" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">';
+        avatarEl.style.background = 'none';
+      } else {
+        avatarEl.textContent = (user.name || 'U').charAt(0).toUpperCase();
+      }
+    }
   }
 
   const params = new URLSearchParams(window.location.search);
@@ -112,6 +139,9 @@
 
       // Render recommendations
       renderRecommendations(screeningData.recommendations || []);
+
+      // Show smoking cessation motivation popup
+      showQuitMotivationPopup(screeningData);
 
     } catch (err) {
       console.error(err);
@@ -309,9 +339,9 @@
             envNormalized,
             painNormalized
           ],
-          borderColor: data.riskColor || '#ec4899',
-          backgroundColor: getRGBA(data.riskColor || '#ec4899', 0.15),
-          pointBackgroundColor: data.riskColor || '#ec4899',
+          borderColor: data.riskColor || 'var(--brand-500)',
+          backgroundColor: getRGBA(data.riskColor || 'var(--brand-500)', 0.15),
+          pointBackgroundColor: data.riskColor || 'var(--brand-500)',
           borderWidth: 2
         }]
       },
@@ -353,8 +383,8 @@
 
       if (rec.title.toLowerCase().includes('dokter') || rec.title.toLowerCase().includes('medis')) {
         icon = 'heart-pulse';
-        iconColor = 'var(--pink-500)';
-        bgColor = 'var(--pink-50)';
+        iconColor = 'var(--brand-500)';
+        bgColor = 'var(--brand-50)';
       } else if (rec.title.toLowerCase().includes('rokok') || rec.title.toLowerCase().includes('berhenti')) {
         icon = 'ban';
         iconColor = 'var(--purple-500)';
@@ -375,6 +405,119 @@
     }).join('');
 
     lucide.createIcons();
+  }
+
+  // ═══ Smoking Cessation Motivation Popup ═══
+  function showQuitMotivationPopup(data) {
+    const overlay = document.getElementById('quit-modal-overlay');
+    const modal = document.getElementById('quit-modal');
+    if (!overlay || !modal) return;
+
+    // Determine content based on risk level
+    const riskCategory = (data.riskCategory || '').toUpperCase();
+    const cigarettesPerDay = data.cigarettesPerDay || 0;
+
+    // Configure popup by risk level
+    const config = getPopupConfig(riskCategory, cigarettesPerDay);
+
+    // Apply risk-level CSS class
+    modal.className = 'quit-modal';
+    modal.classList.add(`risk-${riskCategory.toLowerCase()}`);
+
+    // Update badge
+    const badge = document.getElementById('quit-modal-badge');
+    if (badge) badge.textContent = config.badge;
+
+    // Update icon
+    const iconEl = document.getElementById('quit-modal-icon');
+    if (iconEl) {
+      iconEl.innerHTML = `<i data-lucide="${config.icon}" style="width:32px;height:32px;"></i>`;
+    }
+
+    // Update title
+    const title = document.getElementById('quit-modal-title');
+    if (title) title.textContent = config.title;
+
+    // Update message
+    const message = document.getElementById('quit-modal-message');
+    if (message) message.textContent = config.message;
+
+    // Update quote
+    const quote = document.getElementById('quit-modal-quote');
+    if (quote) {
+      quote.querySelector('p').textContent = config.quote;
+    }
+
+    // Recreate Lucide icons inside the modal
+    lucide.createIcons({ nodes: [modal] });
+
+    // Show the popup after a short delay (let the page render first)
+    setTimeout(() => {
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }, 1500);
+
+    // Close handlers
+    const closeModal = () => {
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    };
+
+    document.getElementById('quit-modal-close')?.addEventListener('click', closeModal);
+    document.getElementById('quit-modal-dismiss')?.addEventListener('click', closeModal);
+
+    // Close on overlay click (outside modal)
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) closeModal();
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && overlay.classList.contains('active')) {
+        closeModal();
+      }
+    });
+  }
+
+  function getPopupConfig(riskCategory, cigarettesPerDay) {
+    const configs = {
+      'RENDAH': {
+        badge: '💚 Tips Kesehatan',
+        icon: 'shield-check',
+        title: 'Pertahankan Gaya Hidup Sehat!',
+        message: 'Hasil screening Anda menunjukkan risiko rendah. Tetap jaga pola hidup sehat dan hindari paparan asap rokok untuk melindungi paru-paru Anda.',
+        quote: '"Pencegahan adalah obat terbaik. Terus jaga kesehatan paru-paru Anda dengan menghindari rokok dan polusi."'
+      },
+      'SEDANG': {
+        badge: '⚠️ Peringatan Kesehatan',
+        icon: 'alert-triangle',
+        title: 'Waktunya Berubah untuk Kesehatan Anda',
+        message: cigarettesPerDay > 0
+          ? `Anda mengonsumsi ${cigarettesPerDay} batang rokok per hari. Mengurangi atau berhenti merokok sekarang dapat menurunkan risiko kanker paru-paru secara signifikan.`
+          : 'Risiko Anda berada di level sedang. Sangat disarankan untuk menghindari faktor risiko dan berkonsultasi dengan tenaga medis.',
+        quote: '"Setiap rokok yang tidak Anda hisap adalah kemenangan kecil untuk paru-paru Anda. Mulailah hari ini."'
+      },
+      'TINGGI': {
+        badge: '🔴 Peringatan Serius',
+        icon: 'alert-octagon',
+        title: 'Paru-Paru Anda Membutuhkan Perhatian Segera',
+        message: cigarettesPerDay > 0
+          ? `Dengan ${cigarettesPerDay} batang rokok per hari, risiko Anda tergolong tinggi. Berhenti merokok adalah langkah paling penting yang bisa Anda ambil sekarang.`
+          : 'Tingkat risiko Anda tinggi. Segera konsultasikan dengan dokter spesialis paru untuk pemeriksaan lebih lanjut.',
+        quote: '"Tidak pernah terlambat untuk berhenti. Dalam 24 jam setelah berhenti merokok, risiko serangan jantung Anda sudah mulai menurun."'
+      },
+      'SANGAT_TINGGI': {
+        badge: '🚨 Peringatan Kritis',
+        icon: 'siren',
+        title: 'Tindakan Segera Diperlukan!',
+        message: cigarettesPerDay > 0
+          ? `Mengonsumsi ${cigarettesPerDay} batang rokok per hari menempatkan Anda pada risiko sangat tinggi. Berhenti merokok SEKARANG dan segera hubungi dokter spesialis paru.`
+          : 'Risiko Anda sangat tinggi. Sangat penting untuk segera mendapatkan pemeriksaan medis komprehensif dari dokter spesialis.',
+        quote: '"Hidup Anda berharga. Setiap detik yang Anda pilih untuk berhenti merokok adalah detik yang Anda berikan untuk keluarga dan masa depan Anda."'
+      }
+    };
+
+    return configs[riskCategory] || configs['SEDANG'];
   }
 
   // PDF Download Trigger

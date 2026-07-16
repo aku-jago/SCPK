@@ -48,6 +48,9 @@ class ScreeningService {
       data: {
         userId,
         age: inputData.age,
+        isSmoker: inputData.isSmoker,
+        smokingDurationYears: inputData.smokingDurationYears,
+        isPassiveSmoker: inputData.isPassiveSmoker,
         cigarettesPerDay: inputData.cigarettesPerDay,
         coughDuration: inputData.coughDuration,
         weight: inputData.weight,

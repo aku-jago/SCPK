@@ -62,7 +62,18 @@
       cardName.textContent = user.name || 'User';
       cardEmail.textContent = user.email || 'user@scpk.com';
       cardRole.textContent = user.role === 'ADMIN' ? 'Administrator' : 'Pengguna';
-      cardAvatar.textContent = (user.name || 'U').charAt(0).toUpperCase();
+      
+      const btnDeleteAvatar = document.getElementById('btn-delete-avatar');
+      if (user.avatar) {
+        cardAvatar.innerHTML = '<img src="' + user.avatar + '" alt="Profile" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">';
+        cardAvatar.style.background = 'none';
+        if (btnDeleteAvatar) btnDeleteAvatar.style.display = 'block';
+      } else {
+        cardAvatar.textContent = (user.name || 'U').charAt(0).toUpperCase();
+        cardAvatar.style.background = 'var(--gradient-button)';
+        if (btnDeleteAvatar) btnDeleteAvatar.style.display = 'none';
+      }
+
       cardJoined.textContent = new Date(user.createdAt).toLocaleDateString('id-ID', {
         year: 'numeric',
         month: 'long',
@@ -71,7 +82,34 @@
 
       // Update sidebar
       document.getElementById('user-name').textContent = user.name || 'User';
-      document.getElementById('user-avatar').textContent = (user.name || 'U').charAt(0).toUpperCase();
+
+    const roleEl = document.getElementById('user-role');
+    if (roleEl) roleEl.textContent = user.role === 'ADMIN' ? 'Administrator' : 'Pengguna';
+
+
+    // Add Admin link if user is ADMIN
+    if (user.role === 'ADMIN') {
+      const nav = document.querySelector('.sidebar-nav');
+      if (nav && !document.getElementById('nav-admin-return')) {
+        nav.insertAdjacentHTML('beforeend', `
+          <div class="sidebar-section-title" style="margin-top:var(--space-4);">Admin Area</div>
+          <a href="/admin/" class="sidebar-link" id="nav-admin-return">
+            <i data-lucide="shield" style="width:20px;height:20px;"></i> Dashboard Admin
+          </a>
+        `);
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+      }
+    }
+
+      const avatarEl = document.getElementById('user-avatar');
+    if (avatarEl) {
+      if (user.avatar) {
+        avatarEl.innerHTML = '<img src="' + user.avatar + '" alt="Profile" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">';
+        avatarEl.style.background = 'none';
+      } else {
+        avatarEl.textContent = (user.name || 'U').charAt(0).toUpperCase();
+      }
+    }
 
     } catch (err) {
       console.error(err);
@@ -135,6 +173,108 @@
     } finally {
       btn.disabled = false;
       btn.innerHTML = originalText;
+    }
+  });
+
+  // Avatar Upload Logic
+  const avatarUploadInput = document.getElementById('avatar-upload');
+  if (avatarUploadInput) {
+    avatarUploadInput.addEventListener('change', async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+
+      if (file.size > 5 * 1024 * 1024) {
+        Toast.error('Ukuran file maksimal adalah 5MB');
+        return;
+      }
+
+      if (!file.type.startsWith('image/')) {
+        Toast.error('Format file harus berupa gambar');
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('avatar', file);
+
+      // Temporary loading state
+      const originalContent = cardAvatar.innerHTML;
+      cardAvatar.innerHTML = '<span class="spinner" style="border-color:white; border-bottom-color:transparent; width:24px; height:24px; border-width:3px;"></span>';
+
+      try {
+        const token = API.getToken();
+        const res = await fetch('/api/auth/profile-picture', {
+          method: 'POST',
+          headers: {
+            'Authorization': `Bearer ${token}`
+          },
+          body: formData
+        });
+
+        const data = await res.json();
+        
+        if (res.ok) {
+          Toast.success('Foto profil berhasil diunggah');
+          
+          // Update cached user
+          const localUser = Auth.getUser();
+          if (localUser && data.user) {
+            localUser.avatar = data.user.avatar;
+            API.setUser(localUser);
+          }
+          
+          loadProfile();
+        } else {
+          throw new Error(data.message || 'Gagal mengunggah foto profil');
+        }
+      } catch (err) {
+        console.error(err);
+        Toast.error(err.message || 'Terjadi kesalahan saat mengunggah foto');
+        cardAvatar.innerHTML = originalContent;
+      } finally {
+        avatarUploadInput.value = ''; // Reset input
+      }
+    });
+  }
+
+  // Avatar Delete Logic
+  document.addEventListener('click', async (e) => {
+    const btn = e.target.closest('#btn-delete-avatar');
+    if (!btn) return;
+
+    if (!confirm('Apakah Anda yakin ingin menghapus foto profil ini?')) return;
+
+    const originalContent = cardAvatar.innerHTML;
+    cardAvatar.innerHTML = '<span class="spinner" style="border-color:white; border-bottom-color:transparent; width:24px; height:24px; border-width:3px;"></span>';
+
+    try {
+      const token = API.getToken();
+      const res = await fetch('/api/auth/profile-picture', {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      });
+
+      const data = await res.json();
+      
+      if (res.ok) {
+        Toast.success('Foto profil berhasil dihapus');
+        
+        // Update cached user
+        const localUser = Auth.getUser();
+        if (localUser && data.user) {
+          localUser.avatar = data.user.avatar; // null
+          API.setUser(localUser);
+        }
+        
+        loadProfile();
+      } else {
+        throw new Error(data.message || 'Gagal menghapus foto profil');
+      }
+    } catch (err) {
+      console.error(err);
+      Toast.error(err.message || 'Terjadi kesalahan saat menghapus foto');
+      cardAvatar.innerHTML = originalContent;
     }
   });
 

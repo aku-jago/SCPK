@@ -25,7 +25,7 @@
 .auth-bg-orb-1 {
   width: 500px;
   height: 500px;
-  background: radial-gradient(circle, var(--pink-200), transparent 70%);
+  background: radial-gradient(circle, var(--brand-200), transparent 70%);
   top: -150px;
   left: -150px;
   animation: auth-orb-float 12s ease-in-out infinite;
@@ -185,19 +185,19 @@
 .auth-checkbox input[type="checkbox"] {
   width: 16px;
   height: 16px;
-  accent-color: var(--pink-500);
+  accent-color: var(--brand-500);
   cursor: pointer;
 }
 
 .auth-link {
   font-size: var(--text-sm);
   font-weight: 600;
-  color: var(--pink-500);
+  color: var(--brand-500);
   transition: color var(--duration-fast);
 }
 
 .auth-link:hover {
-  color: var(--pink-600);
+  color: var(--brand-600);
 }
 
 /* Auth Footer */
@@ -210,11 +210,11 @@
 
 .auth-footer a {
   font-weight: 600;
-  color: var(--pink-500);
+  color: var(--brand-500);
 }
 
 .auth-footer a:hover {
-  color: var(--pink-600);
+  color: var(--brand-600);
 }
 
 /* Password Strength Indicator */

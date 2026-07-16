@@ -31,7 +31,15 @@
   const user = Auth.getUser();
   if (user) {
     document.getElementById('user-name').textContent = user.name || 'Admin';
-    document.getElementById('user-avatar').textContent = (user.name || 'A').charAt(0).toUpperCase();
+    const avatarEl2 = document.getElementById('user-avatar');
+    if (avatarEl2) {
+      if (user.avatar) {
+        avatarEl2.innerHTML = '<img src="' + user.avatar + '" alt="Profile" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">';
+        avatarEl2.style.background = 'none';
+      } else {
+        avatarEl2.textContent = (user.name || 'A').charAt(0).toUpperCase();
+      }
+    }
   }
 
   // State
@@ -166,7 +174,7 @@
       variablesList.innerHTML = vars.map(v => {
         const typeBadge = v.type === 'INPUT'
           ? `<span class="badge badge-info">Variabel Input</span>`
-          : `<span class="badge badge-pink">Variabel Output (Konsekuensi)</span>`;
+          : `<span class="badge badge-info">Variabel Output (Konsekuensi)</span>`;
 
         const ranges = `Rentang: ${v.minValue} - ${v.maxValue} ${v.unit || ''}`;
 

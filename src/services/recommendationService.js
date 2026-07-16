@@ -127,11 +127,31 @@ class RecommendationService {
     const recs = [];
 
     // High cigarette consumption
-    if (data.cigarettesPerDay >= 20) {
+    if (data.isSmoker && data.cigarettesPerDay >= 20) {
       recs.push({
         title: 'Kurangi Konsumsi Rokok Secara Bertahap',
         description: `Anda merokok ${data.cigarettesPerDay} batang per hari. Mulailah mengurangi 2-3 batang per minggu. Target: kurangi 50% dalam 1 bulan pertama. Gunakan pengganti nikotin jika diperlukan.`,
         priority: 'HIGH',
+        category: 'LIFESTYLE',
+      });
+    }
+
+    // Long smoking duration
+    if (data.isSmoker && data.smokingDurationYears >= 10) {
+      recs.push({
+        title: 'Evaluasi Dampak Jangka Panjang Merokok',
+        description: `Anda telah merokok selama ${data.smokingDurationYears} tahun. Risiko penyakit paru-paru meningkat seiring waktu. Pertimbangkan untuk melakukan rontgen dada atau CT scan dosis rendah (LDCT) sebagai skrining pencegahan.`,
+        priority: 'HIGH',
+        category: 'MEDICAL_CHECKUP',
+      });
+    }
+
+    // Passive smoker
+    if (!data.isSmoker && data.isPassiveSmoker) {
+      recs.push({
+        title: 'Hindari Paparan Asap Rokok',
+        description: 'Meskipun Anda tidak merokok, paparan asap rokok pasif dapat meningkatkan risiko penyakit paru-paru. Usahakan untuk menghindari lingkungan yang penuh asap rokok dan pastikan rumah memiliki ventilasi yang baik.',
+        priority: 'MEDIUM',
         category: 'LIFESTYLE',
       });
     }

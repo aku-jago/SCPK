@@ -31,7 +31,34 @@
   const user = Auth.getUser();
   if (user) {
     document.getElementById('user-name').textContent = user.name || 'User';
-    document.getElementById('user-avatar').textContent = (user.name || 'U').charAt(0).toUpperCase();
+
+    const roleEl = document.getElementById('user-role');
+    if (roleEl) roleEl.textContent = user.role === 'ADMIN' ? 'Administrator' : 'Pengguna';
+
+
+    // Add Admin link if user is ADMIN
+    if (user.role === 'ADMIN') {
+      const nav = document.querySelector('.sidebar-nav');
+      if (nav && !document.getElementById('nav-admin-return')) {
+        nav.insertAdjacentHTML('beforeend', `
+          <div class="sidebar-section-title" style="margin-top:var(--space-4);">Admin Area</div>
+          <a href="/admin/" class="sidebar-link" id="nav-admin-return">
+            <i data-lucide="shield" style="width:20px;height:20px;"></i> Dashboard Admin
+          </a>
+        `);
+        if (typeof lucide !== 'undefined') lucide.createIcons();
+      }
+    }
+
+    const avatarEl = document.getElementById('user-avatar');
+    if (avatarEl) {
+      if (user.avatar) {
+        avatarEl.innerHTML = '<img src="' + user.avatar + '" alt="Profile" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">';
+        avatarEl.style.background = 'none';
+      } else {
+        avatarEl.textContent = (user.name || 'U').charAt(0).toUpperCase();
+      }
+    }
   }
 
   // Password Form Elements

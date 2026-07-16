@@ -81,10 +81,10 @@ class FuzzyTsukamotoService {
    *        a  b      c  d
    */
   _trapezoid(x, [a, b, c, d]) {
-    if (x <= a || x >= d) return 0;
+    if (x < a || x > d) return 0;
     if (x >= b && x <= c) return 1;
-    if (x > a && x < b) return (x - a) / (b - a);
-    if (x > c && x < d) return (d - x) / (d - c);
+    if (x >= a && x < b) return a === b ? 1 : (x - a) / (b - a);
+    if (x > c && x <= d) return c === d ? 1 : (d - x) / (d - c);
     return 0;
   }
 
@@ -101,8 +101,8 @@ class FuzzyTsukamotoService {
   _triangle(x, [a, b, c]) {
     if (x <= a || x >= c) return 0;
     if (x === b) return 1;
-    if (x > a && x < b) return (x - a) / (b - a);
-    if (x > b && x < c) return (c - x) / (c - b);
+    if (x > a && x < b) return a === b ? 1 : (x - a) / (b - a);
+    if (x > b && x < c) return b === c ? 1 : (c - x) / (c - b);
     return 0;
   }
 
@@ -171,13 +171,16 @@ class FuzzyTsukamotoService {
       }
       case 'triangle': {
         const [a, b, c] = mf.params;
-        // Use ascending side for low/medium, descending for high
-        // For Tsukamoto, we use the ascending side by default
+        // For Tsukamoto, use the midpoint (b) as reference.
+        // Interpolate from a to b on the ascending side.
+        // This gives z = a + alpha * (b - a), which maps alpha=1 → b (peak)
+        // and alpha=0 → a (base). This is correct for monotonic interpretation.
         return a + alpha * (b - a);
       }
       case 'trapezoid': {
         const [a, b, c, d] = mf.params;
-        // Use ascending side
+        // Use ascending side: maps alpha=0 → a, alpha=1 → b
+        if (a === b) return a;
         return a + alpha * (b - a);
       }
       default:
@@ -286,11 +289,16 @@ class FuzzyTsukamotoService {
    *   zi = crisp output of rule i (from inverse membership)
    *   z* = final crisp output (risk score)
    */
-  defuzzify(ruleResults) {
+  defuzzify(ruleResults, fuzzyInputs = null) {
     if (ruleResults.length === 0) {
+      // Fallback heuristic for sparse rule base when no rules fire
+      let riskScore = 0;
+      if (fuzzyInputs) {
+        riskScore = this.calculateFallbackScore(fuzzyInputs);
+      }
       return {
-        method: 'tsukamoto_weighted_average',
-        riskScore: 0,
+        method: 'fallback_heuristic',
+        riskScore: riskScore,
         numerator: 0,
         denominator: 0,
         activeRules: 0,
@@ -305,7 +313,8 @@ class FuzzyTsukamotoService {
       denominator += result.firingStrength;
     }
 
-    const riskScore = denominator > 0 ? numerator / denominator : 0;
+    // Prevent division by zero
+    const riskScore = denominator === 0 ? 0 : numerator / denominator;
 
     return {
       method: 'tsukamoto_weighted_average',
@@ -315,6 +324,38 @@ class FuzzyTsukamotoService {
       activeRules: ruleResults.length,
       formula: `z* = ${Math.round(numerator * 100) / 100} / ${Math.round(denominator * 10000) / 10000} = ${Math.round(riskScore * 100) / 100}`,
     };
+  }
+
+  /**
+   * Fallback heuristic score calculator
+   * Used when no fuzzy rules match the input combination
+   */
+  calculateFallbackScore(fuzzyInputs) {
+    let totalScore = 0;
+    let weightSum = 0;
+
+    // Map common fuzzy linguistic labels to a 0-100 severity scale
+    const severityMap = {
+      muda: 10, dewasa: 40, tua: 80,
+      ringan: 10, sedang: 50, berat: 90,
+      singkat: 10, lama: 90,
+      kurus: 30, normal: 10, gemuk: 60, obesitas: 90,
+      tidak_ada: 10, ada: 80,
+      rendah: 10, tinggi: 90
+    };
+
+    for (const [varName, memberships] of Object.entries(fuzzyInputs)) {
+      for (const [label, degree] of Object.entries(memberships)) {
+        if (degree > 0) {
+           const severity = severityMap[label] || 50; 
+           totalScore += severity * degree;
+           weightSum += degree;
+        }
+      }
+    }
+
+    if (weightSum === 0) return 0;
+    return Math.round(totalScore / weightSum);
   }
 
   /**
@@ -372,7 +413,7 @@ class FuzzyTsukamotoService {
     const ruleResults = this.evaluateRules(fuzzyInputs);
 
     // Step 3: Defuzzification
-    const defuzzResult = this.defuzzify(ruleResults);
+    const defuzzResult = this.defuzzify(ruleResults, fuzzyInputs);
 
     // Classify risk
     const riskCategory = this.classifyRisk(defuzzResult.riskScore);

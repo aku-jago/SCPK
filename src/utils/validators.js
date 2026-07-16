@@ -39,9 +39,18 @@ const screeningValidation = [
   body('age')
     .notEmpty().withMessage('Usia harus diisi')
     .isInt({ min: 15, max: 80 }).withMessage('Usia harus antara 15-80 tahun'),
+  body('isSmoker')
+    .notEmpty().withMessage('Status perokok harus diisi')
+    .isBoolean().withMessage('Status perokok harus boolean'),
+  body('smokingDurationYears')
+    .optional()
+    .isFloat({ min: 0 }).withMessage('Durasi merokok/paparan harus angka positif'),
+  body('isPassiveSmoker')
+    .optional()
+    .isBoolean().withMessage('Status perokok pasif harus boolean'),
   body('cigarettesPerDay')
     .notEmpty().withMessage('Jumlah rokok per hari harus diisi')
-    .isInt({ min: 1, max: 60 }).withMessage('Jumlah rokok harus antara 1-60 batang'),
+    .isInt({ min: 0, max: 60 }).withMessage('Jumlah rokok harus antara 0-60 batang'),
   body('coughDuration')
     .notEmpty().withMessage('Durasi batuk harus diisi')
     .isFloat({ min: 0, max: 24 }).withMessage('Durasi batuk harus antara 0-24 bulan'),

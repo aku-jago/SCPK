@@ -95,6 +95,45 @@ class AuthController {
   }
 
   /**
+   * POST /api/auth/profile-picture
+   */
+  async updateProfilePicture(req, res, next) {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ success: false, message: 'Tidak ada file yang diunggah' });
+      }
+      
+      const avatarUrl = '/uploads/profiles/' + req.file.filename;
+      const result = await authService.updateProfilePicture(req.user.id, avatarUrl);
+      
+      res.json({
+        success: true,
+        message: 'Foto profil berhasil diperbarui',
+        user: result.user,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
+   * DELETE /api/auth/profile-picture
+   */
+  async deleteProfilePicture(req, res, next) {
+    try {
+      const result = await authService.updateProfilePicture(req.user.id, null);
+      
+      res.json({
+        success: true,
+        message: 'Foto profil berhasil dihapus',
+        user: result.user,
+      });
+    } catch (error) {
+      next(error);
+    }
+  }
+
+  /**
    * PUT /api/auth/change-password
    */
   async changePassword(req, res, next) {

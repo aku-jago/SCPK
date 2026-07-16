@@ -208,6 +208,28 @@ class AuthService {
   }
 
   /**
+   * Update profile picture
+   */
+  async updateProfilePicture(userId, avatarUrl) {
+    const user = await prisma.user.update({
+      where: { id: userId },
+      data: { avatar: avatarUrl },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        phone: true,
+        dateOfBirth: true,
+        gender: true,
+        role: true,
+        avatar: true,
+      },
+    });
+
+    return { user };
+  }
+
+  /**
    * Change password
    */
   async changePassword(userId, { currentPassword, newPassword }) {

@@ -1,15 +1,15 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="id" data-theme="light">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="SCPK - Sistem AI Deteksi Dini & Klasifikasi Tingkat Risiko Kanker Paru-Paru bagi Perokok Aktif. Platform skrining mandiri berbasis Fuzzy Tsukamoto.">
+  <meta name="description" content="LunarHealth - Sistem AI Deteksi Dini & Klasifikasi Tingkat Risiko Kanker Paru-Paru bagi Perokok Aktif. Platform skrining mandiri berbasis Fuzzy Tsukamoto.">
   <meta name="keywords" content="kanker paru-paru, deteksi dini, AI, fuzzy tsukamoto, skrining, perokok, kesehatan">
-  <meta name="author" content="SCPK Team">
-  <title>SCPK — Self-Screening Platform | Deteksi Dini Kanker Paru-Paru</title>
+  <meta name="author" content="LunarHealth Team">
+  <title>LunarHealth — Self-Screening Platform | Deteksi Dini Kanker Paru-Paru</title>
 
   <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🫁</text></svg>">
+  <link rel="icon" type="image/svg+xml" href="/assets/images/logo/favicon.svg">
 
   <!-- Stylesheets -->
   <link rel="stylesheet" href="assets/css/global.css">
@@ -18,9 +18,10 @@
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 
-  <!-- GSAP + ScrollTrigger -->
+  <!-- GSAP + ScrollTrigger + ScrollToPlugin -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollToPlugin.min.js"></script>
 
   <!-- Three.js -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -32,11 +33,11 @@
        ============================================================ -->
   <nav class="navbar" id="navbar" role="navigation" aria-label="Main navigation">
     <div class="container" style="display:flex;align-items:center;width:100%;max-width:100%;padding:0 var(--space-8);">
-      <a href="/" class="navbar-brand" aria-label="SCPK Home">
+      <a href="/" class="navbar-brand" aria-label="LunarHealth Home">
         <div class="navbar-brand-icon">
           <i data-lucide="heart-pulse" style="width:20px;height:20px;color:white;"></i>
         </div>
-        <span>SCPK</span>
+        <span>LunarHealth</span>
       </a>
 
       <div class="navbar-menu" id="navbar-menu">
@@ -69,7 +70,7 @@
     </div>
 
     <!-- Three.js Particles Layer -->
-    <canvas id="particles-canvas" data-parallax-speed="0.2"></canvas>
+    <canvas class="particles-bg" data-parallax-speed="0.2"></canvas>
 
     <!-- Human Anatomy Model Layer -->
     <div class="hero-model-container" data-parallax-speed="0.4" id="model-container">
@@ -92,7 +93,7 @@
     </div>
 
     <div class="floating-card floating-card-2" id="floating-card-2">
-      <div class="floating-card-icon" style="background:var(--pink-100);color:var(--pink-500);">
+      <div class="floating-card-icon" style="background:var(--brand-100);color:var(--brand-500);">
         <i data-lucide="activity" style="width:20px;height:20px;"></i>
       </div>
       <div class="floating-card-title">Risk Analysis</div>
@@ -149,7 +150,16 @@
        FEATURES SECTION
        ============================================================ -->
   <section class="features-section" id="features">
-    <div class="container">
+    <!-- Background Glow Layer -->
+    <div class="features-bg-glow">
+      <div class="features-glow-orb features-glow-orb-1"></div>
+      <div class="features-glow-orb features-glow-orb-2"></div>
+    </div>
+
+    <!-- Three.js Particles Layer -->
+    <canvas class="particles-bg"></canvas>
+
+    <div class="container" style="position: relative; z-index: 2;">
       <div class="features-header section-center">
         <span class="section-badge">
           <i data-lucide="sparkles" style="width:14px;height:14px;"></i>
@@ -163,60 +173,36 @@
       </div>
 
       <div class="features-grid" id="features-grid">
-        <div class="feature-card" id="feature-ai">
-          <div class="feature-icon" style="background:var(--pink-50);color:var(--pink-500);">
-            <i data-lucide="brain" style="width:28px;height:28px;"></i>
-          </div>
-          <h3 class="feature-title">AI Fuzzy Tsukamoto</h3>
-          <p class="feature-desc">Mesin inferensi fuzzy canggih yang menganalisis multi-parameter untuk menghasilkan klasifikasi risiko yang akurat dan personal.</p>
-        </div>
-
         <div class="feature-card" id="feature-screening">
           <div class="feature-icon" style="background:var(--purple-50);color:var(--purple-500);">
             <i data-lucide="clipboard-check" style="width:28px;height:28px;"></i>
           </div>
-          <h3 class="feature-title">Self Screening</h3>
-          <p class="feature-desc">Proses skrining mandiri yang mudah dan cepat. Cukup jawab beberapa pertanyaan dan dapatkan hasil analisis dalam hitungan detik.</p>
+          <h3 class="feature-title">Self Screening Mandiri</h3>
+          <p class="feature-desc">Proses skrining mandiri yang cepat dan mudah. Cukup jawab beberapa pertanyaan seputar kebiasaan merokok dan kondisi fisik Anda untuk mengetahui tingkat risiko.</p>
         </div>
 
-        <div class="feature-card" id="feature-risk">
-          <div class="feature-icon" style="background:var(--info-light);color:var(--info);">
-            <i data-lucide="gauge" style="width:28px;height:28px;"></i>
+        <div class="feature-card" id="feature-ai">
+          <div class="feature-icon" style="background:var(--brand-50);color:var(--brand-500);">
+            <i data-lucide="brain" style="width:28px;height:28px;"></i>
           </div>
-          <h3 class="feature-title">Klasifikasi Risiko</h3>
-          <p class="feature-desc">Empat tingkat klasifikasi risiko: Rendah, Sedang, Tinggi, dan Sangat Tinggi. Setiap kategori disertai penjelasan detail.</p>
+          <h3 class="feature-title">Analisis AI Fuzzy Tsukamoto</h3>
+          <p class="feature-desc">Ditenagai oleh algoritma AI Fuzzy Logic terdepan, memberikan hasil klasifikasi risiko yang sangat akurat dan terpercaya berdasarkan 7 parameter medis krusial.</p>
         </div>
 
         <div class="feature-card" id="feature-recommendation">
           <div class="feature-icon" style="background:var(--success-light);color:var(--success);">
             <i data-lucide="heart-handshake" style="width:28px;height:28px;"></i>
           </div>
-          <h3 class="feature-title">Rekomendasi Medis</h3>
-          <p class="feature-desc">Rekomendasi kesehatan personal yang disesuaikan dengan profil risiko Anda, meliputi gaya hidup, diet, dan tindakan medis.</p>
+          <h3 class="feature-title">Panduan Berhenti Merokok</h3>
+          <p class="feature-desc">Dapatkan rekomendasi personal dan panduan langkah demi langkah (actionable) untuk membantu Anda berhenti merokok serta memperbaiki pola hidup sehat.</p>
         </div>
 
         <div class="feature-card" id="feature-analytics">
-          <div class="feature-icon" style="background:var(--warning-light);color:var(--warning);">
+          <div class="feature-icon" style="background:var(--info-light);color:var(--info);">
             <i data-lucide="bar-chart-3" style="width:28px;height:28px;"></i>
           </div>
-          <h3 class="feature-title">Analytics Dashboard</h3>
-          <p class="feature-desc">Dashboard analitik komprehensif untuk memantau riwayat skrining, tren risiko, dan perkembangan kesehatan Anda.</p>
-        </div>
-
-        <div class="feature-card" id="feature-education">
-          <div class="feature-icon" style="background:var(--pink-50);color:var(--pink-500);">
-            <i data-lucide="graduation-cap" style="width:28px;height:28px;"></i>
-          </div>
-          <h3 class="feature-title">Edukasi Kesehatan</h3>
-          <p class="feature-desc">Knowledge base lengkap tentang kanker paru-paru, faktor risiko, pencegahan, dan tips kesehatan dari sumber terpercaya.</p>
-        </div>
-
-        <div class="feature-card" id="feature-privacy">
-          <div class="feature-icon" style="background:var(--gray-100);color:var(--gray-600);">
-            <i data-lucide="shield" style="width:28px;height:28px;"></i>
-          </div>
-          <h3 class="feature-title">Data Privacy</h3>
-          <p class="feature-desc">Data kesehatan Anda terlindungi dengan enkripsi end-to-end dan standar keamanan tertinggi. Privasi Anda adalah prioritas kami.</p>
+          <h3 class="feature-title">Dashboard & Statistik Interaktif</h3>
+          <p class="feature-desc">Pantau perkembangan kesehatan Anda melalui dashboard interaktif. Lacak riwayat skrining dan tren perubahan risiko Anda dari waktu ke waktu secara visual.</p>
         </div>
       </div>
     </div>
@@ -343,7 +329,7 @@
 
       <div class="ai-flow" id="ai-flow">
         <div class="ai-flow-step">
-          <div class="ai-flow-icon" style="color:var(--pink-500);">
+          <div class="ai-flow-icon" style="color:var(--brand-500);">
             <i data-lucide="file-input" style="width:32px;height:32px;"></i>
           </div>
           <div class="ai-flow-label">Input Data</div>
@@ -433,7 +419,7 @@
     <div class="container">
       <div class="footer-grid">
         <div>
-          <div class="footer-brand">🫁 SCPK</div>
+          <div class="footer-brand">🫁 LunarHealth</div>
           <p class="footer-desc">
             Sistem AI Deteksi Dini & Klasifikasi Tingkat Risiko 
             Kanker Paru-Paru bagi Perokok Aktif. Platform skrining mandiri 
@@ -469,7 +455,7 @@
       </div>
       <div class="footer-bottom">
         <span class="footer-copyright">
-          © 2025 SCPK Self-Screening Platform. All rights reserved.
+          © 2025 LunarHealth Self-Screening Platform. All rights reserved.
         </span>
         <span class="footer-copyright" style="font-size:var(--text-xs);color:var(--gray-600);">
           ⚠️ Platform ini bukan pengganti diagnosis medis profesional. 

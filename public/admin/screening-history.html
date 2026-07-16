@@ -1,0 +1,231 @@
+﻿<!DOCTYPE html>
+<html lang="id" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Riwayat Pemeriksaan — LunarHealth Admin</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/images/logo/favicon.svg">
+  <link rel="stylesheet" href="/assets/css/global.css">
+  <link rel="stylesheet" href="/assets/css/dashboard.css">
+  <link rel="stylesheet" href="/assets/css/admin.css">
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body class="dashboard-layout">
+  <!-- Mobile Top Bar -->
+  <div class="top-bar" id="top-bar">
+    <button class="top-bar-toggle" id="sidebar-toggle" aria-label="Toggle menu">
+      <i data-lucide="menu" style="width:22px;height:22px;"></i>
+    </button>
+    <div class="navbar-brand">
+      <div class="navbar-brand-icon"><i data-lucide="heart-pulse" style="width:18px;height:18px;color:white;"></i></div>
+      <span style="font-size:var(--text-lg);font-weight:800;">LunarHealth Admin</span>
+    </div>
+    <button class="btn btn-icon btn-ghost" id="theme-toggle-mobile" style="margin-left:auto;" aria-label="Toggle theme">
+      <i data-lucide="sun" style="width:18px;height:18px;"></i>
+    </button>
+  </div>
+
+  <!-- Sidebar Overlay -->
+  <div class="sidebar-overlay" id="sidebar-overlay"></div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sidebar-brand">
+      <div class="navbar-brand-icon" style="background:var(--admin-gradient-button);"><i data-lucide="heart-pulse" style="width:18px;height:18px;color:white;"></i></div>
+      <span style="font-family:var(--font-display);font-size:var(--text-lg);font-weight:800;color:var(--gray-900);">LunarHealth Admin</span>
+      <button class="btn btn-icon btn-ghost" id="theme-toggle" style="margin-left:auto;" aria-label="Toggle theme">
+        <i data-lucide="sun" style="width:16px;height:16px;" id="theme-icon-light"></i>
+        <i data-lucide="moon" style="width:16px;height:16px;display:none;" id="theme-icon-dark"></i>
+      </button>
+    </div>
+
+    <div class="sidebar-user" id="sidebar-user">
+      <div class="sidebar-user-avatar admin-avatar" id="user-avatar">A</div>
+      <div>
+        <div class="sidebar-user-name" id="user-name">Loading...</div>
+        <div class="sidebar-user-role" id="user-role">Administrator</div>
+      </div>
+    </div>
+
+    <nav class="sidebar-nav">
+      <div class="sidebar-section-title">Menu Utama</div>
+      <a href="/admin/" class="sidebar-link" id="nav-analytics">
+        <i data-lucide="line-chart" style="width:20px;height:20px;"></i> Ringkasan Analisis
+      </a>
+      <a href="/admin/users.html" class="sidebar-link" id="nav-users">
+        <i data-lucide="users" style="width:20px;height:20px;"></i> Data Pengguna
+      </a>
+      <a href="/admin/knowledge-base.html" class="sidebar-link" id="nav-knowledge">
+        <i data-lucide="book-open" style="width:20px;height:20px;"></i> Knowledge Base
+      </a>
+      <a href="/admin/screening-history.html" class="sidebar-link active admin-link-active" id="nav-screening-history">
+        <i data-lucide="file-clock" style="width:20px;height:20px;"></i> Riwayat Pemeriksaan
+      </a>
+
+      <div class="sidebar-section-title" style="margin-top:var(--space-4);">Mesin Fuzzy AI</div>
+      <a href="/admin/fuzzy-rules.html" class="sidebar-link" id="nav-rules">
+        <i data-lucide="sliders" style="width:20px;height:20px;"></i> Aturan &amp; Variabel
+      </a>
+      <a href="/admin/risk-distribution.html" class="sidebar-link" id="nav-distribution">
+        <i data-lucide="pie-chart" style="width:20px;height:20px;"></i> Epidemiologi Risiko
+      </a>
+
+      <div class="sidebar-section-title" style="margin-top:var(--space-4);">Akun</div>
+      <a href="/admin/settings.html" class="sidebar-link" id="nav-settings">
+        <i data-lucide="settings" style="width:20px;height:20px;"></i> Pengaturan
+      </a>
+      <a href="/dashboard/" class="sidebar-link" style="border-top: 1px solid var(--gray-200); margin-top: var(--space-4); padding-top: var(--space-4);">
+        <i data-lucide="arrow-left-right" style="width:20px;height:20px;"></i> Area Pengguna
+      </a>
+    </nav>
+
+    <div class="sidebar-footer">
+      <button class="sidebar-link w-full" id="btn-logout" style="color:var(--danger);">
+        <i data-lucide="log-out" style="width:20px;height:20px;"></i> Keluar
+      </button>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main class="main-content page-transition">
+    <div class="page-header" style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:var(--space-4);">
+      <div>
+        <h1 class="page-title">Riwayat Pemeriksaan</h1>
+        <p class="page-subtitle">Telusuri seluruh data pemeriksaan screening dari semua pengguna platform.</p>
+      </div>
+      <div style="display:flex;gap:var(--space-3);">
+        <button class="btn btn-secondary" id="btn-export" style="background:var(--white);border-color:var(--gray-200);color:var(--gray-700);">
+          <i data-lucide="download" style="width:16px;height:16px;"></i> Export CSV
+        </button>
+      </div>
+    </div>
+
+    <!-- Filters -->
+    <div class="glass-card" style="padding:var(--space-4);margin-bottom:var(--space-6);">
+      <div style="display:flex;gap:var(--space-3);align-items:flex-end;flex-wrap:wrap;">
+        <div class="form-group" style="margin-bottom:0;flex:1;min-width:200px;position:relative;">
+          <label class="form-label" style="font-size:var(--text-xs);margin-bottom:var(--space-1);">Cari Pengguna</label>
+          <input type="text" id="search-input" class="form-input" placeholder="Nama atau email pengguna..." style="padding-left:var(--space-10);">
+          <span style="position:absolute;left:14px;bottom:11px;color:var(--gray-400);"><i data-lucide="search" style="width:18px;height:18px;"></i></span>
+        </div>
+        <div class="form-group" style="margin-bottom:0;min-width:160px;">
+          <label class="form-label" style="font-size:var(--text-xs);margin-bottom:var(--space-1);">Kategori Risiko</label>
+          <select id="filter-risk" class="form-input" style="cursor:pointer;">
+            <option value="">Semua Kategori</option>
+            <option value="RENDAH">Rendah</option>
+            <option value="SEDANG">Sedang</option>
+            <option value="TINGGI">Tinggi</option>
+            <option value="SANGAT_TINGGI">Sangat Tinggi</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom:0;min-width:150px;">
+          <label class="form-label" style="font-size:var(--text-xs);margin-bottom:var(--space-1);">Dari Tanggal</label>
+          <input type="date" id="filter-date-from" class="form-input">
+        </div>
+        <div class="form-group" style="margin-bottom:0;min-width:150px;">
+          <label class="form-label" style="font-size:var(--text-xs);margin-bottom:var(--space-1);">Sampai Tanggal</label>
+          <input type="date" id="filter-date-to" class="form-input">
+        </div>
+        <button class="btn btn-primary" id="btn-search" style="height:44px;">
+          <i data-lucide="filter" style="width:16px;height:16px;"></i> Terapkan
+        </button>
+        <button class="btn btn-secondary" id="btn-reset" style="height:44px;background:var(--white);border-color:var(--gray-200);color:var(--gray-600);">
+          <i data-lucide="x" style="width:16px;height:16px;"></i> Reset
+        </button>
+      </div>
+    </div>
+
+    <!-- Summary Stats -->
+    <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));gap:var(--space-4);margin-bottom:var(--space-6);" id="summary-stats">
+      <div class="glass-card" style="padding:var(--space-4);text-align:center;">
+        <div style="font-size:var(--text-xs);color:var(--gray-500);margin-bottom:var(--space-1);">Total Hasil</div>
+        <div style="font-family:var(--font-display);font-size:1.75rem;font-weight:800;color:var(--gray-900);" id="stat-total">0</div>
+      </div>
+      <div class="glass-card" style="padding:var(--space-4);text-align:center;">
+        <div style="font-size:var(--text-xs);color:var(--gray-500);margin-bottom:var(--space-1);">Risiko Rendah</div>
+        <div style="font-family:var(--font-display);font-size:1.75rem;font-weight:800;color:#10b981;" id="stat-rendah">0</div>
+      </div>
+      <div class="glass-card" style="padding:var(--space-4);text-align:center;">
+        <div style="font-size:var(--text-xs);color:var(--gray-500);margin-bottom:var(--space-1);">Risiko Sedang</div>
+        <div style="font-family:var(--font-display);font-size:1.75rem;font-weight:800;color:#f59e0b;" id="stat-sedang">0</div>
+      </div>
+      <div class="glass-card" style="padding:var(--space-4);text-align:center;">
+        <div style="font-size:var(--text-xs);color:var(--gray-500);margin-bottom:var(--space-1);">Risiko Tinggi</div>
+        <div style="font-family:var(--font-display);font-size:1.75rem;font-weight:800;color:#ef4444;" id="stat-tinggi">0</div>
+      </div>
+    </div>
+
+    <!-- Table Container -->
+    <div class="glass-card" style="padding:0;overflow:hidden;">
+      <div id="screenings-loading-container" style="padding:var(--space-8);">
+        <!-- Skeleton loader -->
+      </div>
+
+      <div id="screenings-empty-container" class="empty-state" style="display:none;">
+        <div class="empty-state-icon">
+          <i data-lucide="file-clock" style="width:36px;height:36px;"></i>
+        </div>
+        <div class="empty-state-title">Tidak Ada Data Pemeriksaan</div>
+        <div class="empty-state-desc">Belum ada data screening yang sesuai dengan filter yang dipilih.</div>
+      </div>
+
+      <div id="screenings-content-container" style="display:none;">
+        <div class="table-container">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Pengguna</th>
+                <th>Email</th>
+                <th>Tanggal Pemeriksaan</th>
+                <th>Skor Risiko</th>
+                <th>Kategori Risiko</th>
+                <th>BMI</th>
+                <th style="text-align:right;">Aksi</th>
+              </tr>
+            </thead>
+            <tbody id="screenings-table-body">
+              <!-- Loaded dynamically -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:var(--space-4) var(--space-6);border-top:1px solid var(--gray-100);">
+          <div style="font-size:var(--text-xs);color:var(--gray-500);" id="pagination-info">
+            Menampilkan 0 - 0 dari 0 hasil
+          </div>
+          <div style="display:flex;gap:var(--space-2);">
+            <button class="btn btn-secondary btn-sm" id="btn-prev" disabled>
+              <i data-lucide="chevron-left" style="width:16px;height:16px;"></i> Sebelum
+            </button>
+            <button class="btn btn-secondary btn-sm" id="btn-next" disabled>
+              Lanjut <i data-lucide="chevron-right" style="width:16px;height:16px;"></i>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Detail Modal -->
+    <div id="detail-modal" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.5);backdrop-filter:blur(4px);padding:var(--space-6);overflow-y:auto;">
+      <div style="max-width:640px;margin:var(--space-8) auto;background:var(--white);border-radius:var(--radius-xl);padding:var(--space-8);box-shadow:var(--shadow-2xl);position:relative;">
+        <button onclick="closeDetailModal()" style="position:absolute;top:var(--space-4);right:var(--space-4);background:none;border:none;cursor:pointer;color:var(--gray-400);padding:var(--space-1);">
+          <i data-lucide="x" style="width:20px;height:20px;"></i>
+        </button>
+        <h2 style="font-family:var(--font-display);font-size:var(--text-xl);font-weight:800;color:var(--gray-900);margin-bottom:var(--space-6);">Detail Pemeriksaan</h2>
+        <div id="detail-modal-content">
+          <!-- Filled dynamically -->
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <script src="/assets/js/lib/api.js"></script>
+  <script src="/assets/js/lib/auth.js"></script>
+  <script src="/assets/js/lib/toast.js"></script>
+  <script src="/assets/js/lib/theme.js"></script>
+  <script src="/assets/js/lib/skeleton.js"></script>
+  <script src="/assets/js/admin/screening-history.js"></script>
+  <script>lucide.createIcons();</script>
+</body>
+</html>

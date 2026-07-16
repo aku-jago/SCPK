@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Self Screening — SCPK</title>
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🫁</text></svg>">
+  <title>Self Screening — LunarHealth</title>
+  <link rel="icon" type="image/svg+xml" href="/assets/images/logo/favicon.svg">
   <link rel="stylesheet" href="/assets/css/global.css">
   <link rel="stylesheet" href="/assets/css/dashboard.css">
   <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
@@ -12,23 +12,56 @@
 <body class="dashboard-layout">
   <div class="top-bar" id="top-bar">
     <button class="top-bar-toggle" id="sidebar-toggle"><i data-lucide="menu" style="width:22px;height:22px;"></i></button>
-    <div class="navbar-brand"><div class="navbar-brand-icon"><i data-lucide="heart-pulse" style="width:18px;height:18px;color:white;"></i></div><span style="font-size:var(--text-lg);font-weight:800;">SCPK</span></div>
+    <div class="navbar-brand"><div class="navbar-brand-icon"><i data-lucide="heart-pulse" style="width:18px;height:18px;color:white;"></i></div><span style="font-size:var(--text-lg);font-weight:800;">LunarHealth</span></div>
   </div>
   <div class="sidebar-overlay" id="sidebar-overlay"></div>
   <aside class="sidebar" id="sidebar">
-    <div class="sidebar-brand"><div class="navbar-brand-icon"><i data-lucide="heart-pulse" style="width:18px;height:18px;color:white;"></i></div><span style="font-family:var(--font-display);font-size:var(--text-lg);font-weight:800;">SCPK</span><button class="btn btn-icon btn-ghost" id="theme-toggle" style="margin-left:auto;"><i data-lucide="sun" style="width:16px;height:16px;" id="theme-icon-light"></i><i data-lucide="moon" style="width:16px;height:16px;display:none;" id="theme-icon-dark"></i></button></div>
-    <div class="sidebar-user" id="sidebar-user"><div class="sidebar-user-avatar" id="user-avatar">U</div><div><div class="sidebar-user-name" id="user-name">User</div><div class="sidebar-user-role" id="user-role">Pengguna</div></div></div>
+    <div class="sidebar-brand">
+      <div class="navbar-brand-icon" style="background:var(--gradient-button);"><i data-lucide="heart-pulse" style="width:18px;height:18px;color:white;"></i></div>
+      <span style="font-family:var(--font-display);font-size:var(--text-lg);font-weight:800;color:var(--gray-900);">LunarHealth</span>
+      <button class="btn btn-icon btn-ghost" id="theme-toggle" style="margin-left:auto;" aria-label="Toggle theme">
+        <i data-lucide="sun" style="width:16px;height:16px;" id="theme-icon-light"></i>
+        <i data-lucide="moon" style="width:16px;height:16px;display:none;" id="theme-icon-dark"></i>
+      </button>
+    </div>
+
+    <div class="sidebar-user" id="sidebar-user">
+      <div class="sidebar-user-avatar" id="user-avatar" style="background:var(--gradient-button);color:white;cursor:pointer;" title="Klik untuk ubah profil" onclick="window.location.href='/dashboard/profile.html'">U</div>
+      <div>
+        <div class="sidebar-user-name" id="user-name">Loading...</div>
+        <div class="sidebar-user-role" id="user-role">Pengguna</div>
+      </div>
+    </div>
+
     <nav class="sidebar-nav">
-      <div class="sidebar-section-title">Menu</div>
-      <a href="/dashboard/" class="sidebar-link"><i data-lucide="layout-dashboard" style="width:20px;height:20px;"></i> Dashboard</a>
-      <a href="/dashboard/screening.html" class="sidebar-link active"><i data-lucide="clipboard-check" style="width:20px;height:20px;"></i> Self Screening</a>
-      <a href="/dashboard/history.html" class="sidebar-link"><i data-lucide="history" style="width:20px;height:20px;"></i> Riwayat</a>
-      <a href="/dashboard/recommendation.html" class="sidebar-link"><i data-lucide="heart-handshake" style="width:20px;height:20px;"></i> Rekomendasi</a>
-      <div class="sidebar-section-title" style="margin-top:var(--space-4);">Akun</div>
-      <a href="/dashboard/profile.html" class="sidebar-link"><i data-lucide="user" style="width:20px;height:20px;"></i> Profil</a>
-      <a href="/dashboard/settings.html" class="sidebar-link"><i data-lucide="settings" style="width:20px;height:20px;"></i> Pengaturan</a>
+      <div class="sidebar-section-title">Menu Utama</div>
+      <a href="/dashboard/" class="sidebar-link" id="nav-dashboard">
+        <i data-lucide="layout-dashboard" style="width:20px;height:20px;"></i> Dashboard
+      </a>
+      <a href="/dashboard/screening.html" class="sidebar-link active" id="nav-screening">
+        <i data-lucide="clipboard-check" style="width:20px;height:20px;"></i> Self Screening
+      </a>
+      <a href="/dashboard/history.html" class="sidebar-link" id="nav-history">
+        <i data-lucide="history" style="width:20px;height:20px;"></i> Riwayat
+      </a>
+      <a href="/dashboard/recommendation.html" class="sidebar-link" id="nav-recommendation">
+        <i data-lucide="heart-handshake" style="width:20px;height:20px;"></i> Rekomendasi
+      </a>
+
+      <div class="sidebar-section-title" style="margin-top:var(--space-4);">Pengaturan Akun</div>
+      <a href="/dashboard/profile.html" class="sidebar-link" id="nav-profile">
+        <i data-lucide="user" style="width:20px;height:20px;"></i> Profil
+      </a>
+      <a href="/dashboard/settings.html" class="sidebar-link" id="nav-settings">
+        <i data-lucide="settings" style="width:20px;height:20px;"></i> Pengaturan
+      </a>
     </nav>
-    <div class="sidebar-footer"><button class="sidebar-link w-full" id="btn-logout" style="color:var(--danger);"><i data-lucide="log-out" style="width:20px;height:20px;"></i> Keluar</button></div>
+
+    <div class="sidebar-footer">
+      <button class="sidebar-link w-full" id="btn-logout" style="color:var(--danger);">
+        <i data-lucide="log-out" style="width:20px;height:20px;"></i> Keluar Akun
+      </button>
+    </div>
   </aside>
 
   <main class="main-content page-transition">
@@ -88,11 +121,51 @@
         <div class="wizard-panel" id="step-2">
           <div class="wizard-panel-title">Kebiasaan Merokok</div>
           <div class="wizard-panel-desc">Informasi tentang kebiasaan merokok Anda.</div>
+          
           <div class="form-group">
-            <label class="form-label" for="cigarettesPerDay">Jumlah Rokok per Hari (batang) *</label>
-            <input type="number" id="cigarettesPerDay" class="form-input" placeholder="Contoh: 15" min="1" max="60" required>
-            <div class="form-error" id="cigarettesPerDay-error"></div>
+            <label class="form-label">Apakah Anda perokok aktif? *</label>
+            <div style="display:flex;gap:var(--space-4);margin-top:var(--space-2);">
+              <label style="display:flex;align-items:center;gap:var(--space-2);cursor:pointer;padding:var(--space-3) var(--space-5);border:1.5px solid var(--gray-200);border-radius:var(--radius-lg);flex:1;transition:all 0.2s;">
+                <input type="radio" name="isSmoker" value="true" style="accent-color:var(--brand-500);"> <span>Ya</span>
+              </label>
+              <label style="display:flex;align-items:center;gap:var(--space-2);cursor:pointer;padding:var(--space-3) var(--space-5);border:1.5px solid var(--gray-200);border-radius:var(--radius-lg);flex:1;transition:all 0.2s;">
+                <input type="radio" name="isSmoker" value="false" checked style="accent-color:var(--brand-500);"> <span>Tidak</span>
+              </label>
+            </div>
           </div>
+
+          <div id="smoker-section" style="display:none;">
+            <div class="form-group">
+              <label class="form-label" for="smokingDurationYearsSmoker">Sudah berapa lama merokok? (tahun) *</label>
+              <input type="number" id="smokingDurationYearsSmoker" class="form-input" placeholder="Contoh: 5" min="0" max="80" step="0.5">
+              <div class="form-error" id="smokingDurationYearsSmoker-error"></div>
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="cigarettesPerDay">Jumlah Rokok per Hari (batang) *</label>
+              <input type="number" id="cigarettesPerDay" class="form-input" placeholder="Contoh: 15" min="1" max="60">
+              <div class="form-error" id="cigarettesPerDay-error"></div>
+            </div>
+          </div>
+
+          <div id="non-smoker-section">
+            <div class="form-group">
+              <label class="form-label">Apakah Anda sering terpapar asap rokok orang lain (Perokok Pasif)? *</label>
+              <div style="display:flex;gap:var(--space-4);margin-top:var(--space-2);">
+                <label style="display:flex;align-items:center;gap:var(--space-2);cursor:pointer;padding:var(--space-3) var(--space-5);border:1.5px solid var(--gray-200);border-radius:var(--radius-lg);flex:1;transition:all 0.2s;">
+                  <input type="radio" name="isPassiveSmoker" value="true" style="accent-color:var(--brand-500);"> <span>Ya</span>
+                </label>
+                <label style="display:flex;align-items:center;gap:var(--space-2);cursor:pointer;padding:var(--space-3) var(--space-5);border:1.5px solid var(--gray-200);border-radius:var(--radius-lg);flex:1;transition:all 0.2s;">
+                  <input type="radio" name="isPassiveSmoker" value="false" checked style="accent-color:var(--brand-500);"> <span>Tidak</span>
+                </label>
+              </div>
+            </div>
+            <div class="form-group" id="passive-duration-group" style="display:none;">
+              <label class="form-label" for="smokingDurationYearsPassive">Sudah berapa lama Anda rutin terpapar? (tahun) *</label>
+              <input type="number" id="smokingDurationYearsPassive" class="form-input" placeholder="Contoh: 2" min="0" max="80" step="0.5">
+              <div class="form-error" id="smokingDurationYearsPassive-error"></div>
+            </div>
+          </div>
+
           <div class="form-group">
             <label class="form-label" for="coughDuration">Durasi Batuk (bulan) *</label>
             <input type="number" id="coughDuration" class="form-input" placeholder="0 jika tidak batuk" min="0" max="24" step="0.5" required>
@@ -113,23 +186,23 @@
             <label class="form-label">Riwayat Kanker Paru-Paru dalam Keluarga *</label>
             <div style="display:flex;gap:var(--space-4);margin-top:var(--space-2);">
               <label style="display:flex;align-items:center;gap:var(--space-2);cursor:pointer;padding:var(--space-3) var(--space-5);border:1.5px solid var(--gray-200);border-radius:var(--radius-lg);flex:1;transition:all 0.2s;">
-                <input type="radio" name="familyHistory" value="true" style="accent-color:var(--pink-500);"> <span>Ya, ada</span>
+                <input type="radio" name="familyHistory" value="true" style="accent-color:var(--brand-500);"> <span>Ya, ada</span>
               </label>
               <label style="display:flex;align-items:center;gap:var(--space-2);cursor:pointer;padding:var(--space-3) var(--space-5);border:1.5px solid var(--gray-200);border-radius:var(--radius-lg);flex:1;transition:all 0.2s;">
-                <input type="radio" name="familyHistory" value="false" checked style="accent-color:var(--pink-500);"> <span>Tidak ada</span>
+                <input type="radio" name="familyHistory" value="false" checked style="accent-color:var(--brand-500);"> <span>Tidak ada</span>
               </label>
             </div>
             <div class="form-error" id="familyHistory-error"></div>
           </div>
           <div class="form-group">
             <label class="form-label" for="environmentalExposure">Paparan Lingkungan Berbahaya (1-10) *</label>
-            <input type="range" id="environmentalExposure" min="1" max="10" value="3" style="width:100%;accent-color:var(--pink-500);">
-            <div style="display:flex;justify-content:space-between;font-size:var(--text-xs);color:var(--gray-500);"><span>1 - Rendah</span><span id="env-value" style="font-weight:700;color:var(--pink-500);">3</span><span>10 - Tinggi</span></div>
+            <input type="range" id="environmentalExposure" min="1" max="10" value="3" style="width:100%;accent-color:var(--brand-500);">
+            <div style="display:flex;justify-content:space-between;font-size:var(--text-xs);color:var(--gray-500);"><span>1 - Rendah</span><span id="env-value" style="font-weight:700;color:var(--brand-500);">3</span><span>10 - Tinggi</span></div>
           </div>
           <div class="form-group">
             <label class="form-label" for="chestPainScale">Skala Nyeri Dada (1-10) *</label>
-            <input type="range" id="chestPainScale" min="1" max="10" value="2" style="width:100%;accent-color:var(--pink-500);">
-            <div style="display:flex;justify-content:space-between;font-size:var(--text-xs);color:var(--gray-500);"><span>1 - Ringan</span><span id="pain-value" style="font-weight:700;color:var(--pink-500);">2</span><span>10 - Berat</span></div>
+            <input type="range" id="chestPainScale" min="1" max="10" value="2" style="width:100%;accent-color:var(--brand-500);">
+            <div style="display:flex;justify-content:space-between;font-size:var(--text-xs);color:var(--gray-500);"><span>1 - Ringan</span><span id="pain-value" style="font-weight:700;color:var(--brand-500);">2</span><span>10 - Berat</span></div>
           </div>
           <div class="wizard-actions">
             <button class="btn btn-secondary" onclick="wizardPrev()"><i data-lucide="arrow-left" style="width:16px;height:16px;"></i> Kembali</button>

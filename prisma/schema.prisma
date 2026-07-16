@@ -53,6 +53,9 @@ model Screening {
   
   // Input Parameters
   age                   Int
+  isSmoker              Boolean         @default(false)
+  smokingDurationYears  Float?
+  isPassiveSmoker       Boolean?
   cigarettesPerDay      Int
   coughDuration         Float           // in months
   weight                Float           // in kg

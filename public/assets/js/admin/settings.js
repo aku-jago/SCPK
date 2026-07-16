@@ -31,7 +31,15 @@
   const user = Auth.getUser();
   if (user) {
     document.getElementById('user-name').textContent = user.name || 'Admin';
-    document.getElementById('user-avatar').textContent = (user.name || 'A').charAt(0).toUpperCase();
+    const avatarEl2 = document.getElementById('user-avatar');
+    if (avatarEl2) {
+      if (user.avatar) {
+        avatarEl2.innerHTML = '<img src="' + user.avatar + '" alt="Profile" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">';
+        avatarEl2.style.background = 'none';
+      } else {
+        avatarEl2.textContent = (user.name || 'A').charAt(0).toUpperCase();
+      }
+    }
   }
 
   // DOM elements
@@ -54,7 +62,15 @@
 
       // Sync sidebar
       document.getElementById('user-name').textContent = data.name || 'Admin';
-      document.getElementById('user-avatar').textContent = (data.name || 'A').charAt(0).toUpperCase();
+      const avatarEl3 = document.getElementById('user-avatar');
+    if (avatarEl3) {
+      if (data.avatar) {
+        avatarEl3.innerHTML = '<img src="' + data.avatar + '" alt="Profile" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">';
+        avatarEl3.style.background = 'none';
+      } else {
+        avatarEl3.textContent = (data.name || 'A').charAt(0).toUpperCase();
+      }
+    }
 
     } catch (err) {
       console.error(err);

@@ -48,7 +48,14 @@
     const userNameEl = document.getElementById('user-name');
     const userAvatarEl = document.getElementById('user-avatar');
     if (userNameEl) userNameEl.textContent = user.name || 'Admin';
-    if (userAvatarEl) userAvatarEl.textContent = (user.name || 'A').charAt(0).toUpperCase();
+    if (userAvatarEl) {
+      if (user.avatar) {
+        userAvatarEl.innerHTML = '<img src="' + user.avatar + '" alt="Profile" style="width:100%;height:100%;object-fit:cover;border-radius:50%;">';
+        userAvatarEl.style.background = 'none';
+      } else {
+        userAvatarEl.textContent = (user.name || 'A').charAt(0).toUpperCase();
+      }
+    }
   }
 
   // Value Animation
@@ -124,18 +131,17 @@
     let values = [];
     let total = 0;
 
-    if (growthData.length > 0) {
+    if (growthData && growthData.length > 0) {
       labels = growthData.map(d => new Date(d.date).toLocaleDateString('id-ID', { day: '2-digit', month: 'short' }));
-      values = growthData.map(d => d.count * 3); // Multiply for dramatic effect since it's screening total
+      values = growthData.map(d => d.count);
       total = values.reduce((a, b) => a + b, 0);
     } else {
       for (let i = 14; i >= 0; i--) {
         const d = new Date(); d.setDate(d.getDate() - i);
         labels.push(d.toLocaleDateString('id-ID', { day: '2-digit', month: 'short' }));
-        const val = Math.floor(Math.random() * 50) + 10;
-        values.push(val);
-        total += val;
+        values.push(0);
       }
+      total = 0;
     }
 
     animateValue(document.getElementById('chart-total-value'), 0, total, 1000);

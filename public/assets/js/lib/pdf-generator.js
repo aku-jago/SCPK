@@ -29,7 +29,7 @@ const PDFGenerator = {
     doc.setTextColor(...white);
     doc.setFontSize(22);
     doc.setFont('helvetica', 'bold');
-    doc.text('SCPK Self-Screening Platform', 20, 20);
+    doc.text('LunarHealth Self-Screening Platform', 20, 20);
     doc.setFontSize(10);
     doc.setFont('helvetica', 'normal');
     doc.text('Sistem AI Deteksi Dini & Klasifikasi Tingkat Risiko Kanker Paru-Paru', 20, 30);
@@ -145,6 +145,6 @@ const PDFGenerator = {
     }
 
     // Save
-    doc.save(`SCPK_Screening_Report_${new Date().toISOString().slice(0, 10)}.pdf`);
+    doc.save(`LunarHealth_Screening_Report_${new Date().toISOString().slice(0, 10)}.pdf`);
   },
 };

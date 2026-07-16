@@ -60,7 +60,7 @@ app.use('/api/tracker', trackerRoutes);
 app.get('/api/health', (req, res) => {
   res.json({
     success: true,
-    message: 'SCPK API is running',
+    message: 'LunarHealth API is running',
     timestamp: new Date().toISOString(),
     version: '1.0.0',
   });

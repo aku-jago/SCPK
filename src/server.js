@@ -8,7 +8,7 @@ app.listen(PORT, () => {
   console.log('');
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
   console.log('');
-  console.log('  🏥  SCPK Self-Screening Platform');
+  console.log('  🏥  LunarHealth Self-Screening Platform');
   console.log('  ─────────────────────────────────');
   console.log(`  🌐  Server:     http://localhost:${PORT}`);
   console.log(`  📡  API:        http://localhost:${PORT}/api/health`);
